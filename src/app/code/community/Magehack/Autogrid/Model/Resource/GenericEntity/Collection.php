@@ -26,7 +26,7 @@ class Magehack_Autogrid_Model_Resource_GenericEntity_Collection
     
     protected function _construct()
     {
-        $this->_init('magehack_autogrid/table');
+        $this->_init('magehack_autogrid/genericEntity');
     }
 
     /**

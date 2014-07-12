@@ -23,7 +23,7 @@ class Magehack_Autogrid_Test_Model_Resource_GenericEntity_CollectionTest
             ->method('getReadConnection')
             ->withAnyParameters()
             ->will($this->returnValue($stubZendDbAdapter));
-        $this->app()->getConfig()->replaceInstanceCreation('resource_model', 'magehack_autogrid/table', $stubResource);
+        $this->app()->getConfig()->replaceInstanceCreation('resource_model', 'magehack_autogrid/genericEntity', $stubResource);
         
         /** @var Magehack_Autogrid_Model_Resource_GenericEntity_Collection $instance */
         $instance = new $this->class;
@@ -51,7 +51,7 @@ class Magehack_Autogrid_Test_Model_Resource_GenericEntity_CollectionTest
 
     public function testItCanBeInstantiatedViaFactory()
     {
-        $result = Mage::getConfig()->getResourceModelClassName('magehack_autogrid/table_collection');
+        $result = Mage::getConfig()->getResourceModelClassName('magehack_autogrid/genericEntity_collection');
         $this->assertEquals($this->class, $result);
     }
     

@@ -36,13 +36,13 @@ class Magehack_Autogrid_Test_Model_GenericEntityTest
 
     public function testItCanBeInstantiatedViaFactory()
     {
-        $result = Mage::getConfig()->getModelClassName('magehack_autogrid/table');
+        $result = Mage::getConfig()->getModelClassName('magehack_autogrid/genericEntity');
         $this->assertEquals($this->class, $result);
     }
 
     public function testItsResourceModelIsCorrect()
     {
-        $this->assertAttributeEquals('magehack_autogrid/table', '_resourceName', $this->getInstance());
+        $this->assertAttributeEquals('magehack_autogrid/genericEntity', '_resourceName', $this->getInstance());
     }
 
     public function testSetAutoGridTableIdInitializesTheResource()

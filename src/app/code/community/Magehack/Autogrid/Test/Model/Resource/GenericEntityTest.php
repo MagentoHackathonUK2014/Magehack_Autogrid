@@ -72,7 +72,7 @@ class Magehack_Autogrid_Test_Model_Resource_GenericEntityTest
 
     public function testItCanBeInstantiatedViaFactory()
     {
-        $result = Mage::getConfig()->getResourceModelClassName('magehack_autogrid/table');
+        $result = Mage::getConfig()->getResourceModelClassName('magehack_autogrid/genericEntity');
         $this->assertEquals($this->class, $result);
     }
 
