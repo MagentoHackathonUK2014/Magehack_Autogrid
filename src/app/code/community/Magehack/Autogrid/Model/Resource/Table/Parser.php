@@ -83,8 +83,7 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
      */
     public function getTableTitle()
     {
-        // @TODO Implement ;)
-        return '';
+        return $this->_title;
     }
 
 }
