@@ -19,4 +19,10 @@
 -->
 <layout>
 
+    <adminhtml_gridmaster_index>
+
+        <block type="magehack_autogrid/adminhtml_gridmaster" name="grid_container" parent="content" />
+
+    </adminhtml_gridmaster_index>
+
 </layout>

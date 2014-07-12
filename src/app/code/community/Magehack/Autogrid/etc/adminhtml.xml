@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+/**
+ * Magento Hackathon 2014 UK
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   Magehack
+ * @package    Magehack_Autogrid
+ * @copyright  Copyright (c) 2014 Magento community
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+<config>
+    <menu>
+        <system>
+            <children>
+                <autogrid_master translate="title" module="magehack_autogrid">
+                    <title>Grids paradise</title>
+                    <sort_order>10</sort_order>
+                    <action>adminhtml/gridmaster/index</action>
+                </autogrid_master>
+            </children>
+        </system>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <autogrid_master translate="title" module="magehack_autogrid">
+                                <title>Grids paradise</title>
+                            </autogrid_master>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
