@@ -11,7 +11,22 @@ class Magehack_Autogrid_Test_Model_Resource_TableTest
      */
     protected function getInstance()
     {
-        return new $this->class;
+        /** @var Magehack_Autogrid_Model_Resource_Table $instance */
+        $instance = new $this->class;
+        
+        $stubHelper = $this->getMock('Magehack_Autogrid_Helper_Data');
+        
+        $stubConfig = $this->getMock('Magehack_Autogrid_Model_Config');
+        
+        $stubTableParser = $this->getMock('Magehack_Autogrid_Model_Resource_Table_Parser');
+        
+        $instance->setHelper($stubHelper);
+        
+        $instance->setConfig($stubConfig);
+        
+        $instance->setTableParser($stubTableParser);
+        
+        return $instance;
     }
 
     public function testItExists()
@@ -26,17 +41,9 @@ class Magehack_Autogrid_Test_Model_Resource_TableTest
         $this->assertTrue($result);
     }
 
-    public function testItsTableNameIsCorrect()
+    public function testItCanBeInstantiatedViaFactory()
     {
-        $instance = $this->getInstance();
-        $result = $instance->getMainTable();
-        $this->assertEquals('magehack_autogrid_dummy', $result);
-    }
-    
-    public function testItsIdFieldIsCorrect()
-    {
-        $instance = $this->getInstance();
-        $result = $instance->getIdFieldName();
-        $this->assertEquals('id', $result);
+        $result = Mage::getConfig()->getResourceModelClassName('magehack_autogrid/table');
+        $this->assertEquals($this->class, $result);
     }
 }
