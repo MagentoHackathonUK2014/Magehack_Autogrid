@@ -200,7 +200,7 @@ class Magehack_Autogrid_Model_Table
     }
 
     /**
-     * @return Magehack_Autogrid_Model_Resource_Table_Column[]
+     * @return Magehack_Autogrid_Model_Table_ColumnInterface[]
      */
     public function getAllColumns()
     {
@@ -209,9 +209,32 @@ class Magehack_Autogrid_Model_Table
         }
         return $this->_columns;
     }
-    
-    public function getVisibleColumns()
+
+    /**
+     * @return Magehack_Autogrid_Model_Table_ColumnInterface[]
+     */
+    public function getGridColumns()
     {
-        
+        $visibleColumns = array();
+        foreach ($this->getAllColumns() as $column) {
+            if ($column->isInGrid()) {
+                $visibleColumns[] = $column;
+            }
+        }
+        return $visibleColumns;
     }
-} 
+
+    /**
+     * @return Magehack_Autogrid_Model_Table_ColumnInterface[]
+     */
+    public function getFormColumns()
+    {
+        $visibleColumns = array();
+        foreach ($this->getAllColumns() as $column) {
+            if ($column->isInForm()) {
+                $visibleColumns[] = $column;
+            }
+        }
+        return $visibleColumns;
+    }
+}

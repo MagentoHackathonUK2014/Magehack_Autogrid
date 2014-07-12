@@ -27,4 +27,4 @@ class Magehack_Autogrid_Test_Model_TableTest
         $result = Mage::getConfig()->getModelClassName('magehack_autogrid/table');
         $this->assertEquals($this->class, $result);
     }
-} 
+}
