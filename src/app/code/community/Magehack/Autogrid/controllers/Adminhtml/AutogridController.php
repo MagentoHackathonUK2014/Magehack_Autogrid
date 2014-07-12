@@ -29,6 +29,21 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
     {
         return (bool) Mage::getSingleton('admin/session')->isAllowed('magehack_autogrid');
     }
+
+    /**
+     * Init the table
+     * @return Magehack_Autogrid_Model_Table The table
+     */
+    protected function _initTable()
+    {
+        if (!$id = Mage::helper('magehack_autogrid')->getTableId()) {
+            return false;
+        }
+
+        $table = Mage::getModel('magehack_autogrid/table');
+        $table->setAutoGridTableId($id);
+        return $table;
+    }
     
     /**
      * Demo action (just for testing purposes
@@ -72,12 +87,21 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
      */
     public function editAction()
     {
-        // Object
-        $object = $this->_initObject();
-        Mage::register('current_autogrid_table', $object);
+        // The table
+        if (!$table = $this->_initTable()) {
+            return $this->_forward('noroute');
+        }
+        Mage::register('current_autogrid_table', $table);
+
+        // The object
+        $object = Mage::getModel('magehack_autogrid/genericEntity')
+            ->setAutoGridTableId($table->getAutoGridTableId())
+            ->load($this->getRequest()->getParam('id', null))
+        ;
+        Mage::register('current_generic_entity', $object);
 
         // Layout
-        $this->loadLayout();
+        $this->loadLayout(array('default', 'adminhtml_autogrid_edit'));
 
         // Title
         if ($object->getId()) {

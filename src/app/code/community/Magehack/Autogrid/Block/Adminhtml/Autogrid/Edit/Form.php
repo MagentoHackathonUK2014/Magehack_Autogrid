@@ -37,7 +37,7 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit_Form extends Mage_Adminhtm
             'enctype'   => 'multipart/form-data'
         ));
 
-        $entity = Mage::registry('current_autogrid_table');
+        $entity = Mage::registry('current_generic_entity');
         $form->setDataObject($entity);
 
         $fieldset = $form->addFieldset('general', array(
@@ -57,7 +57,7 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit_Form extends Mage_Adminhtm
      */
     protected function _initFormValues()
     {
-        $entity = Mage::registry('current_autogrid_table');
+        $entity = Mage::registry('current_generic_entity');
         $this->getForm()->setValues($entity->getData());
 
         return $this;
