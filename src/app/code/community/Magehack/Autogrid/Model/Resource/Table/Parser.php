@@ -26,10 +26,7 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
         $this->_cols = array();
         foreach ($struct as $name => $info) {
             Mage::log($name."\n",null,'autogrid.log');
-            $column = Mage::getModel('magehack_autogrid/column');
-            $column->setName($name)
-                 ->setType($info['DATA_TYPE']);
-            $this->_cols[] = $column;
+            $this->_cols[] = array($name=>$info['DATA_TYPE']);
         }
         return $this;
     }
@@ -43,11 +40,20 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
     }
 
     /**
-     * @return array|Magehack_Autogrid_Model_Table_Column
+     * @return array|array
      */
     public function getTableColumns()
     {
         return $this->_cols;
+    }
+
+    /**
+     * @return array|string
+     */
+    public function getTableColumnByName($name)
+    {
+        if (exists($this->_cols[$name]))
+        return $this->_cols[$name];
     }
 
 }
