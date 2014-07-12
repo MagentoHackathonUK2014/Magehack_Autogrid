@@ -49,7 +49,7 @@ Developers
 * Sam
 * [Vinai Kopp](https://github.com/vinai)
 * Niels Preuss
-* Jaque
+* [Jacques Bodin-Hullin](http://jacques.sh)
 * Malachy
 
 Licence
