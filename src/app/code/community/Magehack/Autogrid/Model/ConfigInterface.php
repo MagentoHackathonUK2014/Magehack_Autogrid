@@ -68,4 +68,11 @@ interface Magehack_Autogrid_Model_ConfigInterface
      * @return string
      */
     public function getTableTitle($tableId);
+    
+    public function isInGrid();
+    public function isInForm();
+    
+    
+    
+    
 } 
