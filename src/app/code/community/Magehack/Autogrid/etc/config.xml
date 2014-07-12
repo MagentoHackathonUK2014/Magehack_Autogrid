@@ -38,7 +38,7 @@
             <adminhtml>
                 <args>
                     <modules>
-                        <magehack_autogrid after="Mage_Adminhtml">Magehack_Autogrid_Adminhtml</magehack_autogrid>
+                        <magehack_autogrid before="Mage_Adminhtml">Magehack_Autogrid_Adminhtml</magehack_autogrid>
                     </modules>
                 </args>
             </adminhtml>
