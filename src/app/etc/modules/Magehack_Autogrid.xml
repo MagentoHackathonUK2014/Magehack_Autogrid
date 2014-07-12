@@ -2,7 +2,11 @@
 <config>
     <modules>
         <Magehack_Autogrid>
-            <c
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Adminhtml/>
+            </depends>
         </Magehack_Autogrid>
     </modules>
 </config>

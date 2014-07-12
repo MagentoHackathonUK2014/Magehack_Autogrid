@@ -1,4 +1,10 @@
 <?xml version="1.0"?>
 <config>
-
+    <phpunit>
+        <suite>
+            <modules>
+                <Magehack_Autogrid/>
+            </modules>
+        </suite>
+    </phpunit>
 </config>
