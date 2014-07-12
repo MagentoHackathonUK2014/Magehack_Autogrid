@@ -72,4 +72,14 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
         return $this->_cols[$name];
     }
 
+    /**
+     * Retrieve the title
+     * @return string
+     */
+    public function getTableTitle()
+    {
+        // @TODO Implement ;)
+        return '';
+    }
+
 }
