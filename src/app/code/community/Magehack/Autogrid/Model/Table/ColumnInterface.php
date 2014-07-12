@@ -16,7 +16,7 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-interface Magehack_Autogrid_Model_ColumnInterface
+interface Magehack_Autogrid_Model_Table_ColumnInterface
 {
     /**
      * @param $columnName string - column name from mysql
@@ -41,7 +41,13 @@ interface Magehack_Autogrid_Model_ColumnInterface
      * @return string
      */
     public function getFormInputType();
-    public function settFormInputType();
+    
+    /**
+     * This is set internally by default or from the config but you can set it using this method if you like
+     * @param $formInputType string - form type for pasing to addfield()
+     *	 @return Magehack_Autogrid_Model_Column ie $this
+     */
+    public function setFormInputType();
 
     /**
      * Returns the info array (third parameter of addField) for setting up a form field
