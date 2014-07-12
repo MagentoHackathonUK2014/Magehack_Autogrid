@@ -39,5 +39,4 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Grid extends Mage_Adminhtml_Blo
 
         return parent::_prepareColumns();
     }
-
 }
