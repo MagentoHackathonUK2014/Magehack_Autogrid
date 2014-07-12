@@ -20,7 +20,10 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Grid extends Mage_Adminhtml_Blo
 {
     protected function _prepareCollection()
     {
-        $collection = Mage::helper('magehack_autogrid')->getCollection();
+        $tableId = Mage::helper('magehack_autogrid')->getTableId();
+        
+        $collection = Mage::getResourceModel('magehack_autogrid/genericEntity_collection');
+        $collection->setAutoGridTableId($tableId);
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
@@ -30,8 +33,8 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Grid extends Mage_Adminhtml_Blo
     {
         $table = Mage::helper('magehack_autogrid')->getCurrentTable();
 
-        foreach ($table->getCells() as $cell) {
-            $this->addColumn($cell->getName(), $cell->getGridInfo());
+        foreach ($table->getGridColumns() as $column) {
+            $this->addColumn($column->getName(), $column->getGridInfo());
         }
 
         return parent::_prepareColumns();

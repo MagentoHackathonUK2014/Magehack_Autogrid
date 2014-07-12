@@ -20,7 +20,7 @@
 <config>
     <tables>
         <table_identifier_1>
-            <table>table_name_1</table>
+            <table>catalog/product</table>
             <title>The title... it's me !</title>
             <source_method></source_method>
             <grid>
@@ -53,7 +53,7 @@
                     <handle>
                         <name>col2</name>
                         <sort_order>4</sort_order>
-                        <type>dropdown</type>
+                        <type>textbox</type>
                         <optional>0</optional>
                         <validate>1</validate>
                     </handle>
