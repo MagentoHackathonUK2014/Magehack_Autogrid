@@ -22,6 +22,11 @@
                 <class>Magehack_Autogrid_Helper</class>
             </magehack_autogrid>
         </helpers>
+        <blocks>
+            <magehack_autogrid>
+                <class>Magehack_Autogrid_Block</class>
+            </magehack_autogrid>
+        </blocks>
         <events>
             <controller_front_init_routers>
                 <observers>
