@@ -23,7 +23,7 @@ class Magehack_Autogrid_Controller_Router extends Mage_Core_Controller_Varien_Ro
      * The regex to get the object that we are working on.
      * @const string
      */
-    const CONTROLLER_NAME_REGEX = '`autogrid_([a-zA-Z_]*)`';
+    const CONTROLLER_NAME_REGEX = '`autogrid_([a-zA-Z0-9_]*)`';
 
     /**
      * Initialize Controller Router

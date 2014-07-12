@@ -16,22 +16,38 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-class Magehack_Autogrid_Model_GenericEntity extends Mage_Core_Model_Abstract
+/**
+ * Container of the grid of grids
+ * @package Magehack_Autogrid
+ */
+class Magehack_Autogrid_Block_Adminhtml_Gridmaster extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
+
+    /**
+     * Constructor Override
+     * @return Magehack_Autogrid_Controller_Router
+     */
     protected function _construct()
     {
-        $this->_init('magehack_autogrid/genericEntity');
+        parent::_construct();
+
+        $this->_blockGroup = 'magehack_autogrid';
+        $this->_controller = 'adminhtml_gridmaster';
+        $this->_headerText = $this->__('Grid souls');
+
+        return $this;
     }
 
     /**
-     * Initialize the models resource model with the table for the specified autogrid id.
-     * 
-     * @param string $autoGridTableId
-     * @return $this
+     * Prepare Layout
+     * @return Magehack_Autogrid_Controller_Router
      */
-    public function setAutoGridTableId($autoGridTableId)
+    protected function _prepareLayout()
     {
-        $this->getResource()->setAutoGridTableId($autoGridTableId);
-        return $this;
+        $this->_removeButton('add');
+        return parent::_prepareLayout();
     }
+
+// Monsieur Biz Tag NEW_METHOD
+
 }

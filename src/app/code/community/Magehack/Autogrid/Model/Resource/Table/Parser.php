@@ -1,4 +1,20 @@
 <?php
+/**
+ * Magento Hackathon 2014 UK
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   Magehack
+ * @package    Magehack_Autogrid
+ * @copyright  Copyright (c) 2014 Magento community
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 
 class Magehack_Autogrid_Model_Resource_Table_Parser
     extends Mage_Core_Model_Resource_Db_Abstract
@@ -6,7 +22,7 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
 {
 
     protected $_primaryKey = null;
-    protected $_cells = array();
+    protected $_cols = array();
     /**
      * Resource initialization
      */
@@ -23,13 +39,10 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
     {
         $ra = $this->_getReadAdapter();
         $struct = $ra->describeTable($tableName);
-        $this->_cells = array();
+        $this->_cols = array();
         foreach ($struct as $name => $info) {
             Mage::log($name."\n",null,'autogrid.log');
-            $cell = Mage::getModel('magehack_autogrid/cell');
-            $cell->setName($name)
-                 ->setType($info['DATA_TYPE']);
-            $this->_cells[] = $cell;
+            $this->_cols[] = array($name=>$info['DATA_TYPE']);
         }
         return $this;
     }
@@ -43,11 +56,20 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
     }
 
     /**
-     * @return array|Magehack_Autogrid_Model_Table_Cell
+     * @return array|array
      */
     public function getTableColumns()
     {
-        return $this->_cells;
+        return $this->_cols;
+    }
+
+    /**
+     * @return array|string
+     */
+    public function getTableColumnByName($name)
+    {
+        if (exists($this->_cols[$name]))
+        return $this->_cols[$name];
     }
 
 }
