@@ -58,6 +58,7 @@ class Magehack_Autogrid_Model_Table
     public function setAutoGridTableId($autoGridTableId)
     {
         $this->_autogridTableId = $autoGridTableId;
+        $this->_getTableParser()->init($autoGridTableId);
         return $this;
     }
 
@@ -175,6 +176,7 @@ class Magehack_Autogrid_Model_Table
         $parser = $this->_getTableParser();
         $config = $this->_getConfig();
         $tableId = $this->getAutoGridTableId();
+        
 
         /** @var Magehack_Autogrid_Model_Table_ColumnInterface $column */
         $column = Mage::getModel('magehack_autogrid/table_column');
@@ -191,7 +193,8 @@ class Magehack_Autogrid_Model_Table
      */
     protected function _loadTableDataFromParser()
     {
-        $columns = $this->_getTableParser()->getTableColumns();
+        $columns = $this->_getTableParser()
+            ->getTableColumns();
         foreach ($columns as $name => $columnInfo) {
             $this->_columns[$name] = $this->_getColumnInstance($name);
         }
