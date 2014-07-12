@@ -86,7 +86,7 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
     private function _getTableParser()
     {
         if (!isset($this->_tableParser)) {
-            $this->_tableParser = Mage::getModel('magehack_autogrid/table_parser');
+            $this->_tableParser = Mage::getResourceModel('magehack_autogrid/table_parser');
         }
         return $this->_tableParser;
     }
@@ -117,6 +117,7 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
         $tableParser = $this->_getTableParser();
         $tableParser->init($this->getTable($tableName));
         $primaryKey = $tableParser->getPrimaryKey();
+        $this->_resourceModel = null;
         $this->_init($tableName, $primaryKey);
     }
 }

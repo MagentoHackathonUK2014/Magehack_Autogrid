@@ -45,6 +45,9 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
         foreach ($struct as $name => $info) {
             //Mage::log($name."\n",null,'autogrid.log');
             $this->_cols[] = array($name=>$info['DATA_TYPE']);
+            if ($info['PRIMARY'] && $info['PRIMARY_POSITION'] == 1) {
+                $this->_primaryKey = $name;
+            }
         }
         $c = $ra->getConfig();
         $data = $ra->fetchRow("SELECT table_comment FROM INFORMATION_SCHEMA.TABLES WHERE table_schema=? AND table_name=?",array($c['dbname'],$tableName));
