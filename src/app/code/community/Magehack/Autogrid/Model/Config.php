@@ -144,4 +144,18 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         }
     }
 
+    /**
+     * Return the table title if configured, otherwise an empty string
+     *
+     * @param string $tableId
+     * @return string
+     */
+    public function getTableTitle($tableId)
+    {
+        if($node = $this->_config->getNode('tables/'.$tableId.'/title')) {
+            return (string) $node;
+        }
+        return false;
+    }
+
 }
