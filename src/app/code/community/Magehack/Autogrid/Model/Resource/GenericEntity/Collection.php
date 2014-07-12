@@ -1,7 +1,7 @@
 <?php
 
 
-class Magehack_Autogrid_Model_Resource_Table_Collection
+class Magehack_Autogrid_Model_Resource_GenericEntity_Collection
     extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
     /**
@@ -9,7 +9,7 @@ class Magehack_Autogrid_Model_Resource_Table_Collection
      * This will be done when init() is called with the autogrid table id.
      * 
      * @param Mage_Core_Model_Resource_Db_Abstract|null $resource 
-     * @see Magehack_Autogrid_Model_Resource_Table_Collection::init()
+     * @see Magehack_Autogrid_Model_Resource_GenericEntity_Collection::init()
      */
     public function __construct($resource = null)
     {
@@ -26,7 +26,7 @@ class Magehack_Autogrid_Model_Resource_Table_Collection
     
     protected function _construct()
     {
-        $this->_init('magehack_autogrid/table');
+        $this->_init('magehack_autogrid/genericEntity');
     }
 
     /**
@@ -36,7 +36,7 @@ class Magehack_Autogrid_Model_Resource_Table_Collection
      */
     public function setAutoGridTableId($autoGridTableId)
     {
-        /** @var Magehack_Autogrid_Model_Resource_Table $resource */
+        /** @var Magehack_Autogrid_Model_Resource_GenericEntity $resource */
         $resource = $this->getResource();
         $resource->setAutoGridTableId($autoGridTableId);
 

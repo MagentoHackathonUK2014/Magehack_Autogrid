@@ -1,6 +1,6 @@
 <?php
 
-class Magehack_Autogrid_Block_Adminhtml_Widget_Grid extends Mage_Adminhtml_Block_Widget_Grid
+class Magehack_Autogrid_Block_Adminhtml_Autogrid_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
     protected function _prepareCollection()
     {

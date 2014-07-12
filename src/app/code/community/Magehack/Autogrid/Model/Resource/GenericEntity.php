@@ -1,7 +1,7 @@
 <?php
 
 
-class Magehack_Autogrid_Model_Resource_Table
+class Magehack_Autogrid_Model_Resource_GenericEntity
     extends Mage_Core_Model_Resource_Db_Abstract
 {
     /**

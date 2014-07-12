@@ -1,23 +1,23 @@
 <?php
 
 
-class Magehack_Autogrid_Test_Model_TableTest
+class Magehack_Autogrid_Test_Model_GenericEntityTest
     extends EcomDev_PHPUnit_Test_Case
 {
-    protected $class = 'Magehack_Autogrid_Model_Table';
+    protected $class = 'Magehack_Autogrid_Model_GenericEntity';
 
     /**
-     * @return Magehack_Autogrid_Model_Table
+     * @return Magehack_Autogrid_Model_GenericEntity
      */
     protected function getInstance()
     {
-        $stubResource = $this->getMockBuilder('Magehack_Autogrid_Model_Resource_Table')
+        $stubResource = $this->getMockBuilder('Magehack_Autogrid_Model_Resource_GenericEntity')
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var Magehack_Autogrid_Model_Table $instance */
+        /** @var Magehack_Autogrid_Model_GenericEntity $instance */
         $instance = new $this->class;
         $this->app()->getConfig()
-            ->replaceInstanceCreation('resource_model', 'magehack_autogrid/table', $stubResource);
+            ->replaceInstanceCreation('resource_model', 'magehack_autogrid/genericEntity', $stubResource);
         
         return $instance;
     }
@@ -36,13 +36,13 @@ class Magehack_Autogrid_Test_Model_TableTest
 
     public function testItCanBeInstantiatedViaFactory()
     {
-        $result = Mage::getConfig()->getModelClassName('magehack_autogrid/table');
+        $result = Mage::getConfig()->getModelClassName('magehack_autogrid/genericEntity');
         $this->assertEquals($this->class, $result);
     }
 
     public function testItsResourceModelIsCorrect()
     {
-        $this->assertAttributeEquals('magehack_autogrid/table', '_resourceName', $this->getInstance());
+        $this->assertAttributeEquals('magehack_autogrid/genericEntity', '_resourceName', $this->getInstance());
     }
 
     public function testSetAutoGridTableIdInitializesTheResource()
