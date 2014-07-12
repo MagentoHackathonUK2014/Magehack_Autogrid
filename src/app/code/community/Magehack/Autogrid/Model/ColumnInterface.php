@@ -82,6 +82,6 @@ interface Magehack_Autogrid_Model_ColumnInterface
      /**
      * @param $gridColumnId string - sets the id (first parameter of addColumn() for setting up an admin grid column
      */
-     public function setGridColumnId($gridColumnId)    
+     public function setGridColumnId($gridColumnId);
     
 }
