@@ -38,6 +38,15 @@
             </controller_front_init_routers>
         </events>
     </global>
+    <adminhtml>
+       <layout>
+            <updates>
+                <magehack_autogrid module="Magehack_Autogrid">
+                    <file>magehack/autogrid.xml</file>
+                </magehack_autogrid>
+            </updates>
+        </layout>
+    </adminhtml>
     <admin>
         <routers>
             <adminhtml>
