@@ -18,7 +18,7 @@ interface Magehack_Autogrid_Model_Resource_Table_CellInterface
      *
      * @return array
      */
-    public function getFormId();
+    public function getName();
 
     /**
      *
