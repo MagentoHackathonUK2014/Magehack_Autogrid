@@ -29,7 +29,7 @@ class Magehack_Autogrid_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCurrentTable()
     {
-
+        throw new Exception("Implement getCurrentTable");
     }
 
     /**
@@ -37,6 +37,6 @@ class Magehack_Autogrid_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getCollection()
     {
-
+        throw new Exception("Implement getCollection");
     }
 }
