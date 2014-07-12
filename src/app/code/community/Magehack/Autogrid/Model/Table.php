@@ -7,4 +7,16 @@ class Magehack_Autogrid_Model_Table extends Mage_Core_Model_Abstract
     {
         $this->_init('magehack_autogrid/table');
     }
+
+    /**
+     * Initialize the models resource model with the table for the specified autogrid id.
+     * 
+     * @param string $autoGridTableId
+     * @return $this
+     */
+    public function setAutoGridTableId($autoGridTableId)
+    {
+        $this->getResource()->setAutoGridTableId($autoGridTableId);
+        return $this;
+    }
 }
