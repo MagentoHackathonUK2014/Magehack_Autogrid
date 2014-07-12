@@ -31,15 +31,15 @@ class Magehack_Autogrid_Model_Resource_Table
      */
     protected function _construct()
     {
-        // no initialization here
+        $this->_setResource('magehack_autogrid');
     }
 
     /**
      * Setter DI for config access class
      *
-     * @param Magehack_Autogrid_Model_Config $config
+     * @param Magehack_Autogrid_Model_ConfigInterface $config
      */
-    public function setConfig(Magehack_Autogrid_Model_Config $config)
+    public function setConfig(Magehack_Autogrid_Model_ConfigInterface $config)
     {
         $this->_tableConfigModel = $config;
     }
@@ -57,9 +57,9 @@ class Magehack_Autogrid_Model_Resource_Table
     /**
      * Setter DI for table parser
      * 
-     * @param Magehack_Autogrid_Model_Resource_Table_Parser $parser
+     * @param Magehack_Autogrid_Model_Resource_Table_ParserInterface $parser
      */
-    public function setTableParser(Magehack_Autogrid_Model_Resource_Table_Parser $parser)
+    public function setTableParser(Magehack_Autogrid_Model_Resource_Table_ParserInterface $parser)
     {
         $this->_tableParser = $parser;
     }
@@ -104,12 +104,12 @@ class Magehack_Autogrid_Model_Resource_Table
      *
      * @param $tableId
      */
-    public function setAutoGridTable($tableId)
+    public function setAutoGridTableId($tableId)
     {
         $this->_autoGridTable = $tableId;
         $tableName = $this->_getConfig()->getTableName($tableId);
         $tableParser = $this->_getTableParser();
-        $tableParser->init($tableName);
+        $tableParser->init($this->getTable($tableName));
         $primaryKey = $tableParser->getPrimaryKey();
         $this->_init($tableName, $primaryKey);
     }
