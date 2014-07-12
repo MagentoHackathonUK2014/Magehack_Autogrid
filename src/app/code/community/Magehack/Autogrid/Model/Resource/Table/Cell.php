@@ -6,18 +6,138 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
 {
 
     const DEFAULT_COLUMN_WIDTH = '80px';
-    protected $gridInfo = array();
+    
+    protected $name;
+    protected $type;
+
+    protected $formName;
+    protected $formInputType;
     protected $formInfo = array();
 
+    protected $gridColumnId;
+    protected $gridInfo = array();
 
+
+    /**
+     *
+     * Returns the id (first parameter of addField) for setting up a form field
+     *
+     * @return array
+     */
+     public function getName()
+     {
+     	 if (isset($this->name)){
+     	   return $this->name;
+     	 }else{
+     	 	 return false;
+     	 }
+     }
+
+     /**
+     * @param $cellName string - column name from mysql
+     */
+     public function setName($cellName)
+     {
+     	 $this->name = $cellName;
+     }
+
+    /**
+     *
+     * Returns the id (first parameter of addColumn() for setting up an admin grid column
+     *
+     * @return array
+     */
+     public function getGridColumnId()
+     {
+     	 if (isset($this->gridColumnId)){
+     	   return $this->gridColumnId;
+     	 }else{
+     	 	 return false;
+     	 }
+     }
+
+     /**
+     * @param $gridColumnId string - sets the id (first parameter of addColumn() for setting up an admin grid column
+     */
+     public function setGridColumnId($gridColumnId)
+     {
+     	 $this->gridColumnId = $gridColumnId;
+     }
+     
+     
+    /**
+     *
+     * Returns the form id for pasing to addfield()
+     *
+     * @return array
+     */
+     public function getFormName()
+     {
+     	 if (isset($this->formName)){
+     	   return $this->formName;
+     	 }else{
+     	 	 return false;
+     	 }
+     }
+
+     /**
+     * @param $formName string - form id for pasing to addfield()
+     */
+     public function setFormName($formName)
+     {
+     	 $this->formName = $formName;
+     }
+     
+     
+    /**
+     *
+     * Returns the input type (second parameter of addField) for setting up a form field
+     *
+     * @return string
+     */
+     public function getFormInputType()
+     {
+     	 if (isset($this->formInputType)){
+     	   return $this->formInputType;
+     	 }else{
+     	 	 return false;
+     	 }
+     }
+
+     public function setFormInputType($formInputType)
+     {
+     	 $this->formInputType = $formInputType;
+     }
+     
+     
+    /**
+     *
+     * Returns the info array (second parameter of addColumn) for setting up a grid column
+     *
+     * @return array
+     */
     public function getGridInfo()
     {
-        return $this->gridInfo;
+     	 if (isset($this->gridInfo)){
+     	   return $this->gridInfo;
+     	 }else{
+     	 	 return false;
+     	 }        
     }
-
-    public function getGFormInfo()
+    
+    /**
+     *
+     * Returns the info array (third parameter of addField) for setting up a form field
+     *
+     * @return array
+     */
+    public function getFormInfo()
     {
-        return $this->formInfo;
+     	 if (isset($this->formInfo)){
+     	   return $this->formInfo;
+     	 }else{
+     	 	 return false;
+     	 }        
     }
 
 
@@ -60,11 +180,11 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
 
     /**
      * $recognisedDataType as String
-     * $m as integer
+     * $m as integer (it means the size of the SQL field eg VARCHAR[M])
      * Returns (nothing) but sets some cell data ready for reading later
      * so that the Admin for or the Admin grid can be created
      */
-    public function makeDefaultCell($recognisedDataType, $m = null)
+    public function makeDefaultCell($dataType, $m = null)
     {
 
         //we will start with some base defaults
@@ -89,9 +209,9 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
         );
 
         //now we can change some of these for specific data types
-        switch (strtoupper($recognisedDataType)) {
+        switch (strtoupper($dataType)) {
 
-            //these special cases default to text if M<=255, otherwise textbox
+            //these special cases default to text if M<=255 or null, otherwise textbox
             case "VARCHAR" : //What about M?
             case "VARBINARY" : //What about M?
             case "BLOB" :
@@ -102,6 +222,7 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
                 if ($m) {
                     if ($m > 255) {
                         //TEXTBOX
+                        $this->setFormInputType('textbox');
                     } else {
                         //TEXT
                     }
@@ -109,7 +230,6 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
                     //A tough choice
                     //LETS SAY TEXT not TEXTBOX
                 }
-
 
                 //cell grid information
 
@@ -150,7 +270,6 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
                 //cell grid information
 
                 break;
-
 
             //these cases all default to textbox input
             case "MEDIUMBLOB" :
