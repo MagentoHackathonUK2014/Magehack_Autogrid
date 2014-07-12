@@ -113,4 +113,75 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
         // Render
         $this->renderLayout();
     }
+
+    /**
+     * Save generic entity
+     * @return void
+     */
+    public function saveAction()
+    {
+        // The table
+        if (!$table = $this->_initTable()) {
+            return $this->_forward('noroute');
+        }
+
+        // The object
+        $object = Mage::getModel('magehack_autogrid/genericEntity')
+            ->setAutoGridTableId($table->getAutoGridTableId())
+            ->load($this->getRequest()->getParam('id', null))
+        ;
+
+        // Save it
+        try {
+            $object->addData($this->getRequest()->getPost());
+            $object->save();
+        } catch (Mage_Core_Exception $e) {
+            $this->_getSession()->addError($this->__('An error occurred.'));
+            $this->_redirectReferer();
+            return;
+        }
+
+        // Success
+        $this->_getSession()->addSuccess($this->__('Entity saved successfully.'));
+        $this->_redirect('*/*/index');
+    }
+
+    /**
+     * Delete generic entity
+     * @return void
+     */
+    public function deleteAction()
+    {
+        // The table
+        if (!$table = $this->_initTable()) {
+            return $this->_forward('noroute');
+        }
+        Mage::register('current_autogrid_table', $table);
+
+        // The object
+        $object = Mage::getModel('magehack_autogrid/genericEntity')
+            ->setAutoGridTableId($table->getAutoGridTableId())
+            ->load($this->getRequest()->getParam('id', null))
+        ;
+
+        // No object?
+        if (!$object->getId()) {
+            $this->_getSession()->addError($this->__('Entity not found.'));
+            $this->_redirectReferer();
+            return;
+        }
+
+        // Delete it
+        try {
+            $object->delete();
+        } catch (Mage_Core_Exception $e) {
+            $this->_getSession()->addError($this->__('An error occurred.'));
+            $this->_redirectReferer();
+            return;
+        }
+
+        // Success
+        $this->_getSession()->addSuccess($this->__('Entity deleted successfully.'));
+        $this->_redirect('*/*/index');
+    }
 }
