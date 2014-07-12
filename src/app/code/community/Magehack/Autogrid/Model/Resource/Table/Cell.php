@@ -1,8 +1,8 @@
 <?php
 
-class Magehack_Autogrid_Model_Resource_Table_Cell
+class Magehack_Autogrid_Model_Resource_Table_Column
     extends Mage_Core_Model_Abstract
-    implements Magehack_Autogrid_Model_Resource_Table_CellInterface
+    implements Magehack_Autogrid_Model_Resource_Table_ColumnInterface
 {
 
     const DEFAULT_COLUMN_WIDTH = '80px';
@@ -34,11 +34,11 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
      }
 
      /**
-     * @param $cellName string - column name from mysql
+     * @param $columnName string - column name from mysql
      */
-     public function setName($cellName)
+     public function setName($columnName)
      {
-     	 $this->name = $cellName;
+     	 $this->name = $columnName;
      }
 
     /**
@@ -143,7 +143,7 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
 
     /**
      * $dataType as String
-     * Returns (nothing) but sets some cell data ready for reading later
+     * Returns (nothing) but sets some column data ready for reading later
      * so that the Admin for or the Admin grid can be created
      */
 
@@ -151,17 +151,17 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
     {
 
         if (! $this->name) {
-            Mage::log("Cannot make default cell without name.\n", null, 'autogrid.log');
+            Mage::log("Cannot make default column without name.\n", null, 'autogrid.log');
             return false;
         }
         if (! $dataType) {
-            Mage::log("Cannot make default cell without data type.\n", null, 'autogrid.log');
+            Mage::log("Cannot make default column without data type.\n", null, 'autogrid.log');
             return false;
         }
 
         //always start by making the default so every data item is populated
 
-        $this->makeDefaultCell($dataType);
+        $this->makeDefaultColumn($dataType);
 
         //then check some autogrid config to see if there are any specific requests
         //and update the deafult values
@@ -181,16 +181,16 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
     /**
      * $recognisedDataType as String
      * $m as integer (it means the size of the SQL field eg VARCHAR[M])
-     * Returns (nothing) but sets some cell data ready for reading later
+     * Returns (nothing) but sets some column data ready for reading later
      * so that the Admin for or the Admin grid can be created
      */
-    public function makeDefaultCell($dataType, $m = null)
+    public function makeDefaultColumn($dataType, $m = null)
     {
 
         //we will start with some base defaults
         //then you only need to change one or two things depending on the database type
 
-        //cell grid information
+        //column grid information
         $this->gridColumnId       = $this->name;
         $this->gridInfo['header'] = ($this->getHelper()->__($this->name));
         $this->gridInfo['index']  = ($this->name);
@@ -198,7 +198,7 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
         $this->gridInfo['width']  = (self::DEFAULT_COLUMN_WIDTH);
         //		'type'      => ''//'options',
 
-        //cell form information
+        //column form information
         $this->setFormName($this->name); //if name is null or not set by parser we are in trouble
         $this->setFormInputType('text'); //'textbox' //editor //radio //select //selectmulti
         $this->formInfo = array(
@@ -217,7 +217,7 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
             case "BLOB" :
             case "TEXT" :
 
-                //cell form information
+                //column form information
 
                 if ($m) {
                     if ($m > 255) {
@@ -231,7 +231,7 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
                     //LETS SAY TEXT not TEXTBOX
                 }
 
-                //cell grid information
+                //column grid information
 
                 break;
 
@@ -254,8 +254,8 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
             case "BINARY" :
             case "TINYBLOB" :
             case "TINYTEXT" :
-                //cell form information
-                //cell grid information
+                //column form information
+                //column grid information
 
                 break;
 
@@ -266,8 +266,8 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
             case "TIMESTAMP" :
             case "TIME" :
             case "YEAR" :
-                //cell form information
-                //cell grid information
+                //column form information
+                //column grid information
 
                 break;
 
@@ -276,38 +276,39 @@ class Magehack_Autogrid_Model_Resource_Table_Cell
             case "MEDIUMTEXT" :
             case "LONGBLOB" :
             case "LONGTEXT" :
-                //cell form information
-                //cell grid information
+                //column form information
+                //column grid information
 
                 break;
 
             //these cases default to yes/no input
             case "BOOL" :
             case "BOOLEAN" :
-                //cell form information
-                //cell grid information
+                //column form information
+                //column grid information
+                $this->setFormInputType('textbox');
 
                 break;
 
             //these are edge cases, but can be select boxes; what does $info have in it?
             case "SET" :
             case "ENUM" :
-                //cell form information
-                //cell grid information
+                //column form information
+                //column grid information
 
                 break;
 
             default:
                 //the default will be a text box
                 //it was already set before we entered this switch
-                Mage::log("Cell type not recognised. Used base defaults instead.\n", null, 'autogrid.log');
+                Mage::log("Column type not recognised. Used base defaults instead.\n", null, 'autogrid.log');
 
         }
         //end switch
 
 
     }
-    //end function makeDefaultCell
+    //end function makeDefaultColumn
 
 
 } //end class
