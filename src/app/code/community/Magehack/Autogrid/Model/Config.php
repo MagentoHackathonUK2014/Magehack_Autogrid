@@ -125,7 +125,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     {
         if($node = $this->_config->getNode('tables/'.$tableId.'/'.$part.'/source_model')) {
             return Mage::getModel(substr($node->__toString(), 0, strpos($node->__toString(), '::')));
-        };
+        }
         return false;
     }
 
