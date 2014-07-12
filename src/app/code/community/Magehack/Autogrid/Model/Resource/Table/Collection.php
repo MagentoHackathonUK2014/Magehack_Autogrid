@@ -39,9 +39,12 @@ class Magehack_Autogrid_Model_Resource_Table_Collection
      */
     public function loadData($printQuery = false, $logQuery = false)
     {
-        foreach ($this->_getConfig()->getTableIds() as $tableId) {
-            $table = $this->_getTableInstance($tableId);
-            $this->_addItem($table);
+        if (!$this->isLoaded()) {
+            foreach ($this->_getConfig()->getTableIds() as $tableId) {
+                $table = $this->_getTableInstance($tableId);
+                $this->_addItem($table);
+            }
+            $this->_setIsLoaded();
         }
     }
 
