@@ -5,21 +5,16 @@ Using Magehack_Autogrid you don't have to do it again for flat tables.
 
 Facts
 -----
-- version: check the [config.xml](https://github.com/Vinai/groupscatalog2/blob/master/app/code/community/Netzarbeiter/GroupsCatalog2/etc/config.xml)
-- extension key: Netzarbeiter_GroupsCatalog2
-- [extension on Magento Connect](http://www.magentocommerce.com/magento-connect/customer-groups-catalog2-4585.html)
+- version: check the [config.xml](https://github.com/VinaiMagentoHackathonUK2014/Magehack_Autogrid.git/blob/master/app/code/community/Magehack/Autogrid/etc/config.xml)
 - Magento Connect 1.0 extension key: - none -
-- Magento Connect 2.0 extension key:  
-  http://connect20.magentocommerce.com/community/Netzarbeiter_GroupsCatalog2
-- [extension on GitHub](https://github.com/Vinai/groupscatalog2)
-- [direct download link](https://github.com/Vinai/groupscatalog2/zipball/master)
+- Magento Connect 2.0 extension key: - none - 
+- [extension on GitHub](https://github.com/MagentoHackathonUK2014/Magehack_Autogrid)
+- [direct download link](https://github.com/MagentoHackathonUK2014/Magehack_Autogrid/zipball/master)
 
 Description
 -----------
 Every time a developer hase to display information from database tables on Magento admin, she has to write the same code again and again.
 Using Magehack_Autogrid you don't have to do it again for flat tables.
-
-
 
 Usage
 -----
