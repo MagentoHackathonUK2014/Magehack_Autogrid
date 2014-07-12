@@ -20,6 +20,11 @@ class Magehack_Autogrid_Model_Resource_GenericEntity_Collection
     extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
     /**
+     * @var string
+     */
+    protected $_autogridTableId;
+    
+    /**
      * Modify standard constructor to not directly initialize the resource model.
      * This will be done when init() is called with the autogrid table id.
      * 
@@ -45,12 +50,22 @@ class Magehack_Autogrid_Model_Resource_GenericEntity_Collection
     }
 
     /**
+     * @return string
+     */
+    public function getAutoGridTableId()
+    {
+        return $this->_autogridTableId;
+    }
+
+    /**
      * Initialize the collection's resource to point to the specified table.
      * 
      * @param string $autoGridTableId
      */
     public function setAutoGridTableId($autoGridTableId)
     {
+        $this->_autogridTableId = $autoGridTableId;
+        
         /** @var Magehack_Autogrid_Model_Resource_GenericEntity $resource */
         $resource = $this->getResource();
         $resource->setAutoGridTableId($autoGridTableId);
@@ -59,4 +74,12 @@ class Magehack_Autogrid_Model_Resource_GenericEntity_Collection
         $this->setConnection($this->getResource()->getReadConnection());
         $this->_initSelect();
     }
+
+    public function getNewEmptyItem()
+    {
+        $item = parent::getNewEmptyItem();
+        $item->setAutoGridTableId($this->getAutoGridTableId());
+    }
+
+
 }
