@@ -18,7 +18,8 @@ class Magehack_Autogrid_Model_Resource_Table_Collection
         $this->_construct();
         $this->_resource = $resource;
         
-        // The following is done in init()
+        // The following is done in init().
+        // Its left here just as a reference in case the parent changes in future.
         //$this->setConnection($this->getResource()->getReadConnection());
         //$this->_initSelect();
     }
@@ -27,12 +28,17 @@ class Magehack_Autogrid_Model_Resource_Table_Collection
     {
         $this->_init('magehack_autogrid/table');
     }
-    
-    public function init($tableId)
+
+    /**
+     * Initialize the collection's resource to point to the specified table.
+     * 
+     * @param string $autoGridTableId
+     */
+    public function setAutoGridTableId($autoGridTableId)
     {
         /** @var Magehack_Autogrid_Model_Resource_Table $resource */
         $resource = $this->getResource();
-        $resource->setAutoGridTableId($tableId);
+        $resource->setAutoGridTableId($autoGridTableId);
 
         // Initalize the resource model
         $this->setConnection($this->getResource()->getReadConnection());
