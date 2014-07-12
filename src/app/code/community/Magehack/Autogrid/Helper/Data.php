@@ -48,27 +48,11 @@ class Magehack_Autogrid_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @return Magehack_Autogrid_Model_Resource_GenericEntity
+     * @return Magehack_Autogrid_Model_Table
      */
     public function getCurrentTable()
     {
-        throw new Exception("Implement getCurrentTable");
-    }
-
-    /**
-     * @return Magehack_Autogrid_Model_Resource_GenericEntity_Collection for grid
-     */
-    public function getCollection()
-    {
-        throw new Exception("Implement getCollection");
-    }
-
-    /**
-     * Retrieve the current object
-     * @return Mage_Core_Model_Abstract
-     */
-    public function getCurrentObject()
-    {
-        throw new Exception('Implement getCurrentObject first');
+        $tableId = $this->getTableId();
+        return Mage::getModel('magehack_autogrid/table')->setAutoGridTableId($tableId);
     }
 }

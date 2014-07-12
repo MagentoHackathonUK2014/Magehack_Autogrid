@@ -86,9 +86,7 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
     private function _getTableParser()
     {
         if (!isset($this->_tableParser)) {
-            $helper = $this->_getHelper();
-            $message = $helper->__('Table parser config model not set');
-            throw new Magehack_Autogrid_Model_Exception_InitializationRequired($message);
+            $this->_tableParser = Mage::getModel('magehack_autogrid/table_parser');
         }
         return $this->_tableParser;
     }
@@ -100,9 +98,7 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
     private function _getConfig()
     {
         if (!isset($this->_tableConfigModel)) {
-            $helper = $this->_getHelper();
-            $message = $helper->__('Autogrid config model not set');
-            throw new Magehack_Autogrid_Model_Exception_InitializationRequired($message);
+            $this->_tableConfigModel = Mage::getSingleton('magehack_autogrid/config');
         }
         return $this->_tableConfigModel;
     }
