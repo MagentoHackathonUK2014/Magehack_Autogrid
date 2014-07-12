@@ -140,9 +140,8 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     {
         if($node = $this->_config->getNode('tables/'.$tableId.'/'.$part.'/source_model')) {
             $data = explode('::', $node->__toString());
-            return Mage::getModel($data[0])->{$data[1]}();
+            return Mage::getSingleton($data[0])->{$data[1]}();
         }
     }
-
 
 }
