@@ -21,6 +21,7 @@
     <tables>
         <table_identifier_1>
             <table>table_name_1</table>
+            <title>The title... it's me !</title>
             <source_method></source_method>
             <grid>
                 <source_model>fastslow/guano::orderName</source_model>

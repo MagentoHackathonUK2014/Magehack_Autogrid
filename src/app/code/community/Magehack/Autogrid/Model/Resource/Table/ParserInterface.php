@@ -32,9 +32,16 @@ interface Magehack_Autogrid_Model_Resource_Table_ParserInterface
     public function getPrimaryKey();
 
     /**
-     * Return array of of cell instances.
+     * Return the table title from the table comment or an empty string
      * 
-     * @return Magehack_Autogrid_Model_Table_Cell[] (This class name is not final)
+     * @return string
+     */
+    public function getTableTitle();
+
+    /**
+     * Return array of of cell instances
+     *
+     * @return array
      */
     public function getTableColumns();
-} 
+}

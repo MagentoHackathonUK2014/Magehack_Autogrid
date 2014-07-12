@@ -30,13 +30,7 @@ class Magehack_Autogrid_Block_Adminhtml_Gridmaster_Grid extends Mage_Adminhtml_B
     public function getCollection()
     {
         if (!parent::getCollection()) {
-            $collection = new Varien_Data_Collection;
-            $tables = Mage::getSingleton('magehack_autogrid/config')->getTables();
-            foreach ($tables as $tableId => $table) {
-                $table['id'] = $tableId;
-                $collection->addItem(new Varien_Object($table));
-            }
-
+            $collection = Mage::getResourceModel('magehack_autogrid/table_collection');
             $this->setCollection($collection);
         }
 

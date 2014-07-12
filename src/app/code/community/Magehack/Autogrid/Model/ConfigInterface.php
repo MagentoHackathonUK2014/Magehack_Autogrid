@@ -61,4 +61,11 @@ interface Magehack_Autogrid_Model_ConfigInterface
      * @return mixed array of all tableidentifiers defined in the configs
      */
     public function getTableIds();
+    
+     * Return the table title if configured, otherwise an empty string
+     * 
+     * @param string $tableId
+     * @return string
+     */
+    public function getTableTitle($tableId);
 } 

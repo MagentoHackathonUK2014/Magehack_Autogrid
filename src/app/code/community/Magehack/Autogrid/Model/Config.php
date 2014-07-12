@@ -40,7 +40,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
 
     protected $_tables;
 
-    function __construct()
+    public function __construct()
     {
         $this->_config = Mage::getConfig()->loadModulesConfiguration('autogrid.xml');
     }
@@ -51,7 +51,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      *
      * @return array
      */
-    function getTables()
+    public function getTables()
     {
         $tables = array();
             foreach (Mage::getConfig()->loadModulesConfiguration('autogrid.xml')->getNode('tables')->asCanonicalArray() as $tableName => $tableParameters) {
@@ -68,7 +68,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      * @param string $tableId XML identifier for the table
      * @return mixed
      */
-    function getTableName($tableId)
+    public function getTableName($tableId)
     {
         if (!isset($this->_tableNames[$tableId])) {
             if (!$this->_config->getNode('tables/'.$tableId.'/table')) {
@@ -127,7 +127,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     {
         if($node = $this->_config->getNode('tables/'.$tableId.'/'.$part.'/source_model')) {
             return Mage::getModel(substr($node->__toString(), 0, strpos($node->__toString(), '::')));
-        };
+        }
         return false;
     }
 
@@ -162,5 +162,18 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         return $this->_tables;
     }
 
+    /**
+     * Return the table title if configured, otherwise an empty string
+     *
+     * @param string $tableId
+     * @return string
+     */
+    public function getTableTitle($tableId)
+    {
+        if($node = $this->_config->getNode('tables/'.$tableId.'/title')) {
+            return (string) $node;
+        }
+        return false;
+    }
 
 }

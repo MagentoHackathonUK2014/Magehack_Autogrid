@@ -23,6 +23,8 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
 
     protected $_primaryKey = null;
     protected $_cols = array();
+    protected $_title = '';
+
     /**
      * Resource initialization
      */
@@ -44,6 +46,9 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
             Mage::log($name."\n",null,'autogrid.log');
             $this->_cols[] = array($name=>$info['DATA_TYPE']);
         }
+        $c = $ra->getConfig();
+        $data = $ra->fetchRow("SELECT table_comment FROM INFORMATION_SCHEMA.TABLES WHERE table_schema=? AND table_name=?",array($c['dbname'],$tableName));
+        if (isset($data['table_comment'])) $this->_title = $data['table_comment'];
         return $this;
     }
 
@@ -71,5 +76,11 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
         if (exists($this->_cols[$name]))
         return $this->_cols[$name];
     }
+
+    public function getTableTitle()
+    {
+
+    }
+
 
 }
