@@ -58,4 +58,35 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
         $this->loadLayout();
         $this->renderLayout();
     }
+
+    /**
+     * Create an object
+     */
+    public function newAction()
+    {
+        $this->_forward('edit');
+    }
+
+    /**
+     * Edit an object
+     */
+    public function editAction()
+    {
+        // Object
+        $object = $this->_initObject();
+        Mage::register('current_autogrid_table', $object);
+
+        // Layout
+        $this->loadLayout();
+
+        // Title
+        if ($object->getId()) {
+            $this->_title($this->__('Edit'));
+        } else {
+            $this->_title($this->__('New'));
+        }
+
+        // Render
+        $this->renderLayout();
+    }
 }
