@@ -65,12 +65,8 @@ interface Magehack_Autogrid_Model_Table_ColumnInterface
      */
     public function getGridInfo();
 
-    /**
-     * Return an array of column definitions parsed from the real db table
-     * 
-     * @return array
-     */
-    public function getTableColumns();
+
+    
     
     public function isInGrid();
     public function isInForm();
