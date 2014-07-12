@@ -11,7 +11,15 @@ class Magehack_Autogrid_Test_Model_TableTest
      */
     protected function getInstance()
     {
-        return new $this->class;
+        $stubResource = $this->getMockBuilder('Magehack_Autogrid_Model_Resource_Table')
+            ->disableOriginalConstructor()
+            ->getMock();
+        /** @var Magehack_Autogrid_Model_Table $instance */
+        $instance = new $this->class;
+        $this->app()->getConfig()
+            ->replaceInstanceCreation('resource_model', 'magehack_autogrid/table', $stubResource);
+        
+        return $instance;
     }
     
     public function testItExists()
@@ -35,5 +43,17 @@ class Magehack_Autogrid_Test_Model_TableTest
     public function testItsResourceModelIsCorrect()
     {
         $this->assertAttributeEquals('magehack_autogrid/table', '_resourceName', $this->getInstance());
+    }
+
+    public function testSetAutoGridTableIdInitializesTheResource()
+    {
+        $instance = $this->getInstance();
+        
+        /** @var PHPUnit_Framework_MockObject_MockObject $resource */
+        $resource = $instance->getResource();
+        $resource->expects($this->once())
+            ->method('setAutoGridTableId');
+        
+        $instance->setAutoGridTableId('dummy_table_id');
     }
 }

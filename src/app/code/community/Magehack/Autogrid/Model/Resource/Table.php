@@ -5,13 +5,6 @@ class Magehack_Autogrid_Model_Resource_Table
     extends Mage_Core_Model_Resource_Db_Abstract
 {
     /**
-     * The
-     *
-     * @var string
-     */
-    protected $_autoGridTable;
-
-    /**
      * @var Magehack_Autogrid_Model_Config
      */
     protected $_tableConfigModel;
@@ -101,13 +94,15 @@ class Magehack_Autogrid_Model_Resource_Table
 
     /**
      * Set the identifier for the autogrid table to use.
+     * 
+     * This will initialize the resource model with the table
+     * configured for this table id.
      *
-     * @param $tableId
+     * @param $autoGridTableId
      */
-    public function setAutoGridTableId($tableId)
+    public function setAutoGridTableId($autoGridTableId)
     {
-        $this->_autoGridTable = $tableId;
-        $tableName = $this->_getConfig()->getTableName($tableId);
+        $tableName = $this->_getConfig()->getTableName($autoGridTableId);
         $tableParser = $this->_getTableParser();
         $tableParser->init($this->getTable($tableName));
         $primaryKey = $tableParser->getPrimaryKey();
