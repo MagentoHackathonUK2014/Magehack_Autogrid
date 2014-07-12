@@ -44,10 +44,18 @@ class Magehack_Autogrid_Block_Adminhtml_Gridmaster_Grid extends Mage_Adminhtml_B
     protected function _prepareColumns()
     {
 
-        $this->addColumn('id', [
+        $this->addColumn('autogrid_table_id', [
             'header'   => Mage::helper('magehack_autogrid')->__('ID'),
             'type'     => 'text',
-            'index'    => 'id',
+            'getter'   => 'getAutoGridTableId',
+            'filter'   => false,
+            'sortable' => false
+        ]);
+
+        $this->addColumn('title', [
+            'header'   => Mage::helper('magehack_autogrid')->__('Title'),
+            'type'     => 'text',
+            'getter'   => 'getTitle',
             'filter'   => false,
             'sortable' => false
         ]);
