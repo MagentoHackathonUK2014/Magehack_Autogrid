@@ -1,13 +1,13 @@
 <?php
 
 
-class Magehack_Autogrid_Test_Model_Resource_Table_CollectionTest
+class Magehack_Autogrid_Test_Model_Resource_GenericEntity_CollectionTest
     extends EcomDev_PHPUnit_Test_Case
 {
-    protected $class = 'Magehack_Autogrid_Model_Resource_Table_Collection';
+    protected $class = 'Magehack_Autogrid_Model_Resource_GenericEntity_Collection';
 
     /**
-     * @return Magehack_Autogrid_Model_Resource_Table_Collection
+     * @return Magehack_Autogrid_Model_Resource_GenericEntity_Collection
      */
     protected function getInstance()
     {
@@ -18,14 +18,14 @@ class Magehack_Autogrid_Test_Model_Resource_Table_CollectionTest
             false // call original constructor
         );
         
-        $stubResource = $this->getMock('Magehack_Autogrid_Model_Resource_Table');
+        $stubResource = $this->getMock('Magehack_Autogrid_Model_Resource_GenericEntity');
         $stubResource->expects($this->any())
             ->method('getReadConnection')
             ->withAnyParameters()
             ->will($this->returnValue($stubZendDbAdapter));
         $this->app()->getConfig()->replaceInstanceCreation('resource_model', 'magehack_autogrid/table', $stubResource);
         
-        /** @var Magehack_Autogrid_Model_Resource_Table_Collection $instance */
+        /** @var Magehack_Autogrid_Model_Resource_GenericEntity_Collection $instance */
         $instance = new $this->class;
         
         return $instance;
@@ -46,7 +46,7 @@ class Magehack_Autogrid_Test_Model_Resource_Table_CollectionTest
     public function testItsModelClassIsCorrect()
     {
         $instance = $this->getInstance();
-        $this->assertAttributeEquals('Magehack_Autogrid_Model_Table', '_itemObjectClass', $instance);
+        $this->assertAttributeEquals('Magehack_Autogrid_Model_GenericEntity', '_itemObjectClass', $instance);
     }
 
     public function testItCanBeInstantiatedViaFactory()

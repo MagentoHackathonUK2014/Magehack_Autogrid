@@ -48,7 +48,7 @@ class Magehack_Autogrid_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @return Magehack_Autogrid_Model_Resource_Table
+     * @return Magehack_Autogrid_Model_Resource_GenericEntity
      */
     public function getCurrentTable()
     {
@@ -56,7 +56,7 @@ class Magehack_Autogrid_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @return Magehack_Autogrid_Model_Resource_Table_Collection for grid
+     * @return Magehack_Autogrid_Model_Resource_GenericEntity_Collection for grid
      */
     public function getCollection()
     {

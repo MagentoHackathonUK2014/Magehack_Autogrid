@@ -1,18 +1,18 @@
 <?php
 
 
-class Magehack_Autogrid_Test_Model_Resource_TableTest
+class Magehack_Autogrid_Test_Model_Resource_GenericEntityTest
     extends EcomDev_PHPUnit_Test_Case
 {
-    protected $class = 'Magehack_Autogrid_Model_Resource_Table';
+    protected $class = 'Magehack_Autogrid_Model_Resource_GenericEntity';
 
     /**
      * @param string $tableName
-     * @return Magehack_Autogrid_Model_Resource_Table
+     * @return Magehack_Autogrid_Model_Resource_GenericEntity
      */
     protected function getInstance($tableName = null)
     {
-        /** @var Magehack_Autogrid_Model_Resource_Table $instance */
+        /** @var Magehack_Autogrid_Model_Resource_GenericEntity $instance */
         $instance = new $this->class;
         
         $stubHelper = $this->getMock('Magehack_Autogrid_Helper_Data');
