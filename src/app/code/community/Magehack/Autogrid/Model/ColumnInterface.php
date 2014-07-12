@@ -16,7 +16,7 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-interface Magehack_Autogrid_Model_Resource_Table_ColumnInterface
+interface Magehack_Autogrid_Model_ColumnInterface
 {
     /**
      * @param $columnName string - column name from mysql

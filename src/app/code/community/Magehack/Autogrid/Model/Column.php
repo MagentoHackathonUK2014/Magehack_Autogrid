@@ -1,22 +1,6 @@
 <?php
-/**
- * Magento Hackathon 2014 UK
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * @category   Magehack
- * @package    Magehack_Autogrid
- * @copyright  Copyright (c) 2014 Magento community
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 
-class Magehack_Autogrid_Model_Resource_Table_Column
+class Magehack_Autogrid_Model_Column
     extends Mage_Core_Model_Abstract
     implements Magehack_Autogrid_Model_Resource_Table_ColumnInterface
 {
@@ -32,8 +16,46 @@ class Magehack_Autogrid_Model_Resource_Table_Column
 
     protected $gridColumnId;
     protected $gridInfo = array();
+    
+    protected $autogridTableId;
 
 
+    public function isInGrid()
+    {
+    		if(isset($this->autogridTableId) && isset($this->name) ){
+					$config = Mage::getModel('magehack_autogrid/config');
+					$gridConfig = $config->getGrid($this->autogridTableId);
+    			  return $gridConfig['columns'][$this->name]['visibility'];   			
+    		}else{
+    				//default says it's in
+    				return true;
+    		}
+    }
+    
+    public function isInForm(){
+    		if(isset($this->autogridTableId) && isset($this->name) ){
+					$config = Mage::getModel('magehack_autogrid/config');
+					$formConfig = $config->getForm($this->autogridTableId);
+    			  return $formConfig['columns'][$this->name]['visibility'];   			
+    		}else{
+    				//default says it's in
+    				return true;
+    		}
+    }
+    
+    public function setAutogridTableId($id){
+    		$this->autogridTableId = $id;
+    }
+    
+    public function getAutogridTableId($id){
+     	 if (isset($this->autogridTableId)){
+     	   return $this->autogridTableId;
+     	 }else{
+     	 	 return false;
+     	 }
+    }
+    
+    
     /**
      *
      * Returns the id (first parameter of addField) for setting up a form field
@@ -158,34 +180,91 @@ class Magehack_Autogrid_Model_Resource_Table_Column
 
 
     /**
-     * $dataType as String
-     * Returns (nothing) but sets some column data ready for reading later
-     * so that the Admin for or the Admin grid can be created
+     * Call this method to set all the column information
+     * Column information is set by default and by what is pulled from the autogrid.xml config
+     * You must set $this->name before calling this method
+     * and if you want to use autogrid.xml you must also set $this->autoGridTableId before calling this method
+ 		 *    
+     * @PARAM string $dataType the SQL datatype of this column (fetched from the parser)
+     * @RETURN Magehack_Autogrid_Model_Column ie $this 
+     *
      */
-
     public function setType($dataType)
     {
 
-        if (! $this->name) {
+        if (! isset($this->name) ) {
             Mage::log("Cannot make default column without name.\n", null, 'autogrid.log');
             return false;
         }
-        if (! $dataType) {
+        if (! isset($dataType) ) {
             Mage::log("Cannot make default column without data type.\n", null, 'autogrid.log');
             return false;
         }
+        //if(! isset($this->autogridTableId) ){
+        //    Mage::log("Cannot make default column without autogrid table id.\n", null, 'autogrid.log');
+        //    return false;
+        //}
+        //Well, we can make a column for you without it but it will all be defaults
 
+        
         //always start by making the default so every data item is populated
-
         $this->makeDefaultColumn($dataType);
 
-        //then check some autogrid config to see if there are any specific requests
-        //and update the deafult values
+        //then check Magehack_Autogrid_Model_Config to see if there are any specific requests
+        //but only if your tableId set:
 
-
-        //LATER
-
-
+        if(isset($this->autogridTableId)){
+          //then there might be some configuration beyond the defaults
+					$tableId = $this->autogridTableId;
+        
+					//Magehack_Autogrid_Model_Config
+					$config = Mage::getModel('magehack_autogrid/config');
+					
+					//form config
+					$formConfig = $config->getForm($tableId);
+					if ($formConfig!==false){
+						foreach( $formConfig['columns'][$this->name] as $key => $value ){
+						
+							if ($value!=false){ 
+									
+									if ($key == "name"){
+										//then set the name
+										$this->formName = $value;
+									}elseif ($key == "type"){
+										//then set the type
+										$this->formInputType = $value;
+									}else{
+										//stick it all in the info array
+										$this->formInfo[$key] = $value;
+									}
+									
+							}//end if value wasn't false
+							
+						}//end foreach
+					}//end if formConfig wasn't false
+					
+					//grid config
+					$gridConfig = $config->getGrid($tableId);
+					if ($gridConfig!==false){
+						foreach( $gridConfig['columns'][$this->name] as $key => $value ){
+						
+							if ($value!=false){ 
+			
+									if ($key == "name"){
+										//then set the name
+										$this->gridColumnId = $value;
+									}else{
+										//stick it all in the info array
+										$this->gridInfo[$key] = $value;
+									}
+									
+							}//end if value wasn't false
+							
+						}//end foreach
+					}//end if gridConfig wasn't false
+        }//end if there was a tableId
+        
+        return $this;
     }
 
     public function getHelper()
