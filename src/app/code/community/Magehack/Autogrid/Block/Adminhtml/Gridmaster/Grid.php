@@ -69,7 +69,7 @@ class Magehack_Autogrid_Block_Adminhtml_Gridmaster_Grid extends Mage_Adminhtml_B
      */
     public function getRowUrl($item)
     {
-        return $this->getUrl('adminhtml/autogrid_' . $item->getId() . '/demo');
+        return $this->getUrl('adminhtml/autogrid_' . $item->getId() . '/index');
     }
 
 // Monsieur Biz Tag NEW_METHOD
