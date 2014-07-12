@@ -28,7 +28,7 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
      */
     public function demoAction()
     {
-        Zend_Debug::dump(Mage::registry('current_autogrid_object'));
+        Zend_Debug::dump(Mage::helper('magehack_autogrid')->getTableId());
         exit('yo man!');
     }
 

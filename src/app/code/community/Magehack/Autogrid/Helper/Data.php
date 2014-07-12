@@ -19,10 +19,30 @@
 class Magehack_Autogrid_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
-     * Register key of the current "object"
-     * @const string
+     * The table ID
+     * @var string
      */
-    const REGISTER_KEY = 'current_autogrid_object';
+    protected $_tableId;
+
+    /**
+     * Set the table ID
+     * @param string $tableId The table ID
+     * @return Magehack_Autogrid_Controller_Router
+     */
+    public function setTableId($tableId)
+    {
+        $this->_tableId = $tableId;
+        return $this;
+    }
+
+    /**
+     * Retrieve the table ID
+     * @return string
+     */
+    public function getTableId()
+    {
+        return $this->_tableId;
+    }
 
     /**
      * @return Magehack_Autogrid_Model_Resource_Table
@@ -38,5 +58,14 @@ class Magehack_Autogrid_Helper_Data extends Mage_Core_Helper_Abstract
     public function getCollection()
     {
         throw new Exception("Implement getCollection");
+    }
+
+    /**
+     * Retrieve the current object
+     * @return Mage_Core_Model_Abstract
+     */
+    public function getCurrentObject()
+    {
+        throw new Exception('Implement getCurrentObject first');
     }
 }
