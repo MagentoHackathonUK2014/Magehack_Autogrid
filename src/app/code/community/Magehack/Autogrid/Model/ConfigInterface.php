@@ -16,6 +16,7 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+
 interface Magehack_Autogrid_Model_ConfigInterface
 {
     /**
@@ -53,4 +54,11 @@ interface Magehack_Autogrid_Model_ConfigInterface
      * @return mixed
      */
     public function getSourceModel($tableId, $part);
+
+    /**
+     * Return all identifiers from the config for easier looping
+     *
+     * @return mixed array of all tableidentifiers defined in the configs
+     */
+    public function getTableIds();
 } 

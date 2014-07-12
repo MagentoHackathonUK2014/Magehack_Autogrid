@@ -36,7 +36,9 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      */
     protected $_config;
 
-    protected $_sourModels;
+    protected $_sourceModels;
+
+    protected $_tables;
 
     function __construct()
     {
@@ -140,8 +142,24 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     {
         if($node = $this->_config->getNode('tables/'.$tableId.'/'.$part.'/source_model')) {
             $data = explode('::', $node->__toString());
-            return Mage::getModel($data[0])->{$data[1]}();
+            return Mage::getSingleton($data[0])->{$data[1]}();
         }
+    }
+
+    /**
+     * Return all identifiers from the config for easier looping
+     *
+     * @return mixed array of all tableidentifiers defined in the configs
+     */
+    public function getTableIds()
+    {
+        if (!isset($this->_tables)) {
+
+            foreach ($this->_config->getNode('tables')->asArray() as $tableId => $table) {
+                $this->_tables[] = $tableId;
+            }
+        }
+        return $this->_tables;
     }
 
 

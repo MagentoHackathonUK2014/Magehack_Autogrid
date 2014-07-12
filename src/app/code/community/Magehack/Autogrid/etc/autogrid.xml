@@ -59,5 +59,6 @@
                 </columns>
             </form>
         </table_identifier_1>
+        <table_identifier_2></table_identifier_2>
     </tables>
 </config>
