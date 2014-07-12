@@ -30,10 +30,9 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid
         if (! $tableId) {
             Mage::throwException($this->__('No autogrid table id specified'));
         }
-        /** @var Magehack_Autogrid_Model_Config $config */
-        //$config = 
-        
-        $this->_headerText = $this->__('List Distributors');
+        $table =  Mage::getModel('magehack_autogrid/table');
+                    
+        $this->_headerText = $this->__('Table "%s"', $table->getTitle());
         $this->_addButtonLabel = $this->__('Add New');
 
         parent::_construct();
