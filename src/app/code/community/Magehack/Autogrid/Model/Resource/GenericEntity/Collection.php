@@ -79,6 +79,7 @@ class Magehack_Autogrid_Model_Resource_GenericEntity_Collection
     {
         $item = parent::getNewEmptyItem();
         $item->setAutoGridTableId($this->getAutoGridTableId());
+        return $item;
     }
 
 
