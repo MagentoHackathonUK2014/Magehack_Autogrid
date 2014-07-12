@@ -18,5 +18,10 @@
  */
 -->
 <layout>
-
+    <adminhtml_autogrid_index>
+        <block type="magehack_autogrid/adminhtml_autogrid" parent="content"/>
+    </adminhtml_autogrid_index>
+    <adminhtml_autogrid_ajaxgridaction>
+        <block type="magehack_autogrid/adminhtml_autogrid_grid" output="toHtml"/>
+    </adminhtml_autogrid_ajaxgridaction>
 </layout>
