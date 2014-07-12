@@ -35,7 +35,10 @@ class Magehack_Autogrid_Model_Table
      * @var string
      */
     protected $_title;
-    
+
+    /**
+     * @var bool
+     */
     protected $_isLoaded = false;
 
     /**
