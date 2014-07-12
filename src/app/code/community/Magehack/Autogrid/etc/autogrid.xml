@@ -12,7 +12,7 @@
                         <sort_order>1</sort_order>
                         <type>t1</type>
                         <sortable>1</sortable>
-                        <serachable>1</serachable>
+                        <searchable>1</searchable>
                     </id>
                     <type_id>
                         <name>col2</name>
