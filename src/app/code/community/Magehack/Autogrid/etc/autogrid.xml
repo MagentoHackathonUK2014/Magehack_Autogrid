@@ -4,28 +4,33 @@
         <table_identifier_1>
             <table>table_name_1</table>
             <grid>
-                <col>
+                <id>
                     <name>col1</name>
                     <sort_order></sort_order>
                     <type>t1</type>
-                </col>
-                <col>
+                    <sortable>1</sortable>
+                </id>
+                <type_id>
                     <name>col2</name>
                     <sort_order></sort_order>
                     <type>t3</type>
-                </col>
-                <col>
+                    <filterable>1</filterable>
+                </type_id>
+                <handle>
                     <name>col5</name>
                     <sort_order></sort_order>
                     <type>t5</type>
-                </col>
+                    <optional>1</optional>
+                </handle>
             </grid>
             <form>
-                <col>
+                <handle>
                     <name>col2</name>
                     <sort_order>4</sort_order>
                     <type>dropdown</type>
-                </col>
+                    <optional>0</optional>
+                    <validate>1</validate>
+                </handle>
             </form>
         </table_identifier_1>
     </tables>
