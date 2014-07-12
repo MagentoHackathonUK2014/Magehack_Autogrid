@@ -36,5 +36,13 @@ interface Magehack_Autogrid_Model_Resource_Table_CellInterface
      */
     public function getFormInfo();
 
+    /**
+     *
+     * Returns the info array (second parameter of addColumn) for setting up a grid column
+     *
+     * @return array
+     */
+    public function getGridInfo();
+
 
 }
