@@ -91,7 +91,7 @@ class Magehack_Autogrid_Test_Model_Resource_TableTest
         $instance->getMainTable();
     }
     
-    public function testSetAutoGridTableIdInitializesTheResource()
+    public function testItIsInitializedBySetAutoGridTableId()
     {
         $instance = $this->getInstance('dummy_table');
         
