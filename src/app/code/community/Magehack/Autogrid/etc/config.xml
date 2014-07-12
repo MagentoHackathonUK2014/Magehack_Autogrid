@@ -11,7 +11,11 @@
         <models>
             <magehack_autogrid>
                 <class>Magehack_Autogrid_Model</class>
+                <resourceModel>magehack_autogrid_resource</resourceModel>
             </magehack_autogrid>
+            <magehack_autogrid_resource>
+                <class>Magehack_Autogrid_Model_Resource</class>
+            </magehack_autogrid_resource>
         </models>
     </global>
 </config>
