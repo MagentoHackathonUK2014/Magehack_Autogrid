@@ -19,7 +19,7 @@ class Magehack_Autogrid_Test_Model_Resource_Table_CollectionTest
         $this->assertTrue(class_exists($this->class), "Class {$this->class} not found by autoloader");
     }
 
-    public function testItsAEntityModel()
+    public function testItsAEntityCollection()
     {
         $instance = $this->getInstance();
         $result =  $instance instanceof Mage_Core_Model_Resource_Db_Collection_Abstract;
@@ -30,5 +30,11 @@ class Magehack_Autogrid_Test_Model_Resource_Table_CollectionTest
     {
         $instance = $this->getInstance();
         $this->assertAttributeEquals('magehack_autogrid/table', '_itemObjectClass', $instance);
+    }
+
+    public function testItCanBeInstantiatedViaFactory()
+    {
+        $result = Mage::getConfig()->getResourceModelClassName('magehack_autogrid/table_collection');
+        $this->assertEquals($this->class, $result);
     }
 }

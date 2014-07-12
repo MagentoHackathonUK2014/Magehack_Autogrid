@@ -17,5 +17,10 @@
                 <class>Magehack_Autogrid_Model_Resource</class>
             </magehack_autogrid_resource>
         </models>
+        <helpers>
+            <magehack_autogrid>
+                <class>Magehack_Autogrid_Helper</class>
+            </magehack_autogrid>
+        </helpers>
     </global>
 </config>
