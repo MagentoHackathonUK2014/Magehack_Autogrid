@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+    <tables>
+        <table_identifier_1>
+            <table>table_name_1</table>
+            <grid>
+                <col>col1</col>
+                <col>col2</col>
+                <col>col3</col>
+            </grid>
+            <form>
+                <col sort="2">col2</col>
+            </form>
+        </table_identifier_1>
+    </tables>
+</config>
