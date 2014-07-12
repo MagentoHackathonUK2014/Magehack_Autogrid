@@ -33,8 +33,8 @@ class Magehack_Autogrid_Block_Adminhtml_Edit_Form extends Mage_Adminhtml_Block_W
             $fieldset->addField($cell->getName(), $cell->getFormInputType(), $cell->getFormInfo());
         }
 
-        if (Mage::registry('current_autogrid_object')) {
-            $form->setValues(Mage::registry('current_autogrid_object')->getData());
+        if (Mage::registry(Magehack_Autogrid_Helper_Data::REGISTER_KEY)) {
+            $form->setValues(Mage::registry(Magehack_Autogrid_Helper_Data::REGISTER_KEY)->getData());
         }
 
         return parent::_prepareForm();
