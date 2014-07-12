@@ -41,6 +41,7 @@ interface Magehack_Autogrid_Model_ColumnInterface
      * @return string
      */
     public function getFormInputType();
+    public function settFormInputType();
 
     /**
      * Returns the info array (third parameter of addField) for setting up a form field
@@ -48,6 +49,8 @@ interface Magehack_Autogrid_Model_ColumnInterface
      * @return array
      */
     public function getFormInfo();
+    public function getFormName();
+    public function setFormName();
 
     /**
      * Returns the info array (second parameter of addColumn) for setting up a grid column
@@ -62,4 +65,23 @@ interface Magehack_Autogrid_Model_ColumnInterface
      * @return array
      */
     public function getTableColumns();
+    
+    public function isInGrid();
+    public function isInForm();
+    public function setAutogridTableId($id);
+    public function getAutogridTableId($id);
+
+    /**
+     *
+     * Returns the id (first parameter of addColumn() for setting up an admin grid column
+     *
+     * @return string
+     */
+    public function getGridColumnId();
+
+     /**
+     * @param $gridColumnId string - sets the id (first parameter of addColumn() for setting up an admin grid column
+     */
+     public function setGridColumnId($gridColumnId)    
+    
 }
