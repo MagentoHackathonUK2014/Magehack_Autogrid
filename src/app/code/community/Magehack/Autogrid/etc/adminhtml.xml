@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <magehack_autogrid>
+                        <title>View Magehack_Autogrid Grids</title>
+                        <sort_order>108</sort_order>
+                    </magehack_autogrid>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
