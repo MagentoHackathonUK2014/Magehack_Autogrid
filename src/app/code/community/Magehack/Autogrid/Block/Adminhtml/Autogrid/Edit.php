@@ -55,12 +55,12 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit extends Mage_Adminhtml_Blo
     }
 
     /**
-     * Retrieve the table
-     * @return Magehack_Autogrid_Model_Table
+     * Retrieve the generic entity
+     * @return Magehack_Autogrid_Model_GenericEntity
      */
     protected function _getObject()
     {
-        return Mage::registry('current_autogrid_table');
+        return Mage::registry('current_generic_entity');
     }
 
 }

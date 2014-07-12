@@ -1,8 +1,8 @@
 <?php
 
-class Magehack_Autogrid_Model_Column
+class Magehack_Autogrid_Model_Table_Column
     extends Mage_Core_Model_Abstract
-    implements Magehack_Autogrid_Model_Resource_Table_ColumnInterface
+    implements Magehack_Autogrid_Model_Table_ColumnInterface
 {
 
     const DEFAULT_COLUMN_WIDTH = '80px';
