@@ -2,16 +2,12 @@
 
 
 class Magehack_Autogrid_Model_Table
+    extends Varien_Object
 {
     /**
      * @var string
      */
     protected $_autogridTableId;
-    
-    /**
-     * @var Magehack_Autogrid_Model_Resource_Table_Column[]
-     */
-    protected $_columns = array();
 
     /**
      * @var Magehack_Autogrid_Model_ConfigInterface
@@ -27,6 +23,26 @@ class Magehack_Autogrid_Model_Table
      * @var Magehack_Autogrid_Helper_Data
      */
     protected $_helper;
+
+    /**
+     * @var Magehack_Autogrid_Model_Resource_Table_Column[]
+     */
+    protected $_columns = array();
+
+    /**
+     * The table title
+     * 
+     * @var string
+     */
+    protected $_title;
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->getAutogridTableId();
+    }
 
     /**
      * Setter DI Method for grid table id
@@ -133,28 +149,69 @@ class Magehack_Autogrid_Model_Table
         $this->_loadTableDataFromParser();
         $this->_mergeTableDataFromConfig();
     }
-    
+
+    /**
+     * Create a column instance and inject all required data
+     * 
+     * @param $name
+     * @return Magehack_Autogrid_Model_Table_ColumnInterface
+     */
+    protected function _getColumnInstance($name)
+    {
+        $parser = $this->_getTableParser();
+        $config = $this->_getConfig();
+        $tableId = $this->getAutogridTableId();
+
+        /** @var Magehack_Autogrid_Model_Table_ColumnInterface $column */
+        $column = Mage::getModel('magehack_autogrid/table_column');
+        $column->setTableParser($parser);
+        $column->setConfig($config);
+        $column->setAutogridTableId($tableId);
+        $column->setColumnName($name);
+
+        return $column;
+    }
+
+    /**
+     * Populate the $_columns array from the information returned by the parser 
+     */
     protected function _loadTableDataFromParser()
     {
         $columns = $this->_getTableParser()->getTableColumns();
-        foreach ($columns as $column) {
-            //$table->
+        foreach ($columns as $name => $columnInfo) {
+            $this->_columns[$name] = $this->_getColumnInstance($name);
         }
+        $this->_title = $this->_getTableParser()->getTableTitle();
     }
-    
+
+    /**
+     * Update the table data
+     */
     protected function _mergeTableDataFromConfig()
     {
-        
+        $config = $this->_getConfig();
+        $tableId = $this->getAutogridTableId();
+        if ($title = $config->getTableTitle($tableId)) {
+            $this->_title = $title;
+        }
+        if (! $this->_title) {
+            $this->_title = $config->getTableName($tableId);
+        }
     }
 
     /**
      * @return Magehack_Autogrid_Model_Resource_Table_Column[]
      */
-    public function getColumns()
+    public function getAllColumns()
     {
         if (! isset($this->_columns)) {
             $this->_loadTableData();
         }
         return $this->_columns;
+    }
+    
+    public function getVisibleColumns()
+    {
+        
     }
 } 

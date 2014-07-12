@@ -53,4 +53,12 @@ interface Magehack_Autogrid_Model_ConfigInterface
      * @return mixed
      */
     public function getSourceModel($tableId, $part);
+
+    /**
+     * Return the table title if configured, otherwise an empty string
+     * 
+     * @param string $tableId
+     * @return string
+     */
+    public function getTableTitle($tableId);
 } 
