@@ -127,7 +127,7 @@ class Magehack_Autogrid_Controller_Router extends Mage_Core_Controller_Varien_Ro
             // Check the controller name syntax to get the object that we are working on
             $controllerMatches = array();
             if (preg_match(self::CONTROLLER_NAME_REGEX, $controller, $controllerMatches)) {
-                Mage::register('current_autogrid_object', $controllerMatches[1]);
+                Mage::register(Magehack_Autogrid_Helper_Data::REGISTER_KEY, $controllerMatches[1]);
                 $controller = 'autogrid';
             }
 
