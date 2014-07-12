@@ -19,6 +19,8 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      */
     protected $_config;
 
+    protected $_sourModels;
+
     function __construct()
     {
         $this->_config = Mage::getConfig()->loadModulesConfiguration('autogrid.xml');
@@ -52,6 +54,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         if (!isset($this->_tableNames[$tableId])) {
             if (!$this->_config->getNode('tables/'.$tableId.'/table')) {
                 Mage::log('Tablename is missing for: '.$tableId);
+                return false;
             }
             $this->_tableNames[$tableId] = $this->_config->getNode('tables/' . $tableId . '/table')->__toString();
         }
@@ -68,7 +71,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     {
         if (!isset($this->_grids[$tableId])) {
             if (!$this->_config->getNode('tables/'.$tableId.'/grids')) {
-                Mage::log(Mage::helper('magehack_autogrid')->__('No grid information specified for: '.$this->getTableName($tableId)));
+                return false;
             }
             foreach ($this->_config->getNode('tables/' . $tableId . '/grid') as $gridElement) {
                 $this->_grids[$tableId]= $gridElement->asCanonicalArray();
@@ -87,11 +90,42 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     {
             if (!isset($this->_forms[$tableId])) {
                 if (!$this->_config->getNode('tables/'.$tableId.'/form')) {
-                    Mage::log(Mage::helper('magehack_autogrid')->__('No form information specified for: '.$this->getTableName($tableId)));
+                    return false;
                 }
                 $this->_forms[$tableId] = $this->_config->getNode('tables/' . $tableId . '/form')->asCanonicalArray();
             }
             return $this->_forms[$tableId];
     }
+
+    /**
+     * Return the source model for grid or form
+     *
+     * @param string $tableId XML identifier for the table
+     * @param $part grid|form for which part the source model should be
+     * @return mixed
+     */
+    public function getSourceModel($tableId, $part)
+    {
+        if($node = $this->_config->getNode('tables/'.$tableId.'/'.$part.'/source_model')) {
+            return Mage::getModel(substr($node->__toString(), 0, strpos($node->__toString(), '::')));
+        };
+        return false;
+    }
+
+    /**
+     * Return Source Model Options based on Model and specified Methods
+     *
+     * @param string $tableId XML identifier for the table
+     * @param string $part grid|form for which part the source model should be
+     * @return mixed
+     */
+    public function getOptions($tableId, $part)
+    {
+        if($node = $this->_config->getNode('tables/'.$tableId.'/'.$part.'/source_model')) {
+            $data = explode('::', $node->__toString());
+            return Mage::getModel($data[0])->{$data[1]}();
+        }
+    }
+
 
 }

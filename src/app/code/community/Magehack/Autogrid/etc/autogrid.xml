@@ -3,34 +3,42 @@
     <tables>
         <table_identifier_1>
             <table>table_name_1</table>
+            <source_method></source_method>
             <grid>
-                <id>
-                    <name>col1</name>
-                    <sort_order></sort_order>
-                    <type>t1</type>
-                    <sortable>1</sortable>
-                </id>
-                <type_id>
-                    <name>col2</name>
-                    <sort_order></sort_order>
-                    <type>t3</type>
-                    <filterable>1</filterable>
-                </type_id>
-                <handle>
-                    <name>col5</name>
-                    <sort_order></sort_order>
-                    <type>t5</type>
-                    <optional>1</optional>
-                </handle>
+                <source_model>fastslow/guano::orderName</source_model>
+                <columns>
+                    <id>
+                        <name>col1</name>
+                        <sort_order>1</sort_order>
+                        <type>t1</type>
+                        <sortable>1</sortable>
+                        <serachable>1</serachable>
+                    </id>
+                    <type_id>
+                        <name>col2</name>
+                        <sort_order>2</sort_order>
+                        <type>t3</type>
+                        <filterable>1</filterable>
+                    </type_id>
+                    <handle>
+                        <name>col5</name>
+                        <sort_order>7</sort_order>
+                        <type>t5</type>
+                        <optional>1</optional>
+                    </handle>
+                </columns>
             </grid>
             <form>
-                <handle>
-                    <name>col2</name>
-                    <sort_order>4</sort_order>
-                    <type>dropdown</type>
-                    <optional>0</optional>
-                    <validate>1</validate>
-                </handle>
+                <source_model>catalog/product::getCollection</source_model>
+                <columns>
+                    <handle>
+                        <name>col2</name>
+                        <sort_order>4</sort_order>
+                        <type>dropdown</type>
+                        <optional>0</optional>
+                        <validate>1</validate>
+                    </handle>
+                </columns>
             </form>
         </table_identifier_1>
     </tables>

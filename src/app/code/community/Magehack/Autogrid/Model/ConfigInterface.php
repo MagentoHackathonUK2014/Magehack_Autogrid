@@ -28,4 +28,14 @@ interface Magehack_Autogrid_Model_ConfigInterface
      * @return mixed
      */
     public function getForm($tableId);
+
+
+    /**
+     * Return the source model for grid or form
+     *
+     * @param string $tableId XML identifier for the table
+     * @param $part grid|form for which part the source model should be
+     * @return mixed
+     */
+    public function getSourceModel($tableId, $part);
 } 
