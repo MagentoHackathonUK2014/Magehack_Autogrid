@@ -22,5 +22,26 @@
                 <class>Magehack_Autogrid_Helper</class>
             </magehack_autogrid>
         </helpers>
+        <events>
+            <controller_front_init_routers>
+                <observers>
+                    <magehack_autogrid>
+                        <class>Magehack_Autogrid_Controller_Router</class>
+                        <method>initControllerRouters</method>
+                    </magehack_autogrid>
+                </observers>
+            </controller_front_init_routers>
+        </events>
     </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <magehack_autogrid after="Mage_Adminhtml">Magehack_Autogrid_Adminhtml</magehack_autogrid>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
 </config>
