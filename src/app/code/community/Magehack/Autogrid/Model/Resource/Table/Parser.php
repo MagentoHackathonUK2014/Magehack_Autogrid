@@ -6,7 +6,7 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
 {
 
     protected $_primaryKey = null;
-    protected $_cells = array();
+    protected $_cols = array();
     /**
      * Resource initialization
      */
@@ -23,13 +23,13 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
     {
         $ra = $this->_getReadAdapter();
         $struct = $ra->describeTable($tableName);
-        $this->_cells = array();
+        $this->_cols = array();
         foreach ($struct as $name => $info) {
             Mage::log($name."\n",null,'autogrid.log');
-            $cell = Mage::getModel('magehack_autogrid/cell');
-            $cell->setName($name)
+            $column = Mage::getModel('magehack_autogrid/column');
+            $column->setName($name)
                  ->setType($info['DATA_TYPE']);
-            $this->_cells[] = $cell;
+            $this->_cols[] = $column;
         }
         return $this;
     }
@@ -43,11 +43,11 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
     }
 
     /**
-     * @return array|Magehack_Autogrid_Model_Table_Cell
+     * @return array|Magehack_Autogrid_Model_Table_Column
      */
     public function getTableColumns()
     {
-        return $this->_cells;
+        return $this->_cols;
     }
 
 }
