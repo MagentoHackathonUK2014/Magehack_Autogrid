@@ -55,11 +55,11 @@ class Magehack_Autogrid_Test_Model_Resource_Table_CollectionTest
         $this->assertEquals($this->class, $result);
     }
     
-    public function testInitInitializesTheSelect()
+    public function testSetAutoGridTableIdInitializesTheSelect()
     {
         $instance = $this->getInstance();
         $this->assertAttributeEmpty('_select', $instance);
-        $instance->init('dummy_table_id');
+        $instance->setAutoGridTableId('dummy_table_id');
         $this->assertAttributeNotEmpty('_select', $instance);
     }
 }
