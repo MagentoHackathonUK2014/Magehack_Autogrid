@@ -7,4 +7,11 @@
             </modules>
         </suite>
     </phpunit>
+    <global>
+        <models>
+            <magehack_autogrid>
+                <class>Magehack_Autogrid_Model</class>
+            </magehack_autogrid>
+        </models>
+    </global>
 </config>
