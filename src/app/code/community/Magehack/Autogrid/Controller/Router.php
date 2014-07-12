@@ -128,6 +128,9 @@ class Magehack_Autogrid_Controller_Router extends Mage_Core_Controller_Varien_Ro
             $controllerMatches = array();
             if (preg_match(self::CONTROLLER_NAME_REGEX, $controller, $controllerMatches)) {
                 Mage::helper('magehack_autogrid')->setTableId($controllerMatches[1]);
+                $request->setRoutingInfo(array(
+                    'requested_controller' => $controller,
+                ));
                 $controller = 'autogrid';
             }
 
