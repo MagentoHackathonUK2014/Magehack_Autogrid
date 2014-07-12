@@ -46,7 +46,7 @@ class Magehack_Autogrid_Model_Table
      */
     public function getId()
     {
-        return $this->getAutogridTableId();
+        return $this->getAutoGridTableId();
     }
 
     /**
@@ -141,7 +141,7 @@ class Magehack_Autogrid_Model_Table
     /**
      * @return string
      */
-    public function getAutogridTableId()
+    public function getAutoGridTableId()
     {
         return $this->_autogridTableId;
     }
@@ -153,7 +153,7 @@ class Magehack_Autogrid_Model_Table
      */
     protected function _loadTableData()
     {
-        $tableId = $this->getAutogridTableId();
+        $tableId = $this->getAutoGridTableId();
         if (! $tableId) {
             $helper = $this->_getHelper();
             $message = $helper->__('No autogrid id set on table!');
@@ -174,7 +174,7 @@ class Magehack_Autogrid_Model_Table
     {
         $parser = $this->_getTableParser();
         $config = $this->_getConfig();
-        $tableId = $this->getAutogridTableId();
+        $tableId = $this->getAutoGridTableId();
 
         /** @var Magehack_Autogrid_Model_Table_ColumnInterface $column */
         $column = Mage::getModel('magehack_autogrid/table_column');
@@ -204,7 +204,7 @@ class Magehack_Autogrid_Model_Table
     protected function _mergeTableDataFromConfig()
     {
         $config = $this->_getConfig();
-        $tableId = $this->getAutogridTableId();
+        $tableId = $this->getAutoGridTableId();
         if ($title = $config->getTableTitle($tableId)) {
             $this->_title = $title;
         }
