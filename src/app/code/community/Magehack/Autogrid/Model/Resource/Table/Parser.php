@@ -43,7 +43,7 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
         $struct = $ra->describeTable($tableName);
         $this->_cols = array();
         foreach ($struct as $name => $info) {
-            Mage::log($name."\n",null,'autogrid.log');
+            //Mage::log($name."\n",null,'autogrid.log');
             $this->_cols[] = array($name=>$info['DATA_TYPE']);
         }
         $c = $ra->getConfig();
@@ -73,8 +73,10 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
      */
     public function getTableColumnByName($name)
     {
-        if (exists($this->_cols[$name]))
-        return $this->_cols[$name];
+        if (isset($this->_cols[$name])) {
+            return $this->_cols[$name];
+        }
+        return null;
     }
 
     /**
