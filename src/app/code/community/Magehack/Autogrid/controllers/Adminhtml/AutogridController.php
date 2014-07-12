@@ -22,9 +22,18 @@
  */
 class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Controller_Action
 {
-
     /**
-     * Demo action
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return (bool) Mage::getSingleton('admin/session')->isAllowed('magehack_autogrid');
+    }
+    
+    /**
+     * Demo action (just for testing purposes
+     * 
+     * @todo remove
      */
     public function demoAction()
     {
@@ -33,12 +42,20 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Is allowed?
-     * @return bool
+     * Display the grid page
      */
-    protected function _isAllowed()
+    public function indexAction()
     {
-        return true;
+        $this->loadLayout();
+        $this->renderLayout();
     }
 
+    /**
+     * Render and return the grid block only for ajac paging, filtering and sorting.
+     */
+    public function ajaxGridAction()
+    {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
 }
