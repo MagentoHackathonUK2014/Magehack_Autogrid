@@ -12,4 +12,20 @@ interface Magehack_Autogrid_Model_ConfigInterface
      * @return string
      */
     public function getTableName($tableId);
+
+    /**
+     * Return the grid for backend grid creation
+     *
+     * @param string $tableId XML identifier for the table
+     * @return mixed
+     */
+    public function getGrid($tableId);
+
+    /**
+     * Return the grid for backend form creation
+     *
+     * @param string $tableId XML identifier for the table
+     * @return mixed
+     */
+    public function getForm($tableId);
 } 
