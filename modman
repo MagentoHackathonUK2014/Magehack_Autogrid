@@ -1,3 +1,4 @@
 
 src/app/code/community/Magehack/Autogrid app/code/community/Magehack/Autogrid
 src/app/etc/modules/Magehack_Autogrid.xml app/etc/modules/Magehack_Autogrid.xml
+src/app/design/adminhtml/base/default/layout/magehack/* app/design/adminhtml/base/default/layout/magehack/
