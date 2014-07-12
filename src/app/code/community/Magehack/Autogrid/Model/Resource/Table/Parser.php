@@ -1,8 +1,13 @@
 <?php
 
-class Magehack_Autogrid_Model_Resource_Table_Parser extends Mage_Core_Model_Resource_Db_Abstract
+class Magehack_Autogrid_Model_Resource_Table_Parser
+    extends Mage_Core_Model_Resource_Db_Abstract
+    implements Magehack_Autogrid_Model_Resource_Table_ParserInterface
 {
 
+    protected $_tableColumns = array();
+    protected $_primaryKey = null;
+    protected $_cells = array();
     /**
      * Resource initialization
      */
@@ -11,17 +16,29 @@ class Magehack_Autogrid_Model_Resource_Table_Parser extends Mage_Core_Model_Reso
         $this->_init('magehack_autogrid/parser', 'id');
     }
 
-    public function parseTable($tableName) {
+    public function init($tableName)
+    {
         $ra = $this->_getReadAdapter();
         $struct = $ra->describeTable($tableName);
-        $table = Mage::getModel('magehack_autogrid/table');
+        $this->_cells = array();
         foreach ($struct as $name => $info) {
             Mage::log($name."\n",null,'autogrid.log');
-//            $cell = Mage::getModel('magehack_autogrid/cell');
-//            $cell->setName($name)
-//                 ->setType($info['DATA_TYPE']);
-//            $table->addCell($cell);
+            $cell = Mage::getModel('magehack_autogrid/cell');
+            $cell->setName($name)
+                 ->setType($info['DATA_TYPE']);
+            $this->_cells[] = $cell;
         }
-        return $table;
+        return $this;
     }
+
+    public function getPrimaryKey()
+    {
+        return $this->_primaryKey;
+    }
+
+    public function getTableColumns()
+    {
+        return $this->_cells;
+    }
+
 }
