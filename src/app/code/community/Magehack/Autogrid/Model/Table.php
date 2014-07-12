@@ -136,7 +136,10 @@ class Magehack_Autogrid_Model_Table
     
     protected function _loadTableDataFromParser()
     {
-        
+        $columns = $this->_getTableParser()->getTableColumns();
+        foreach ($columns as $column) {
+            //$table->
+        }
     }
     
     protected function _mergeTableDataFromConfig()

@@ -29,7 +29,6 @@ interface Magehack_Autogrid_Model_Resource_Table_ColumnInterface
     public function setType($columnType);
 
     /**
-     *
      * Returns the id (first parameter of addField) for setting up a form field
      *
      * @return array
@@ -37,7 +36,6 @@ interface Magehack_Autogrid_Model_Resource_Table_ColumnInterface
     public function getName();
 
     /**
-     *
      * Returns the input type (second parameter of addField) for setting up a form field
      *
      * @return string
@@ -45,7 +43,6 @@ interface Magehack_Autogrid_Model_Resource_Table_ColumnInterface
     public function getFormInputType();
 
     /**
-     *
      * Returns the info array (third parameter of addField) for setting up a form field
      *
      * @return array
@@ -53,12 +50,16 @@ interface Magehack_Autogrid_Model_Resource_Table_ColumnInterface
     public function getFormInfo();
 
     /**
-     *
      * Returns the info array (second parameter of addColumn) for setting up a grid column
      *
      * @return array
      */
     public function getGridInfo();
 
-
+    /**
+     * Return an array of column definitions parsed from the real db table
+     * 
+     * @return array
+     */
+    public function getTableColumns();
 }
