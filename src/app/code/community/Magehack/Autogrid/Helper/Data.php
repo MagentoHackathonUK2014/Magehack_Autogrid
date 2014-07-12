@@ -20,12 +20,14 @@ class Magehack_Autogrid_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
      * The table ID
+     * 
      * @var string
      */
     protected $_tableId;
 
     /**
      * Set the table ID
+     * 
      * @param string $tableId The table ID
      * @return Magehack_Autogrid_Controller_Router
      */
@@ -37,6 +39,7 @@ class Magehack_Autogrid_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Retrieve the table ID
+     * 
      * @return string
      */
     public function getTableId()
