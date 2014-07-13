@@ -64,6 +64,11 @@
                     <store_id>magehack_autogrid/table_column_source_storeId</store_id>
                     <attrbute_set_id>magehack_autogrid/table_column_source_attributeSetId</attrbute_set_id>
                 </source_model>
+                <!-- not yet used: -->
+                <!--<frontend_input>-->
+                    <!--<store_id>multiselect</store_id>-->
+                    <!--<website_id>multiselect</website_id>-->
+                <!--</frontend_input>-->
             </column_type_defaults>
         </autogrid>
         <layout>
