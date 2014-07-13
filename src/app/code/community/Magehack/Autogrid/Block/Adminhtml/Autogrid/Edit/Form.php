@@ -22,7 +22,6 @@
  */
 class Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit_Form extends Mage_Adminhtml_Block_Widget_Form
 {
-
     /**
      * Prepare form before rendering HTML
      *
@@ -30,6 +29,7 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit_Form extends Mage_Adminhtm
      */
     protected function _prepareForm()
     {
+        $helper = Mage::helper('magehack_autogrid');
         $form = new Varien_Data_Form(array(
             'id'        => 'edit_form',
             'action'    => $this->getData('action'),
@@ -38,27 +38,30 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit_Form extends Mage_Adminhtm
         ));
 
         $entity = Mage::registry('current_generic_entity');
-        $form->setDataObject($entity);
+        $form->setData('data_object', $entity);
 
         $fieldset = $form->addFieldset('general', array(
-            'legend' => Mage::helper('magehack_autogrid')->__('General Information')
+            'legend' => $helper->__('General Information')
         ));
-        $table = Mage::helper('magehack_autogrid')->getCurrentTable();
+        $table = $helper->getCurrentTable();
 
+        /** @var Magehack_Autogrid_Model_Table_ColumnInterface $column */
         foreach ($table->getGridColumns() as $column) {
-            $fieldset->addField($column->getName(), $column->getFormInputType(), $column->getFormInfo());
+            $fieldset->addField($column->getFormFieldId(), $column->getFieldInputType(), $column->getFormFieldInfo());
         }
 
-        $form->setUseContainer(true);
+        $form->setData('use_container', true);
         $this->setForm($form);
 
         return parent::_prepareForm();
     }
 
     /**
-     * Initialize form fields values
-     * Method will be called after prepareForm and can be used for field values initialization
-     * @return Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit_Form
+     * Initialize form fields values.
+     * 
+     * Method will be called after prepareForm and can be used for field values initialization.
+     * 
+     * @return $this
      */
     protected function _initFormValues()
     {
@@ -67,7 +70,4 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit_Form extends Mage_Adminhtm
 
         return $this;
     }
-
-// Monsieur Biz Tag NEW_METHOD
-
 }
