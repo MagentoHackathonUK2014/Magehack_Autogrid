@@ -358,7 +358,7 @@ class Magehack_Autogrid_Model_Table_Column
 
         //column form information
         $this->setFormName($this->name); //if name is null or not set by parser we are in trouble
-        $this->setFormInputType('text'); //'textbox' //editor //radio //select //selectmulti
+        $this->setFormInputType('text'); //'textarea' //editor //radio //select //multiselect //
         $this->formInfo = array(
             'label'    => $title,
             //'class'  => 'color {hash:true,required:false}',
@@ -369,7 +369,7 @@ class Magehack_Autogrid_Model_Table_Column
         //now we can change some of these for specific data types
         switch (strtoupper($dataType)) {
 
-            //these special cases default to text if M<=255 or null, otherwise textbox
+            //these special cases default to text if M<=255 or null, otherwise textarea
             case "VARCHAR" : //What about M?
             case "VARBINARY" : //What about M?
             case "BLOB" :
@@ -379,14 +379,14 @@ class Magehack_Autogrid_Model_Table_Column
 
                 if ($m) {
                     if ($m > 255) {
-                        //TEXTBOX
-                        $this->setFormInputType('textbox');
+                        //TEXTAREA
+                        $this->setFormInputType('textarea');
                     } else {
                         //TEXT
                     }
                 } else {
                     //A tough choice
-                    //LETS SAY TEXT not TEXTBOX
+                    //LETS SAY TEXT not TEXTAREA
                 }
 
                 //column grid information
@@ -429,7 +429,7 @@ class Magehack_Autogrid_Model_Table_Column
 
                 break;
 
-            //these cases all default to textbox input
+            //these cases all default to textarea input
             case "MEDIUMBLOB" :
             case "MEDIUMTEXT" :
             case "LONGBLOB" :
