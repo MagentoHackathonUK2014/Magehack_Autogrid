@@ -136,14 +136,22 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      *
      * @param string $tableId XML identifier for the table
      * @param string $part grid|form for which part the source model should be
+     * @param string $columnId column-identifier
      * @return mixed
      */
-    public function getOptions($tableId, $part)
+    public function getOptions($tableId, $part, $columnId)
     {
-        if($node = $this->_config->getNode('tables/'.$tableId.'/'.$part.'/source_model')) {
+
+        if($node = $this->_config->getNode('tables/'.$tableId.'/'.$part.'/columns/'.$columnId.'/source_model')) {
             $data = explode('::', $node->__toString());
+            if (empty($data[1]) && $part == 'grid') {
+                $data[1] = 'getFlatOptionArray';
+            } elseif (empty($data[1]) && $part == 'form') {
+                $data[1] = 'getSourceOptionsArray';
+            }
             return Mage::getSingleton($data[0])->{$data[1]}();
         }
+        return false;
     }
 
     /**

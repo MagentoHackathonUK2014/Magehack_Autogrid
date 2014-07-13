@@ -28,6 +28,7 @@
                         <source_model>magehack_autogrid/table_column_source_yesno</source_model>
                     </has_options>
                     <type_id>
+                        <source_model>magehack_autogrid/table_column_source_yesno::_loadOptions</source_model>
                         <name>The Product Type</name>
                         <type>varchar</type>
                         <filterable>1</filterable>
