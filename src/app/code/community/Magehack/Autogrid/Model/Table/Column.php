@@ -8,7 +8,6 @@ class Magehack_Autogrid_Model_Table_Column
     const DEFAULT_COLUMN_WIDTH = '80px';
     
     protected $name;
-    protected $type;
 
     protected $formName;
     protected $formInputType;
@@ -214,7 +213,12 @@ class Magehack_Autogrid_Model_Table_Column
     	
       //get the type from the parser
       //the parser is set, yes?
-      $columnArray = $this->_tableParser->getTableColumnByName($name);
+      if(isset($this->_tableParser)){
+      		$columnArray = $this->_tableParser->getTableColumnByName($name);
+      }else{
+        Mage::log("Cannot setColumnName without parser. Please call setTableParser(Magehack_Autogrid_Model_Resource_Table_ParserInterface \$parser).\n", null, 'autogrid.log');
+        return false; 
+      }
       
       if($columnArray===null){
       		//then the $name is not in the database
@@ -223,9 +227,9 @@ class Magehack_Autogrid_Model_Table_Column
         return false; 
       }
     
-    		$this->setType($columnArray[$name]);
+    		$this->setData($columnArray[$name]);
       //use the type to set all the defaults and pull any column info from the config too
-      $this->setColumnData($columnArray[$name]); //the name is the key to the column datatype
+      $this->setColumnData($columnArray[$name]['type']); //the name is the key to the column datatype
     }
     
     
