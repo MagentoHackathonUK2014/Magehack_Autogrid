@@ -305,9 +305,9 @@ class Magehack_Autogrid_Model_Table_Column
 
                         }
                         //end if value wasn't false
-
                     }
-                //end foreach
+                    //end foreach
+                }
             }
             //end if formConfig wasn't false
 
@@ -495,13 +495,13 @@ class Magehack_Autogrid_Model_Table_Column
 						//column form information
 						
 						//column grid information
-						$this->gridInfo['header']    = Mage::helper('catalog')->__('Websites'),
-						$this->gridInfo['width']     = '100px',
-						$this->gridInfo['sortable']  = false,
-						$this->gridInfo['index']     = 'websites',
-						$this->gridInfo['type']      = 'options',
-						$this->gridInfo['options']   = Mage::getModel('core/website')->getCollection()->toOptionHash(),
-							break;
+						$this->gridInfo['header']    = Mage::helper('catalog')->__('Websites');
+						$this->gridInfo['width']     = '100px';
+						$this->gridInfo['sortable']  = false;
+						$this->gridInfo['index']     = 'websites';
+						$this->gridInfo['type']      = 'options';
+						$this->gridInfo['options']   = Mage::getModel('core/website')->getCollection()->toOptionHash();
+                                                break;
 							
 					case 'store_id' :       	
 						//column form information
