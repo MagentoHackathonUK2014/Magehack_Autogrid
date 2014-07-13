@@ -31,7 +31,7 @@ interface Magehack_Autogrid_Model_Table_ColumnInterface
     /**
      * Returns the id (first parameter of addField) for setting up a form field
      *
-     * @return array
+     * @return string
      */
     public function getName();
 
