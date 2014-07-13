@@ -334,7 +334,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             //now the config can change the title and the type
             //so we update the class members anyway just incase they were set from the config
             $fieldInfo = $this->getFormFieldInfo();
-            $this->setFormInputType($fieldInfo['type']);
+            $this->setFieldInputType($fieldInfo['type']);
             //LATER $this->setTitle(); //magic
         }
         //end if there was a tableId
@@ -371,8 +371,8 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
         $this->setGridInfo('sortable', true);
 
         //column form information
-        $this->setFormName($this->getColumnName()); //if name is null or not set by parser we are in trouble
-        $this->setFormInputType('text'); //'textarea' //editor //radio //select //multiselect //
+        $this->setFormFieldId($this->getColumnName()); //if name is null or not set by parser we are in trouble
+        $this->setFieldInputType('text'); //'textarea' //editor //radio //select //multiselect //
         $this->setFormFieldInfo('label', $title);
         $this->setFormFieldInfo('required', false);
         $this->setFormFieldInfo('name', $this->getColumnName());
@@ -388,7 +388,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
                 if ($m) {
                     if ($m > 255) {
                         //TEXTAREA
-                        $this->setFormInputType('textarea');
+                        $this->setFieldInputType('textarea');
                     } else {
                         //TEXT
                     }
@@ -431,13 +431,13 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             case "DATE" :
             case "DATETIME" :
             case "TIMESTAMP" :
-                $this->setFormInputType('date');
+                $this->setFieldInputType('date');
                 $this->setGridInfo('type', 'datetime');
                 $this->setFormFieldInfo('format', Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
                 break;
 
             case "TIME" :
-                $this->setFormInputType('time');
+                $this->setFieldInputType('time');
                 $this->setGridInfo('type', 'datetime');
                 break;
             case "YEAR" :
@@ -457,7 +457,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             case "BOOLEAN" :
                 //column form information
                 //$this->setFormInputType('text');
-                $this->setFormInputType('checkbox');
+                $this->setFieldInputType('checkbox');
 
                 //column grid information
                 $this->setGridInfo('type', 'options');
