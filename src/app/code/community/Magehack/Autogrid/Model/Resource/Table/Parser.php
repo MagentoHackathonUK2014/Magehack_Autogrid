@@ -30,7 +30,7 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
      */
     protected function _construct()
     {
-        $this->_init('magehack_autogrid/parser', 'id');
+        $this->_resources = Mage::getSingleton('core/resource');
     }
 
     /**
