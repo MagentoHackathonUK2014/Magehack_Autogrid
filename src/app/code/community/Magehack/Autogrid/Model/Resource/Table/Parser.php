@@ -44,15 +44,22 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
         $ra = $this->_getReadAdapter();
         $struct = $ra->describeTable($tableName);
         $this->_cols = array();
+        $dbconfig = $ra->getConfig();
+        $titles = array();
+
+        $data = $ra->fetchAll("SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?",array($dbconfig['dbname'],$tableName));
+        foreach ($data as $item) {
+            $titles[$item['COLUMN_NAME']] = $item['COLUMN_COMMENT'];
+        }
+
         foreach ($struct as $name => $info) {
             //Mage::log($name."\n",null,'autogrid.log');
-            $this->_cols[] = array($name=>$info['DATA_TYPE']);
+            $this->_cols[$name] = array('type'=>$info['DATA_TYPE'],'title'=>$titles[$name]);
             if ($info['PRIMARY'] && $info['PRIMARY_POSITION'] == 1) {
                 $this->_primaryKey = $name;
             }
         }
-        $c = $ra->getConfig();
-        $data = $ra->fetchRow("SELECT table_comment FROM INFORMATION_SCHEMA.TABLES WHERE table_schema=? AND table_name=?",array($c['dbname'],$tableName));
+        $data = $ra->fetchRow("SELECT table_comment FROM INFORMATION_SCHEMA.TABLES WHERE table_schema=? AND table_name=?",array($dbconfig['dbname'],$tableName));
         if (isset($data['table_comment'])) $this->_title = $data['table_comment'];
         return $this;
     }
