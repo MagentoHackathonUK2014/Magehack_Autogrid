@@ -61,7 +61,7 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
      */
     public function indexAction()
     {
-        $this->loadLayout();
+        $this->loadLayout(array('default', 'adminhtml_autogrid_index'));
         $this->renderLayout();
     }
 
@@ -70,7 +70,7 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
      */
     public function ajaxGridAction()
     {
-        $this->loadLayout();
+        $this->loadLayout(array('adminhtml_autogrid_ajaxgrid'));
         $this->renderLayout();
     }
 
