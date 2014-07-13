@@ -89,11 +89,17 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     public function getGrid($tableId)
     {
         if (!isset($this->_grids[$tableId])) {
-            if (!$this->_config->getNode('tables/'.$tableId.'/grids')) {
+            if (!$this->_config->getNode('tables/'.$tableId.'/grid')) {
                 return false;
             }
             foreach ($this->_config->getNode('tables/' . $tableId . '/grid') as $gridElement) {
-                $this->_grids[$tableId]= $gridElement->asCanonicalArray();
+                $this->_grids[$tableId] = $gridElement->asCanonicalArray();
+                foreach ($this->_grids[$tableId]['columns'] as $colName => $info) {
+                    if (isset($info['source_model']) && $info['source_model']) {
+                        $options = $this->getOptions($tableId, 'grid', $colName, $info['source_model']);
+                        $this->_grids[$tableId]['columns'][$colName]['options'] = $options;
+                    }
+                }
             }
         }
         return $this->_grids[$tableId];
@@ -137,19 +143,23 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      * @param string $tableId XML identifier for the table
      * @param string $part grid|form for which part the source model should be
      * @param string $columnId column-identifier
-     * @return mixed
+     * @param string $sourceModelClass
+     * @return array|false
      */
-    public function getOptions($tableId, $part, $columnId)
+    public function getOptions($tableId, $part, $columnId, $sourceModelClass = null)
     {
-
-        if($node = $this->_config->getNode('tables/'.$tableId.'/'.$part.'/columns/'.$columnId.'/source_model')) {
-            $data = explode('::', $node->__toString());
+        if (! $sourceModelClass) {
+            $sourceModelClass = (string)$this->_config->getNode('tables/'.$tableId.'/'.$part.'/columns/'.$columnId.'/source_model');
+        }
+        if($sourceModelClass) {
+            $data = explode('::', $sourceModelClass);
             if (empty($data[1]) && $part == 'grid') {
                 $data[1] = 'getFlatOptionArray';
             } elseif (empty($data[1]) && $part == 'form') {
                 $data[1] = 'getSourceOptionsArray';
             }
-            return Mage::getSingleton($data[0])->{$data[1]}();
+            $options = Mage::getSingleton($data[0])->{$data[1]}();
+            return $options;
         }
         return false;
     }
