@@ -143,6 +143,12 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
 
         // Success
         $this->_getSession()->addSuccess($this->__('Entity saved successfully.'));
+
+        // check if 'Save and Continue'
+        if ($this->getRequest()->getParam('back')) {
+            return $this->_redirect('*/*/edit', array('id' => $object->getId()));
+        }
+
         $this->_redirect('*/*/index');
     }
 

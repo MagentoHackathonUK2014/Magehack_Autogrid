@@ -37,6 +37,18 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit extends Mage_Adminhtml_Blo
 
         $this->setFormActionUrl($this->getUrl('*/*/save'));
 
+        // Save and continue edit button
+        $this->_addButton('saveandcontinue', array(
+                'label'     => Mage::helper('adminhtml')->__('Save and Continue Edit'),
+                'onclick'   => 'saveAndContinueEdit()',
+                'class'     => 'save',
+        ), -100);
+        $this->_formScripts[] = "
+            function saveAndContinueEdit(){
+                editForm.submit($('edit_form').action+'back/edit/');
+            }
+        ";
+
         return $this;
     }
 
