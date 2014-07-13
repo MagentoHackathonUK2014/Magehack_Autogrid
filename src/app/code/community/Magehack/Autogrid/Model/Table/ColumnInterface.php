@@ -19,44 +19,48 @@
 interface Magehack_Autogrid_Model_Table_ColumnInterface
 {
     /**
-     * @param $columnName string - column name from mysql
+     * Set the autogrid table id the column is associated with
+     * 
+     * @param string $tableId
+     * @return $this
      */
-    public function setName($columnName);
+    public function setAutogridTableId($tableId);
 
     /**
-     * @param $columnType string - mysql type as string
-     */
-    public function setColumnData($columnType);
-
-    /**
-     * Returns the id (first parameter of addField) for setting up a form field
+     * Return the autogrid table id
      *
      * @return string
      */
-    public function getName();
-
-    /**
-     * Returns the input type (second parameter of addField) for setting up a form field
-     *
-     * @return string
-     */
-    public function getFormInputType();
+    public function getAutogridTableId();
     
     /**
-     * This is set internally by default or from the config but you can set it using this method if you like
-     * @param $formInputType string - form type for pasing to addfield()
-     *	 @return Magehack_Autogrid_Model_Column ie $this
+     * Set the database table column name the autogrid table column is associated with
+     * 
+     * @param string $columnName
+     * @return $this
      */
-    public function setFormInputType($formInputType);
+    public function setColumnName($columnName);
 
     /**
-     * Returns the info array (third parameter of addField) for setting up a form field
+     * Returns the name ot the associated database column
      *
-     * @return array
+     * @return string
      */
-    public function getFormInfo();
-    public function getFormName();
-    public function setFormName($formName);
+    public function getColumnName();
+
+    /**
+     * Return whether the column should be visible in a grid
+     *
+     * @return bool
+     */
+    public function isInGrid();
+
+    /**
+     * Returns the id (first parameter of addColumn() for setting up an admin grid column
+     *
+     * @return string
+     */
+    public function getGridColumnId();
 
     /**
      * Returns the info array (second parameter of addColumn) for setting up a grid column
@@ -65,25 +69,32 @@ interface Magehack_Autogrid_Model_Table_ColumnInterface
      */
     public function getGridInfo();
 
-
-    
-    
-    public function isInGrid();
+    /**
+     * Return whether the column should be visible as a field in a form
+     *
+     * @return bool
+     */
     public function isInForm();
-    public function setAutogridTableId($id);
-    public function getAutogridTableId($id);
 
     /**
-     *
-     * Returns the id (first parameter of addColumn() for setting up an admin grid column
+     * Return the form field element id (forst paramet
      *
      * @return string
      */
-    public function getGridColumnId();
+    public function getFormFieldId();
 
-     /**
-     * @param $gridColumnId string - sets the id (first parameter of addColumn() for setting up an admin grid column
+    /**
+     * Returns the form element input type (e.g. text or select)
+     *
+     * @return string
      */
-     public function setGridColumnId($gridColumnId);
-    
+    public function getFieldInputType();
+
+    /**
+     * Returns the field info array (third parameter of addField) for setting up a form field
+     *
+     * @return array
+     */
+    public function getFormFieldInfo();
+
 }

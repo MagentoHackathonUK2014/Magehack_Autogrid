@@ -31,20 +31,22 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Grid extends Mage_Adminhtml_Blo
 
     protected function _prepareColumns()
     {
+        $helper = Mage::helper('magehack_autogrid');
         $table = Mage::helper('magehack_autogrid')->getCurrentTable();
 
+        /** @var Magehack_Autogrid_Model_Table_ColumnInterface $column */
         foreach ($table->getGridColumns() as $column) {
-            $this->addColumn($column->getName(), $column->getGridInfo());
+            $this->addColumn($column->getGridColumnId(), $column->getGridInfo());
         }
         $this->addColumn('action',
             array(
-                'header' => Mage::helper('catalog')->__('Action'),
+                'header' => $helper->__('Action'),
                 'width' => '100',
                 'type' => 'action',
                 'getter' => 'getId',
                 'actions' => array(
                     array(
-                        'caption' => Mage::helper('catalog')->__('Edit'),
+                        'caption' => $helper->__('Edit'),
                         'url' => array('base'=> '*/*/edit'),
                         'field' => 'id'
                     )),
