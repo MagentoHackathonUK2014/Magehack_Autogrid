@@ -162,6 +162,9 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         if (! $sourceModelClass) {
             $sourceModelClass = (string)$this->_config->getNode('tables/'.$tableId.'/'.$part.'/columns/'.$columnId.'/source_model');
         }
+        if (! $sourceModelClass) {
+            $sourceModelClass = $this->getDefaultSourceModel($columnId);
+        }
         if($sourceModelClass) {
             $data = explode('::', $sourceModelClass);
             if (empty($data[1]) && $part == 'grid') {
@@ -215,7 +218,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      */
     public function getDefaultSourceModel($columnName)
     {
-        $path = 'adminhtml/autogrid/column_type_defaults/source_model';
+        $path = 'adminhtml/autogrid/column_type_defaults/source_model/' . $columnName;
         $sourceModelClass = Mage::getConfig()->getNode($path);
         if (! $sourceModelClass) {
             return false;
