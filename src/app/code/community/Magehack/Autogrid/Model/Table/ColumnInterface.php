@@ -47,7 +47,7 @@ interface Magehack_Autogrid_Model_Table_ColumnInterface
      * @param $formInputType string - form type for pasing to addfield()
      *	 @return Magehack_Autogrid_Model_Column ie $this
      */
-    public function setFormInputType();
+    public function setFormInputType($formInputType);
 
     /**
      * Returns the info array (third parameter of addField) for setting up a form field
@@ -56,7 +56,7 @@ interface Magehack_Autogrid_Model_Table_ColumnInterface
      */
     public function getFormInfo();
     public function getFormName();
-    public function setFormName();
+    public function setFormName($formName);
 
     /**
      * Returns the info array (second parameter of addColumn) for setting up a grid column
