@@ -19,6 +19,32 @@ class Magehack_Autogrid_Model_Table_Column
     
     protected $autogridTableId;
 
+    protected $_config;
+    protected $_tableParser;
+    
+    
+    /**
+     * Setter DI for config model
+     * 
+     * @param Magehack_Autogrid_Model_ConfigInterface $config
+     * @return $this
+     */
+    public function setConfig(Magehack_Autogrid_Model_ConfigInterface $config)
+    {
+        $this->_config = $config;
+        return $this;
+    }
+        /**
+     * Setter DI for table parser
+     * 
+     * @param Magehack_Autogrid_Model_Resource_Table_ParserInterface $parser
+     * @return $this
+     */
+    public function setTableParser(Magehack_Autogrid_Model_Resource_Table_ParserInterface $parser)
+    {
+        $this->_tableParser = $parser;
+        return $this;
+    }
 
     public function isInGrid()
     {
@@ -178,7 +204,31 @@ class Magehack_Autogrid_Model_Table_Column
      	 }        
     }
 
-
+    /**
+     * @param string $name the database column name that will get all its data set now
+     *
+     **/
+    public function setColumnName($name){
+    
+    		$this->setName($name);
+    	
+      //get the type from the parser
+      //the parser is set, yes?
+      $columnArray = $this->_tableParser->getTableColumnByName($name);
+      
+      if($columnArray===null){
+      		//then the $name is not in the database
+      		//but actually $name comes from parser in the first place if you are follwoing the code
+        Mage::log("Column name not found in database table.\n", null, 'autogrid.log');
+        return false; 
+      }
+    
+    		$this->setType($columnArray[$name]);
+      //use the type to set all the defaults and pull any column info from the config too
+      $this->setColumnData($columnArray[$name]); //the name is the key to the column datatype
+    }
+    
+    
     /**
      * Call this method to set all the column information
      * Column information is set by default and by what is pulled from the autogrid.xml config
@@ -189,7 +239,7 @@ class Magehack_Autogrid_Model_Table_Column
      * @RETURN Magehack_Autogrid_Model_Column ie $this 
      *
      */
-    public function setType($dataType)
+    public function setColumnData($dataType)
     {
 
         if (! isset($this->name) ) {
@@ -218,7 +268,14 @@ class Magehack_Autogrid_Model_Table_Column
 					$tableId = $this->autogridTableId;
         
 					//Magehack_Autogrid_Model_Config
-					$config = Mage::getModel('magehack_autogrid/config');
+					//$config = Mage::getModel('magehack_autogrid/config');
+        if (! isset($this->_config) ) {
+            Mage::log("Cannot merge from config with no config. Please call ->setConfig() first.\n", null, 'autogrid.log');
+            return false;
+        }
+					
+					
+					$config = $this->_config; //we assume there must be a config if there is an autogridTableId
 					
 					//form config
 					$formConfig = $config->getForm($tableId);
