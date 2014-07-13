@@ -43,6 +43,11 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
         return $this->setData('table_parser', $parser);
     }
 
+    /**
+     * Return whether the column should be visible in a grid
+     *
+     * @return bool
+     */
     public function isInGrid()
     {
         if ($this->hasAutogridTableId() && $this->hasColumnName() && $this->hasConfig()) {
@@ -56,6 +61,11 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
         return true;
     }
 
+    /**
+     * Return whether the column should be visible as a field in a form
+     *
+     * @return bool
+     */
     public function isInForm()
     {
         if ($this->hasAutogridTableId() && $this->hasColumnName() && $this->hasConfig()) {
@@ -69,14 +79,21 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
         return true;
     }
 
-    public function setAutogridTableId($id)
+    /**
+     * Set the autogrid table id the column is associated with
+     *
+     * @param string $tableId
+     * @return $this
+     */
+    public function setAutogridTableId($tableId)
     {
         return $this->setData('auto_grid_table_id', $id);
     }
 
     /**
-     * Retrieve the autogrid table ID
-     * @return string The ID
+     * Return the autogrid table id
+     *
+     * @return string
      */
     public function getAutogridTableId()
     {
@@ -84,7 +101,8 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
     }
 
     /**
-     * Returns the column name from MySQL
+     * Returns the name ot the associated database column
+     *
      * @return string
      */
     public function getColumnName()
@@ -93,69 +111,20 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
     }
 
     /**
+     * Set the database table column name the autogrid table column is associated with
      *
-     * Returns the id (first parameter of addColumn() for setting up an admin grid column
-     *
-     * @return array
+     * @param string $columnName
+     * @return $this
      */
-    public function getGridColumnId()
-    {
-        return $this->getData('grid_column_id');
-    }
-
-    /**
-     */
-    public function getFormFieldId()
-    {
-        return $this->getData('form_field_id');
-    }
-
-    /**
-     *
-     * Returns the input type (second parameter of addField) for setting up a form field
-     *
-     * @return string
-     */
-    public function getFieldInputType()
-    {
-        return $this->getData('field_input_type');
-    }
-
-    /**
-     *
-     * Returns the info array (second parameter of addColumn) for setting up a grid column
-     *
-     * @return array
-     */
-    public function getGridInfo()
-    {
-        return $this->getData('grid_info');
-    }
-
-    /**
-     *
-     * Returns the info array (third parameter of addField) for setting up a form field
-     *
-     * @return array
-     */
-    public function getFormFieldInfo()
-    {
-        return $this->getData('form_field_info');
-    }
-
-    /**
-     * @param string $name the database column name that will get all its data set now
-     *
-     * */
-    public function setColumnName($name)
+    public function setColumnName($columnName)
     {
 
-        $this->setData('column_name', $name);
+        $this->setData('column_name', $columnName);
 
         //get the type from the parser
         //the parser is set, yes?
         if ($this->hasTableParser()) {
-            $columnArray = $this->getTableParser()->getTableColumnByName($name);
+            $columnArray = $this->getTableParser()->getTableColumnByName($columnName);
         } else {
             Mage::log("Cannot setColumnName without parser. Please call setTableParser(Magehack_Autogrid_Model_Resource_Table_ParserInterface \$parser).\n", null, 'autogrid.log');
             return false;
@@ -171,6 +140,56 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
         $this->setTableColumn($columnArray);
         //use the type to set all the defaults and pull any column info from the config too
         $this->_setColumnData($columnArray['type']); //the name is the key to the column datatype
+    }
+
+    /**
+     * Returns the id (first parameter of addColumn() for setting up an admin grid column
+     *
+     * @return string
+     */
+    public function getGridColumnId()
+    {
+        return $this->getData('grid_column_id');
+    }
+
+    /**
+     * Return the form field element id (forst paramet
+     *
+     * @return string
+     */
+    public function getFormFieldId()
+    {
+        return $this->getData('form_field_id');
+    }
+
+    /**
+     * Returns the form element input type (e.g. text or select)
+     *
+     * @return string
+     */
+    public function getFieldInputType()
+    {
+        return $this->getData('field_input_type');
+    }
+
+    /**
+     * Returns the info array (second parameter of addColumn) for setting up a grid column
+     *
+     * @return array
+     */
+    public function getGridInfo()
+    {
+        return $this->getData('grid_info');
+    }
+
+    /**
+     * Returns the field info array (third parameter of addField) for setting up a form field
+     *
+     * @return array
+     */
+    public function getFormFieldInfo()
+    {
+        return $this->getData('form_field_info');
     }
 
     /**
