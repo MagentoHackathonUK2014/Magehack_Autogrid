@@ -21,23 +21,17 @@
     <tables>
         <table_identifier_1>
             <table>catalog/product</table>
-            <title>The title... it's me !</title>
-            <source_method></source_method>
+            <title>Testing with Catalog Products</title>
             <grid>
-                <source_model>fastslow/guano::orderName</source_model>
                 <columns>
-                    <id>
-                        <name>col1</name>
-                        <sort_order>1</sort_order>
-                        <type>t1</type>
-                        <sortable>1</sortable>
-                        <searchable>1</searchable>
-                    </id>
+                    <has_options>
+                        <source_model>magehack_autogrid/table_column_source_yesno</source_model>
+                    </has_options>
                     <type_id>
-                        <name>col2</name>
-                        <sort_order>2</sort_order>
-                        <type>t3</type>
+                        <name>The Product Type</name>
+                        <type>varchar</type>
                         <filterable>1</filterable>
+                        <sortable>0</sortable>
                     </type_id>
                     <handle>
                         <name>col5</name>
@@ -48,7 +42,6 @@
                 </columns>
             </grid>
             <form>
-                <source_model>catalog/product::getCollection</source_model>
                 <columns>
                     <handle>
                         <name>col2</name>
