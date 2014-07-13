@@ -302,7 +302,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
                                     $this->setFormFieldInfo(array());
                                 }
                                 $formFieldInfo = $this->getFormFieldInfo();
-                                $fieldFieldInfo[$key] = $value;
+                                $formFieldInfo[$key] = $value;
                                 $this->setFormFieldInfo($formFieldInfo);
                             }
                         }
