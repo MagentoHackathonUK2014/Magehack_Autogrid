@@ -291,10 +291,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
 
                         if ($value != false) {
 
-                            if ($key == "name") {
-                                //then set the name
-                                $this->setFormFieldId($value);
-                            } elseif ($key == "type") {
+                            if ($key == "type") {
                                 //then set the type
                                 $this->setFieldInputType($value);
                             } else {
@@ -317,27 +314,16 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             $gridConfig = (array) $config->getGrid($tableId);
             if ($gridConfig && isset($gridConfig['columns'][$columnName])) {
                 foreach ($gridConfig['columns'][$columnName] as $key => $value) {
-
                     if ($value != false) {
-
-                        if ($key == "name") { // ??? SHOULD THIS EVEN BE ALLOWED ???
-                            //then set the name
-                            $this->setGridColumnId($value);
-                        } else {
-                            //stick it all in the info array
-                            $this->setGridInfo($key, $value);
-                        }
+                        $this->setGridInfo($key, $value);
                     }
-                    //end if value wasn't false
                 }
-                //end foreach
             } else {
                 if ($options = $config->getOptions($tableId, 'grid', $columnName)) {
                     $this->setGridInfo('type', 'options');
                     $this->setGridInfo('options', $options);
                 }
             }
-            //end if gridConfig wasn't false
         }
         //end if there was a tableId
 

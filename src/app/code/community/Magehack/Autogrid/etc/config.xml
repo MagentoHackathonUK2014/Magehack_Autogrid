@@ -62,7 +62,7 @@
                 <source_model>
                     <entity_type_id>magehack_autogrid/table_column_source_entityTypeId</entity_type_id>
                     <store_id>magehack_autogrid/table_column_source_storeId</store_id>
-                    <attrbute_set_id>magehack_autogrid/table_column_source_attributeSetId</attrbute_set_id>
+                    <attribute_set_id>magehack_autogrid/table_column_source_attributeSetId</attribute_set_id>
                 </source_model>
                 <!-- not yet used: -->
                 <!--<frontend_input>-->

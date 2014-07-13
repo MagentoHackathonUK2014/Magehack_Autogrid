@@ -91,7 +91,7 @@ abstract class Magehack_Autogrid_Model_Table_Column_Source_Abstract
     protected function _loadOptions()
     {
         if (! isset($this->_collection)) {
-            Mage::throwException('No collection class not set');
+            Mage::throwException('No collection class set on ' . get_class($this));
         }
         $collection = Mage::getResourceModel($this->_collection);
         foreach ($collection as $id => $model) {
