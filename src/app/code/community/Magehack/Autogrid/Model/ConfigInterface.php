@@ -68,5 +68,14 @@ interface Magehack_Autogrid_Model_ConfigInterface
      * @return string
      */
     public function getTableTitle($tableId);
-    
+
+    /**
+     * If a default source model is specified for the given column name, return that config value.
+     * 
+     * NOTE: This config value comes from the regular (config.xml) config, not the autogrid.xml.
+     * 
+     * @param string $columnName
+     * @return string|false
+     */
+    public function getDefaultSourceModel($columnName);
 }

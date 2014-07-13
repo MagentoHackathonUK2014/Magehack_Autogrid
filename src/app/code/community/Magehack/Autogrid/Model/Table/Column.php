@@ -48,8 +48,8 @@ class Magehack_Autogrid_Model_Table_Column
 
     public function isInGrid()
     {
-        if (isset($this->autogridTableId) && isset($this->name)) {
-            $config     = Mage::getModel('magehack_autogrid/config');
+        if (isset($this->autogridTableId) && isset($this->name) && isset($this->_config)) {
+            $config     = $this->_config;//Mage::getModel('magehack_autogrid/config');
             $gridConfig = $config->getGrid($this->autogridTableId);
             if ($gridConfig && isset($gridConfig['columns'][$this->name]['visiblity']))
                 return $gridConfig['columns'][$this->name]['visibility'];
@@ -59,8 +59,8 @@ class Magehack_Autogrid_Model_Table_Column
 
     public function isInForm()
     {
-        if (isset($this->autogridTableId) && isset($this->name)) {
-            $config     = Mage::getModel('magehack_autogrid/config');
+        if (isset($this->autogridTableId) && isset($this->name) && isset($this->_config)) {
+            $config     = $this->_config;//Mage::getModel('magehack_autogrid/config');
             $formConfig = $config->getForm($this->autogridTableId);
             if ($formConfig && isset($formConfig['columns'][$this->name]['visiblity']))
                 return $formConfig['columns'][$this->name]['visibility'];
@@ -378,36 +378,7 @@ class Magehack_Autogrid_Model_Table_Column
             'name'     => $this->name,
         );
 
-        //do you want to consider some special cases
-        //such as $this->name = "store_id"
-        /*
-                $this->addColumn('store_id', array(
-                                          'header'     => $this->__('Store View'),
-                                          'width'      => '200px',
-                                          'index'      => 'store_id',
-                                          'header_export'      => 'store_id',
-                                          'type'       => 'store',
-                                          'store_all'  => false,
-                                          'store_view' => true,
-                                     ));
-               //and similar for the form info                      
-         */
-        //or $this->name = 'websites'
-        /*
-        if (!Mage::app()->isSingleStoreMode()) {
-            $this->addColumn('websites',
-                array(
-                    'header'=> Mage::helper('catalog')->__('Websites'),
-                    'width' => '100px',
-                    'sortable'  => false,
-                    'index'     => 'websites',
-                    'type'      => 'options',
-                    'options'   => Mage::getModel('core/website')->getCollection()->toOptionHash(),
-            ));
-        }
-        */
-
-        //now we can change some of these for specific data types
+        //now set some defaults based on the SQL data type
         switch (strtoupper($dataType)) {
             //these special cases default to text if M<=255 or null, otherwise textarea
             case "VARCHAR" : //What about M?
@@ -511,6 +482,60 @@ class Magehack_Autogrid_Model_Table_Column
                 Mage::log("Column type not recognised. Used base defaults instead.\n", null, 'autogrid.log');
         }
         //end switch
+        
+        
+        //now we treat some special cases
+        //do you want to consider some special cases
+        //such as $this->name = "store_id"
+        //or $this->name = 'websites'
+
+        switch(strtolower($this->name)){
+        	
+					case 'websites' :
+						//column form information
+						
+						//column grid information
+						$this->gridInfo['header']    = Mage::helper('catalog')->__('Websites'),
+						$this->gridInfo['width']     = '100px',
+						$this->gridInfo['sortable']  = false,
+						$this->gridInfo['index']     = 'websites',
+						$this->gridInfo['type']      = 'options',
+						$this->gridInfo['options']   = Mage::getModel('core/website')->getCollection()->toOptionHash(),
+							break;
+							
+					case 'store_id' :       	
+						//column form information
+						$this->setFormInputType('multiselect');
+						
+						$this->formInfo['name']      = 'stores[]';
+						$this->formInfo['label']     = 'Store View';
+						$this->formInfo['title']     = 'Store View';
+						$this->formInfo['required']  = true;
+						$this->formInfo['values']    = Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true);       
+						
+						//column grid information
+						$this->gridInfo['header']     = $this->__('Store View');  //is this to restrictive?
+						$this->gridInfo['width']      = '200px';									//is this too restrictive?
+						$this->gridInfo['index']      = 'store_id';
+						$this->gridInfo['header_export'] = 'store_id';
+						$this->gridInfo['type']      = 'store';
+						$this->gridInfo['store_all']  = false;  //what is this?
+						$this->gridInfo['store_view'] = true;
+						
+						break;
+						
+						default:
+							//no default
+        }
+        
+        
+        //now there are some defaults in the config too,
+        //but I don;t understand them yet
+        //$this->config is autogrid.xml but is Vinai proposing config.xml?
+        
+        
+        
+        
 
     }
     //end function makeDefaultColumn
