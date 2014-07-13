@@ -354,6 +354,7 @@ class Magehack_Autogrid_Model_Table_Column
         $this->gridInfo['index']  = $this->name;
         $this->gridInfo['align']  = 'left';
         $this->gridInfo['width']  = self::DEFAULT_COLUMN_WIDTH;
+        $this->gridInfo['sortable'] = true;
         //		'type'      => ''//'options',
 
         //column form information
@@ -366,6 +367,35 @@ class Magehack_Autogrid_Model_Table_Column
             'name'     => $this->name,
         );
 
+        //do you want to consider some special cases
+        //such as $this->name = "store_id"
+        /*
+                $this->addColumn('store_id', array(
+                                          'header'     => $this->__('Store View'),
+                                          'width'      => '200px',
+                                          'index'      => 'store_id',
+                                          'header_export'      => 'store_id',
+                                          'type'       => 'store',
+                                          'store_all'  => false,
+                                          'store_view' => true,
+                                     ));
+               //and similar for the form info                      
+         */
+        //or $this->name = 'websites'
+        /*
+        if (!Mage::app()->isSingleStoreMode()) {
+            $this->addColumn('websites',
+                array(
+                    'header'=> Mage::helper('catalog')->__('Websites'),
+                    'width' => '100px',
+                    'sortable'  => false,
+                    'index'     => 'websites',
+                    'type'      => 'options',
+                    'options'   => Mage::getModel('core/website')->getCollection()->toOptionHash(),
+            ));
+        }
+        */
+        
         //now we can change some of these for specific data types
         switch (strtoupper($dataType)) {
 
@@ -407,7 +437,10 @@ class Magehack_Autogrid_Model_Table_Column
             case "FLOAT" :
             case "DOUBLE" :
             case "DOUBLE PRECISION" :
-
+                //column form information
+                //column grid information
+            			$this->gridInfo['type']='number';
+            			break;
             case "CHAR" :
             case "BINARY" :
             case "TINYBLOB" :
@@ -422,10 +455,14 @@ class Magehack_Autogrid_Model_Table_Column
             case "DATE" :
             case "DATETIME" :
             case "TIMESTAMP" :
+            		$this->setFormInputType('date');
+            		$this->gridInfo['type'] = 'datetime';
+            		break;
             case "TIME" :
+            		$this->setFormInputType('time');
+            		$this->gridInfo['type'] = 'datetime';
+            		break;
             case "YEAR" :
-                //column form information
-                //column grid information
 
                 break;
 
@@ -439,12 +476,20 @@ class Magehack_Autogrid_Model_Table_Column
 
                 break;
 
-            //these cases could default to radio buttons or yes/no select
+            //these cases could default to radio buttons or yes/no select or a check box...
             case "BOOL" :
             case "BOOLEAN" :
                 //column form information
-                //column grid information
-                $this->setFormInputType('text');
+                //$this->setFormInputType('text');
+                $this->setFormInputType('checkbox');
+
+								//column grid information
+								$this->gridInfo['type'] = 'options';
+								$this->gridInfo['options'] = array(
+										'1' => 'Yes',
+										'0' => 'No',
+								),
+								$this->gridInfo['align'] = 'center';
 
                 break;
 
