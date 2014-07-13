@@ -42,17 +42,6 @@
                     </handle>
                 </columns>
             </grid>
-            <form>
-                <columns>
-                    <handle>
-                        <name>col2</name>
-                        <sort_order>4</sort_order>
-                        <type>textarea</type>
-                        <optional>0</optional>
-                        <validate>1</validate>
-                    </handle>
-                </columns>
-            </form>
         </table_identifier_1>
         <table_identifier_2>
             <table>core_resource</table>
