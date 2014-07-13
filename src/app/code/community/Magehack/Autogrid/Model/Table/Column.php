@@ -28,6 +28,12 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
     protected $_gridInfo = array();
 
     /**
+     * The form info
+     * @var array
+     */
+    protected $_formFieldInfo = array();
+
+    /**
      * Setter DI for config model
      *
      * @param Magehack_Autogrid_Model_ConfigInterface $config
@@ -91,7 +97,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      * @param string $tableId
      * @return $this
      */
-    public function setAutogridTableId($tableId)
+    public function setAutogridTableId($id)
     {
         return $this->setData('auto_grid_table_id', $id);
     }
@@ -212,7 +218,24 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      */
     public function getFormFieldInfo()
     {
-        return $this->getData('form_field_info');
+        return $this->_formFieldInfo;
+    }
+
+    /**
+     * Set a key into the form field info array
+     *
+     * @param string|array $key The key to set
+     * @param mixed $value The value
+     * @return Magehack_Autogrid_Model_Table_Column
+     */
+    public function setFormFieldInfo($key, $value = null)
+    {
+        if (is_array($key)) {
+            $this->_formFieldInfo = $key;
+        } else {
+            $this->_formFieldInfo[$key] = $value;
+        }
+        return $this;
     }
 
     /**
@@ -300,12 +323,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
                             $this->setGridColumnId($value);
                         } else {
                             //stick it all in the info array
-                            if (!$this->hasGridInfo()) {
-                                $this->setGridInfo(array());
-                            }
-                            $gridInfo = $this->getGridInfo();
-                            $gridInfo[$key] = $value;
-                            $this->setGridInfo($gridInfo);
+                            $this->setGridInfo($key, $value);
                         }
                     }
                     //end if value wasn't false
@@ -355,12 +373,9 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
         //column form information
         $this->setFormName($this->getColumnName()); //if name is null or not set by parser we are in trouble
         $this->setFormInputType('text'); //'textarea' //editor //radio //select //multiselect //
-        $this->setFormInfo(array(
-            'label'    => $title,
-            //'class'  => 'color {hash:true,required:false}',
-            'required' => false,
-            'name'     => $this->getColumnName(),
-        ));
+        $this->setFormFieldInfo('label', $title);
+        $this->setFormFieldInfo('required', false);
+        $this->setFormFieldInfo('name', $this->getColumnName());
 
         //now set some defaults based on the SQL data type
         switch (strtoupper($dataType)) {
@@ -418,9 +433,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             case "TIMESTAMP" :
                 $this->setFormInputType('date');
                 $this->setGridInfo('type', 'datetime');
-                $formInfo = $this->getFormInfo();
-                $formInfo['format'] = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
-                $this->setFormInfo($formInfo);
+                $this->setFormFieldInfo('format', Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT));
                 break;
 
             case "TIME" :
@@ -452,7 +465,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
                     '1' => 'Yes',
                     '0' => 'No',
                 ));
-                $setGridInfo('align', 'center');
+                $this->setGridInfo('align', 'center');
                 break;
 
             //these are edge cases, but can be select boxes; what does $info have in it?
@@ -482,10 +495,8 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             $this->setGridInfo('type', 'options');
             $this->setGridInfo('options', Mage::getModel($columnSourceModel)->getFlatOptionArray());
 
-            $formInfo = $this->getFormInfo();
-            $formInfo['type']   = 'select';
-            $formInfo['values'] = Mage::getModel($columnSourceModel)->getSourceOptionArray();
-            $this->setFormInfo($formInfo);
+            $this->setFormFieldInfo('type', 'select');
+            $this->setFormFieldInfo('values', Mage::getModel($columnSourceModel)->getSourceOptionArray());
         }
 
         /*
