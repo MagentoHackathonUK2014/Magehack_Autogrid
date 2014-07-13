@@ -21,16 +21,6 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
 
     const DEFAULT_COLUMN_WIDTH = '80px';
 
-    protected $name;
-    protected $formName;
-    protected $formInputType;
-    protected $formInfo = array();
-    protected $gridColumnId;
-    protected $gridInfo = array();
-    protected $autogridTableId;
-    protected $_config;
-    protected $_tableParser;
-
     /**
      * Setter DI for config model
      *
@@ -39,8 +29,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      */
     public function setConfig(Magehack_Autogrid_Model_ConfigInterface $config)
     {
-        $this->_config = $config;
-        return $this;
+        return $this->setData('config', $config);
     }
 
     /**
@@ -51,67 +40,56 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      */
     public function setTableParser(Magehack_Autogrid_Model_Resource_Table_ParserInterface $parser)
     {
-        $this->_tableParser = $parser;
-        return $this;
+        return $this->setData('table_parser', $parser);
     }
 
     public function isInGrid()
     {
-        if (isset($this->autogridTableId) && isset($this->name) && isset($this->_config)) {
-            $config     = $this->_config; //Mage::getModel('magehack_autogrid/config');
-            $gridConfig = $config->getGrid($this->autogridTableId);
-            if ($gridConfig && isset($gridConfig['columns'][$this->name]['visiblity']))
-                return $gridConfig['columns'][$this->name]['visibility'];
+        if ($this->hasAutogridTableId() && $this->hasColumnName() && $this->hasConfig()) {
+            $config     = $this->getConfig();
+            $gridConfig = $config->getGrid($this->getAutogridTableId());
+            if ($gridConfig && isset($gridConfig['columns'][$this->getColumnName()]['visiblity'])) {
+                return $gridConfig['columns'][$this->getColumnName()]['visibility'];
+            }
         }
+
         return true;
     }
 
     public function isInForm()
     {
-        if (isset($this->autogridTableId) && isset($this->name) && isset($this->_config)) {
-            $config     = $this->_config; //Mage::getModel('magehack_autogrid/config');
-            $formConfig = $config->getForm($this->autogridTableId);
-            if ($formConfig && isset($formConfig['columns'][$this->name]['visiblity']))
-                return $formConfig['columns'][$this->name]['visibility'];
+        if ($this->hasAutogridTableId() && $this->hasColumnName() && $this->hasConfig()) {
+            $config     = $this->getConfig(); //Mage::getModel('magehack_autogrid/config');
+            $formConfig = $config->getForm($this->getAutogridTableId());
+            if ($formConfig && isset($formConfig['columns'][$this->getColumnName()]['visiblity'])) {
+                return $formConfig['columns'][$this->getColumnName()]['visibility'];
+            }
         }
+
         return true;
     }
 
     public function setAutogridTableId($id)
     {
-        $this->autogridTableId = $id;
-    }
-
-    public function getAutogridTableId($id)
-    {
-        if (isset($this->autogridTableId)) {
-            return $this->autogridTableId;
-        } else {
-            return false;
-        }
+        return $this->setData('auto_grid_table_id', $id);
     }
 
     /**
-     *
-     * Returns the id (first parameter of addField) for setting up a form field
-     *
-     * @return array
+     * Retrieve the autogrid table ID
+     * @return string The ID
      */
-    public function getName()
+    public function getAutogridTableId()
     {
-        if (isset($this->name)) {
-            return $this->name;
-        } else {
-            return false;
-        }
+        return $this->getData('auto_grid_table_id');
     }
 
     /**
-     * @param $columnName string - column name from mysql
+     * Returns the column name from MySQL
+     * @return string
      */
-    public function setName($columnName)
+    public function getColumnName()
     {
-        $this->name = $columnName;
+        return $this->getData('column_name');
     }
 
     /**
@@ -122,42 +100,14 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      */
     public function getGridColumnId()
     {
-        if (isset($this->gridColumnId)) {
-            return $this->gridColumnId;
-        } else {
-            return false;
-        }
+        return $this->getData('grid_column_id');
     }
 
     /**
-     * @param $gridColumnId string - sets the id (first parameter of addColumn() for setting up an admin grid column
      */
-    public function setGridColumnId($gridColumnId)
+    public function getFormFieldId()
     {
-        $this->gridColumnId = $gridColumnId;
-    }
-
-    /**
-     *
-     * Returns the form id for pasing to addfield()
-     *
-     * @return array
-     */
-    public function getFormName()
-    {
-        if (isset($this->formName)) {
-            return $this->formName;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @param $formName string - form id for pasing to addfield()
-     */
-    public function setFormName($formName)
-    {
-        $this->formName = $formName;
+        return $this->getData('form_field_id');
     }
 
     /**
@@ -166,18 +116,9 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      *
      * @return string
      */
-    public function getFormInputType()
+    public function getFieldInputType()
     {
-        if (isset($this->formInputType)) {
-            return $this->formInputType;
-        } else {
-            return false;
-        }
-    }
-
-    public function setFormInputType($formInputType)
-    {
-        $this->formInputType = $formInputType;
+        return $this->getData('field_input_type');
     }
 
     /**
@@ -188,11 +129,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      */
     public function getGridInfo()
     {
-        if (isset($this->gridInfo)) {
-            return $this->gridInfo;
-        } else {
-            return false;
-        }
+        return $this->getData('grid_info');
     }
 
     /**
@@ -201,13 +138,9 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      *
      * @return array
      */
-    public function getFormInfo()
+    public function getFormFieldInfo()
     {
-        if (isset($this->formInfo)) {
-            return $this->formInfo;
-        } else {
-            return false;
-        }
+        return $this->getData('form_field_info');
     }
 
     /**
@@ -217,12 +150,12 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
     public function setColumnName($name)
     {
 
-        $this->setName($name);
+        $this->setData('column_name', $name);
 
         //get the type from the parser
         //the parser is set, yes?
-        if (isset($this->_tableParser)) {
-            $columnArray = $this->_tableParser->getTableColumnByName($name);
+        if ($this->hasTableParser()) {
+            $columnArray = $this->getTableParser()->getTableColumnByName($name);
         } else {
             Mage::log("Cannot setColumnName without parser. Please call setTableParser(Magehack_Autogrid_Model_Resource_Table_ParserInterface \$parser).\n", null, 'autogrid.log');
             return false;
@@ -235,9 +168,9 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             return false;
         }
 
-        $this->setData($columnArray);
+        $this->setTableColumn($columnArray);
         //use the type to set all the defaults and pull any column info from the config too
-        $this->setColumnData($columnArray['type']); //the name is the key to the column datatype
+        $this->_setColumnData($columnArray['type']); //the name is the key to the column datatype
     }
 
     /**
@@ -250,21 +183,19 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      * @RETURN Magehack_Autogrid_Model_Column ie $this
      *
      */
-    public function setColumnData($dataType)
+    protected function _setColumnData($dataType)
     {
 
-        if (!isset($this->name)) {
-            Mage::log("Cannot make default column without name.\n", null, 'autogrid.log');
-            return false;
-        }
         if (!isset($dataType)) {
             Mage::log("Cannot make default column without data type.\n", null, 'autogrid.log');
             return false;
         }
-        //if(! isset($this->autogridTableId) ){
-        //    Mage::log("Cannot make default column without autogrid table id.\n", null, 'autogrid.log');
-        //    return false;
-        //}
+
+        if (!$this->hasColumnName()) {
+            Mage::log("Cannot make default column without name.\n", null, 'autogrid.log');
+            return false;
+        }
+
         //Well, we can make a column for you without it but it will all be defaults
         //always start by making the default so every data item is populated
         $this->makeDefaultColumn($dataType);
@@ -272,56 +203,67 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
         //then check Magehack_Autogrid_Model_Config to see if there are any specific requests
         //but only if your tableId set:
 
-        if (isset($this->autogridTableId)) {
+        if ($this->hasAutogridTableId()) {
             //then there might be some configuration beyond the defaults
-            $tableId = $this->autogridTableId;
+            $tableId = $this->getAutogridTableId();
 
             //Magehack_Autogrid_Model_Config
             //$config = Mage::getModel('magehack_autogrid/config');
-            if (!isset($this->_config)) {
+            if (!$this->hasConfig()) {
                 Mage::log("Cannot merge from config with no config. Please call ->setConfig() first.\n", null, 'autogrid.log');
                 return false;
             }
 
 
-            $config = $this->_config; //we assume there must be a config if there is an autogridTableId
+            $config = $this->getConfig(); //we assume there must be a config if there is an autogridTableId
             //form config
             $formConfig = $config->getForm($tableId);
             if ($formConfig !== false) {
-                if (isset($formConfig['columns'][$this->name]))
-                    foreach ($formConfig['columns'][$this->name] as $key => $value) {
+                if (isset($formConfig['columns'][$this->getColumnName()])) {
+                    foreach ($formConfig['columns'][$this->getColumnName()] as $key => $value) {
 
                         if ($value != false) {
 
                             if ($key == "name") {
                                 //then set the name
-                                $this->formName = $value;
+                                $this->setFormFieldId($value);
                             } elseif ($key == "type") {
                                 //then set the type
-                                $this->formInputType = $value;
+                                $this->setFieldInputType($value);
                             } else {
                                 //stick it all in the info array
-                                $this->formInfo[$key] = $value;
+                                if (!$this->hasFormFieldInfo()) {
+                                    $this->setFormFieldInfo(array());
+                                }
+                                $formFieldInfo = $this->getFormFieldInfo();
+                                $fieldFieldInfo[$key] = $value;
+                                $this->setFormFieldInfo($formFieldInfo);
                             }
                         }
                         //end if value wasn't false
                     }
-                //end foreach
+                    //end foreach
+                }
             }
             //end if formConfig wasn't false
             //grid config
             $gridConfig = $config->getGrid($tableId);
             if ($gridConfig !== false) {
-                foreach ($gridConfig['columns'][$this->name] as $key => $value) {
+                foreach ($gridConfig['columns'][$this->getColumnName()] as $key => $value) {
 
                     if ($value != false) {
 
                         if ($key == "name") {
                             //then set the name
-                            $this->gridColumnId = $value;
+                            $this->setGridColumnId($value);
                         } else {
                             //stick it all in the info array
-                            $this->gridInfo[$key] = $value;
+                            if (!$this->hasGridInfo()) {
+                                $this->setGridInfo(array());
+                            }
+                            $gridInfo = $this->getGridInfo();
+                            $gridInfo[$key] = $value;
+                            $this->setGridInfo($gridInfo);
                         }
                     }
                     //end if value wasn't false
@@ -331,7 +273,8 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             //end if gridConfig wasn't false
             //now the config can change the title and the type
             //so we update the class members anyway just incase they were set from the config
-            $this->formInputType = $this->formInfo['type'];
+            $fieldInfo = $this->getFormFieldInfo();
+            $this->setFormInputType($fieldInfo['type']);
             //LATER $this->setTitle(); //magic
         }
         //end if there was a tableId
@@ -359,22 +302,23 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
 
         $title                      = $this->getTitle() ? $this->getTitle() : $this->name; //magic via setData() or use the column id if no title or empty title is set,
         //column grid information
-        $this->gridColumnId         = $this->name;
-        $this->gridInfo['header']   = $title;
-        $this->gridInfo['index']    = $this->name;
-        $this->gridInfo['align']    = 'left';
-        $this->gridInfo['width']    = self::DEFAULT_COLUMN_WIDTH;
-        $this->gridInfo['sortable'] = true;
+        $gridInfo = $this->getGridInfo();
+        $this->setGridColumnId($this->getColumnName());
+        $gridInfo['header']   = $title;
+        $gridInfo['index']    = $this->getColumnName();
+        $gridInfo['align']    = 'left';
+        $gridInfo['width']    = self::DEFAULT_COLUMN_WIDTH;
+        $gridInfo['sortable'] = true;
         //		'type'      => ''//'options',
         //column form information
-        $this->setFormName($this->name); //if name is null or not set by parser we are in trouble
+        $this->setFormName($this->getColumnName()); //if name is null or not set by parser we are in trouble
         $this->setFormInputType('text'); //'textarea' //editor //radio //select //multiselect //
-        $this->formInfo = array(
+        $this->setFormInfo(array(
             'label'    => $title,
             //'class'  => 'color {hash:true,required:false}',
             'required' => false,
-            'name'     => $this->name,
-        );
+            'name'     => $this->getColumnName(),
+        ));
 
         //now set some defaults based on the SQL data type
         switch (strtoupper($dataType)) {
@@ -414,7 +358,9 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             case "DOUBLE PRECISION" :
                 //column form information
                 //column grid information
-                $this->gridInfo['type'] = 'number';
+                $gridInfo = $this->getGridInfo();
+                $gridInfo['type'] = 'number';
+                $this->setGridInfo($gridInfo);
                 break;
 
             case "CHAR" :
@@ -431,13 +377,19 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             case "DATETIME" :
             case "TIMESTAMP" :
                 $this->setFormInputType('date');
-                $this->gridInfo['type']   = 'datetime';
-                $this->formInfo['format'] = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
+                $gridInfo = $this->getGridInfo();
+                $gridInfo['type'] = 'datetime';
+                $this->setGridInfo($gridInfo);
+                $formInfo = $this->getFormInfo();
+                $formInfo['format'] = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
+                $this->setFormInfo($formInfo);
                 break;
 
             case "TIME" :
                 $this->setFormInputType('time');
-                $this->gridInfo['type'] = 'datetime';
+                $gridInfo = $this->getGridInfo();
+                $gridInfo['type'] = 'datetime';
+                $this->setGridInfo($gridInfo);
                 break;
             case "YEAR" :
                 break;
@@ -459,12 +411,14 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
                 $this->setFormInputType('checkbox');
 
                 //column grid information
-                $this->gridInfo['type']    = 'options';
-                $this->gridInfo['options'] = array(
+                $gridInfo = $this->getGridInfo();
+                $gridInfo['type']    = 'options';
+                $gridInfo['options'] = array(
                     '1' => 'Yes',
                     '0' => 'No',
                 );
-                $this->gridInfo['align']   = 'center';
+                $gridInfo['align']   = 'center';
+                $this->setGridInfo($gridInfo);
                 break;
 
             //these are edge cases, but can be select boxes; what does $info have in it?
@@ -488,14 +442,17 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
         //but I don;t understand them yet
         //$this->config is autogrid.xml but is Vinai proposing config.xml?
 
-        if ($columnSourceModel = $this->config->getDefaultSourceModel($this->name)) {
+        if ($columnSourceModel = $this->getConfig()->getDefaultSourceModel($this->getColumnName())) {
 
             //column grid information
-            $this->gridInfo['type']    = 'options';
-            $this->gridInfo['options'] = Mage::getModel($columnSourceModel)->getFlatOptionArray();
+            $gridInfo = $this->getGridInfo();
+            $gridInfo['type']    = 'options';
+            $gridInfo['options'] = Mage::getModel($columnSourceModel)->getFlatOptionArray();
 
-            $this->formInfo['type']   = 'select';
-            $this->formInfo['values'] = Mage::getModel($columnSourceModel)->getSourceOptionArray();
+            $formInfo = $this->getFormInfo();
+            $formInfo['type']   = 'select';
+            $formInfo['values'] = Mage::getModel($columnSourceModel)->getSourceOptionArray();
+            $this->setGridInfo($gridInfo);
         }
 
         /*
