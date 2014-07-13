@@ -313,7 +313,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             //end if formConfig wasn't false
             //grid config
             $gridConfig = $config->getGrid($tableId);
-            if ($gridConfig !== false) {
+            if ($gridConfig && isset($gridConfig['columns'][$this->getColumnName()])) {
                 foreach ($gridConfig['columns'][$this->getColumnName()] as $key => $value) {
 
                     if ($value != false) {
@@ -332,10 +332,6 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             }
             //end if gridConfig wasn't false
             //now the config can change the title and the type
-            //so we update the class members anyway just incase they were set from the config
-            $fieldInfo = $this->getFormFieldInfo();
-            $this->setFieldInputType($fieldInfo['type']);
-            //LATER $this->setTitle(); //magic
         }
         //end if there was a tableId
 
