@@ -49,7 +49,7 @@ class Magehack_Autogrid_Model_Table_Column
     public function isInGrid()
     {
         if (isset($this->autogridTableId) && isset($this->name) && isset($this->_config)) {
-            $config     = $this->_config;//Mage::getModel('magehack_autogrid/config');
+            $config = $this->_config; //Mage::getModel('magehack_autogrid/config');
             $gridConfig = $config->getGrid($this->autogridTableId);
             if ($gridConfig && isset($gridConfig['columns'][$this->name]['visiblity']))
                 return $gridConfig['columns'][$this->name]['visibility'];
@@ -60,7 +60,7 @@ class Magehack_Autogrid_Model_Table_Column
     public function isInForm()
     {
         if (isset($this->autogridTableId) && isset($this->name) && isset($this->_config)) {
-            $config     = $this->_config;//Mage::getModel('magehack_autogrid/config');
+            $config = $this->_config; //Mage::getModel('magehack_autogrid/config');
             $formConfig = $config->getForm($this->autogridTableId);
             if ($formConfig && isset($formConfig['columns'][$this->name]['visiblity']))
                 return $formConfig['columns'][$this->name]['visibility'];
@@ -249,11 +249,11 @@ class Magehack_Autogrid_Model_Table_Column
     public function setColumnData($dataType)
     {
 
-        if (! isset($this->name)) {
+        if (!isset($this->name)) {
             Mage::log("Cannot make default column without name.\n", null, 'autogrid.log');
             return false;
         }
-        if (! isset($dataType)) {
+        if (!isset($dataType)) {
             Mage::log("Cannot make default column without data type.\n", null, 'autogrid.log');
             return false;
         }
@@ -276,7 +276,7 @@ class Magehack_Autogrid_Model_Table_Column
 
             //Magehack_Autogrid_Model_Config
             //$config = Mage::getModel('magehack_autogrid/config');
-            if (! isset($this->_config)) {
+            if (!isset($this->_config)) {
                 Mage::log("Cannot merge from config with no config. Please call ->setConfig() first.\n", null, 'autogrid.log');
                 return false;
             }
@@ -334,12 +334,12 @@ class Magehack_Autogrid_Model_Table_Column
 
             }
             //end if gridConfig wasn't false
-                                     
-					//now the config can change the title and the type
-					//so we update the class members anyway just incase they were set from the config
-					$this->formInputType = $this->formInfo['type'];
-					//LATER $this->setTitle(); //magic              
-            
+
+            //now the config can change the title and the type
+            //so we update the class members anyway just incase they were set from the config
+            $this->formInputType = $this->formInfo['type'];
+            //LATER $this->setTitle(); //magic              
+
         }
         //end if there was a tableId
 
@@ -365,13 +365,13 @@ class Magehack_Autogrid_Model_Table_Column
         //we will start with some base defaults
         //then you only need to change one or two things depending on the database type
 
-        $title = $this->getTitle()?$this->getTitle():$this->name; //magic via setData() or use the column id if no title or empty title is set,
+        $title = $this->getTitle() ? $this->getTitle() : $this->name; //magic via setData() or use the column id if no title or empty title is set,
         //column grid information
-        $this->gridColumnId         = $this->name;
-        $this->gridInfo['header']   = $title;
-        $this->gridInfo['index']    = $this->name;
-        $this->gridInfo['align']    = 'left';
-        $this->gridInfo['width']    = self::DEFAULT_COLUMN_WIDTH;
+        $this->gridColumnId = $this->name;
+        $this->gridInfo['header'] = $title;
+        $this->gridInfo['index'] = $this->name;
+        $this->gridInfo['align'] = 'left';
+        $this->gridInfo['width'] = self::DEFAULT_COLUMN_WIDTH;
         $this->gridInfo['sortable'] = true;
         //		'type'      => ''//'options',
 
@@ -379,10 +379,10 @@ class Magehack_Autogrid_Model_Table_Column
         $this->setFormName($this->name); //if name is null or not set by parser we are in trouble
         $this->setFormInputType('text'); //'textarea' //editor //radio //select //multiselect //
         $this->formInfo = array(
-            'label'    => $title,
+            'label' => $title,
             //'class'  => 'color {hash:true,required:false}',
             'required' => false,
-            'name'     => $this->name,
+            'name' => $this->name,
         );
 
         //now set some defaults based on the SQL data type
@@ -468,12 +468,12 @@ class Magehack_Autogrid_Model_Table_Column
                 $this->setFormInputType('checkbox');
 
                 //column grid information
-                $this->gridInfo['type']    = 'options';
+                $this->gridInfo['type'] = 'options';
                 $this->gridInfo['options'] = array(
                     '1' => 'Yes',
                     '0' => 'No',
                 );
-                $this->gridInfo['align']   = 'center';
+                $this->gridInfo['align'] = 'center';
                 break;
 
             //these are edge cases, but can be select boxes; what does $info have in it?
@@ -489,8 +489,8 @@ class Magehack_Autogrid_Model_Table_Column
                 Mage::log("Column type not recognised. Used base defaults instead.\n", null, 'autogrid.log');
         }
         //end switch
-        
-        
+
+
         //now we treat some special cases
         //do you want to consider some special cases
         //such as $this->name = "store_id"
@@ -500,65 +500,61 @@ class Magehack_Autogrid_Model_Table_Column
         //but I don;t understand them yet
         //$this->config is autogrid.xml but is Vinai proposing config.xml?
 
-        if ($columnSourceModel = $this->config->getDefaultSourceModel($this->name)){
-    
-						//column grid information
-						$this->gridInfo['type']      = 'options',
-						$this->gridInfo['options']   = Mage::getModel($columnSourceModel)->getFlatOptionArray();
+        if ($columnSourceModel = $this->config->getDefaultSourceModel($this->name)) {
 
-						$this->formInfo['type']      = 'select',
-						$this->formInfo['values']   = Mage::getModel($columnSourceModel)->getSourceOptionArray();
+            //column grid information
+            $this->gridInfo['type'] = 'options',
+						$this->gridInfo['options'] = Mage::getModel($columnSourceModel)->getFlatOptionArray();
+
+						$this->formInfo['type'] = 'select',
+						$this->formInfo['values'] = Mage::getModel($columnSourceModel)->getSourceOptionArray();
 
         }
 
-/*
-Are there special cases?
+        /*
+        Are there special cases?
+        
+                switch(strtolower($this->name)){
+                    
+                            case 'websites' :
+                                //column form information
+                                
+                                //column grid information
+                                $this->gridInfo['header']    = Mage::helper('catalog')->__('Websites'),
+                                $this->gridInfo['width']     = '100px',
+                                $this->gridInfo['sortable']  = false,
+                                $this->gridInfo['index']     = 'websites',
+                                $this->gridInfo['type']      = 'options',
+                                $this->gridInfo['options']   = Mage::getModel('core/website')->getCollection()->toOptionHash(),
+                                    break;
+                                    
+                            case 'store_id' :       	
+                                //column form information
+                                $this->setFormInputType('multiselect');
+                                
+                                $this->formInfo['name']      = 'stores[]';
+                                $this->formInfo['label']     = 'Store View';
+                                $this->formInfo['title']     = 'Store View';
+                                $this->formInfo['required']  = true;
+                                $this->formInfo['values']    = Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true);       
+                                
+                                //column grid information
+                                $this->gridInfo['header']     = Mage::helper('catalog')->__('Store View');  //is this to restrictive?
+                                $this->gridInfo['width']      = '200px';									//is this too restrictive?
+                                $this->gridInfo['index']      = 'store_id';
+                                $this->gridInfo['header_export'] = 'store_id';
+                                $this->gridInfo['type']      = 'store';
+                                $this->gridInfo['store_all']  = false;  //what is this?
+                                $this->gridInfo['store_view'] = true;
+                                
+                                break;
+                                
+                                default:
+                                    //no default
+                }
+                
+        */
 
-        switch(strtolower($this->name)){
-        	
-					case 'websites' :
-						//column form information
-						
-						//column grid information
-						$this->gridInfo['header']    = Mage::helper('catalog')->__('Websites'),
-						$this->gridInfo['width']     = '100px',
-						$this->gridInfo['sortable']  = false,
-						$this->gridInfo['index']     = 'websites',
-						$this->gridInfo['type']      = 'options',
-						$this->gridInfo['options']   = Mage::getModel('core/website')->getCollection()->toOptionHash(),
-							break;
-							
-					case 'store_id' :       	
-						//column form information
-						$this->setFormInputType('multiselect');
-						
-						$this->formInfo['name']      = 'stores[]';
-						$this->formInfo['label']     = 'Store View';
-						$this->formInfo['title']     = 'Store View';
-						$this->formInfo['required']  = true;
-						$this->formInfo['values']    = Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true);       
-						
-						//column grid information
-						$this->gridInfo['header']     = Mage::helper('catalog')->__('Store View');  //is this to restrictive?
-						$this->gridInfo['width']      = '200px';									//is this too restrictive?
-						$this->gridInfo['index']      = 'store_id';
-						$this->gridInfo['header_export'] = 'store_id';
-						$this->gridInfo['type']      = 'store';
-						$this->gridInfo['store_all']  = false;  //what is this?
-						$this->gridInfo['store_view'] = true;
-						
-						break;
-						
-						default:
-							//no default
-        }
-        
-*/        
-        
-        
-        
-        
-        
 
     }
     //end function makeDefaultColumn
