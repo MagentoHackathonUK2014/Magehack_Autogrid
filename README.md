@@ -50,7 +50,7 @@ Developers
 * [Vinai Kopp](https://github.com/vinai)
 * Niels Preuss
 * [Jacques Bodin-Hullin](http://jacques.sh)
-* Malachy
+* Malachy McConnell (git hub username malachy.mcconnnell)
 
 Licence
 -------
