@@ -98,6 +98,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
                     if (isset($info['source_model']) && $info['source_model']) {
                         $options = $this->getOptions($tableId, 'grid', $colName, $info['source_model']);
                         $this->_grids[$tableId]['columns'][$colName]['options'] = $options;
+                        $this->_grids[$tableId]['columns'][$colName]['type'] = 'option';
                     }
                 }
             }
@@ -118,6 +119,16 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
                     return false;
                 }
                 $this->_forms[$tableId] = $this->_config->getNode('tables/' . $tableId . '/form')->asCanonicalArray();
+
+                foreach ($this->_forms[$tableId]['columns'] as $colName => $info) {
+                    if (isset($info['source_model']) && $info['source_model']) {
+                        $options = $this->getOptions($tableId, 'form', $colName, $info['source_model']);
+                        $this->_forms[$tableId]['columns'][$colName]['values'] = $options;
+                        if (! isset($this->_forms[$tableId]['columns'][$colName]['type'])) {
+                            $this->_forms[$tableId]['columns'][$colName]['type'] = 'select';
+                        }
+                    }
+                }
             }
             return $this->_forms[$tableId];
     }
