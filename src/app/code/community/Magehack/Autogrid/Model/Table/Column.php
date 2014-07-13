@@ -264,7 +264,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
 
         //Well, we can make a column for you without it but it will all be defaults
         //always start by making the default so every data item is populated
-        $this->_makeDefaultColumn($dataType);
+        $this->_initColumnDefaultValues($dataType);
 
         //then check Magehack_Autogrid_Model_Config to see if there are any specific requests
         //but only if your tableId set:
@@ -281,6 +281,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             }
 
 
+            /** @var Magehack_Autogrid_Model_Config $config */
             $config = $this->getConfig(); //we assume there must be a config if there is an autogridTableId
             //form config
             $formConfig = $config->getForm($tableId);
@@ -313,7 +314,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             }
             //end if formConfig wasn't false
             //grid config
-            $gridConfig = $config->getGrid($tableId);
+            $gridConfig = (array) $config->getGrid($tableId);
             if ($gridConfig && isset($gridConfig['columns'][$columnName])) {
                 foreach ($gridConfig['columns'][$columnName] as $key => $value) {
 
@@ -330,9 +331,13 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
                     //end if value wasn't false
                 }
                 //end foreach
+            } else {
+                if ($options = $config->getOptions($tableId, 'grid', $columnName)) {
+                    $this->setGridInfo('type', 'options');
+                    $this->setGridInfo('options', $options);
+                }
             }
             //end if gridConfig wasn't false
-            //now the config can change the title and the type
         }
         //end if there was a tableId
 
@@ -346,12 +351,12 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
 
     /**
      * Sets some column data ready for reading later so that the Admin form or the Admin grid can be created
-     * @param $dataType as String
-     * @param $m as integer (it means the size of the SQL field eg VARCHAR[M])
-     * @return null (nothing)
-     *
+     * 
+     * @param string $dataType
+     * @param int $m (it means the size of the SQL field eg VARCHAR[M])
+     * @return void
      */
-    protected function _makeDefaultColumn($dataType, $m = null)
+    protected function _initColumnDefaultValues($dataType, $m = null)
     {
 
         //we will start with some base defaults
