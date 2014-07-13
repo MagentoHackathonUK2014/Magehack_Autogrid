@@ -514,7 +514,7 @@ class Magehack_Autogrid_Model_Table_Column
 						$this->formInfo['values']    = Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true);       
 						
 						//column grid information
-						$this->gridInfo['header']     = $this->__('Store View');  //is this to restrictive?
+						$this->gridInfo['header']     = Mage::helper('catalog')->__('Store View');  //is this to restrictive?
 						$this->gridInfo['width']      = '200px';									//is this too restrictive?
 						$this->gridInfo['index']      = 'store_id';
 						$this->gridInfo['header_export'] = 'store_id';
