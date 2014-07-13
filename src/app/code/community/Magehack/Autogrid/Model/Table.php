@@ -25,7 +25,7 @@ class Magehack_Autogrid_Model_Table
     protected $_helper;
 
     /**
-     * @var Magehack_Autogrid_Model_Resource_Table_Column[]
+     * @var Magehack_Autogrid_Model_Table_Column[]
      */
     protected $_columns = array();
 
@@ -154,7 +154,7 @@ class Magehack_Autogrid_Model_Table
     protected function _loadTableData()
     {
         $tableId = $this->getAutoGridTableId();
-        $tableName = $this->_getResolvedTableName($tableId);
+        $tableName = $this->_getConfig()->getTableName($tableId);
         $this->_getTableParser()->init($tableName);
         if (! $tableId) {
             $helper = $this->_getHelper();
@@ -177,8 +177,8 @@ class Magehack_Autogrid_Model_Table
         $parser = $this->_getTableParser();
         $config = $this->_getConfig();
         $tableId = $this->getAutoGridTableId();
-
-        $tableName = $this->_getResolvedTableName($tableId);
+        $tableName = $config->getTableName($tableId);
+        
         $parser->init($tableName);
 
         /** @var Magehack_Autogrid_Model_Table_ColumnInterface $column */
@@ -189,13 +189,6 @@ class Magehack_Autogrid_Model_Table
         $column->setColumnName($name);
 
         return $column;
-    }
-    
-    protected function _getResolvedTableName($tableId)
-    {
-        $tableAlias = $this->_getConfig()->getTableName($tableId);
-        $tableName = Mage::getSingleton('core/resource')->getTableName($tableAlias); // @fixme!!!
-        return $tableName;
     }
 
     /**

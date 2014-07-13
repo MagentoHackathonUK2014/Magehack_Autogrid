@@ -39,6 +39,8 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
      */
     public function init($tableName)
     {
+        $tableName = $this->getTable($tableName);
+        
         $ra = $this->_getReadAdapter();
         $struct = $ra->describeTable($tableName);
         $this->_cols = array();
