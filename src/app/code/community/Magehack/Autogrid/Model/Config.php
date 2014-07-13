@@ -98,7 +98,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
                     if (isset($info['source_model']) && $info['source_model']) {
                         $options = $this->getOptions($tableId, 'grid', $colName, $info['source_model']);
                         $this->_grids[$tableId]['columns'][$colName]['options'] = $options;
-                        $this->_grids[$tableId]['columns'][$colName]['type'] = 'option';
+                        $this->_grids[$tableId]['columns'][$colName]['type'] = 'options';
                     }
                 }
             }
