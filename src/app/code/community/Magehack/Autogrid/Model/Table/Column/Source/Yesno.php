@@ -7,7 +7,7 @@ class Magehack_Autogrid_Model_Table_Column_Source_Yesno
     /**
      * @return void
      */
-    function _loadOptions()
+    protected function _loadOptions()
     {
         $helper = Mage::helper('magehack_autogrid');
         $this->_options = array(
