@@ -287,7 +287,7 @@ class Magehack_Autogrid_Model_Table_Column
             //form config
             $formConfig = $config->getForm($tableId);
             if ($formConfig !== false) {
-                if (isset($formConfig['columns'][$this->name])) {
+                if (isset($formConfig['columns'][$this->name]))
                     foreach ($formConfig['columns'][$this->name] as $key => $value) {
 
                         if ($value != false) {
@@ -305,9 +305,9 @@ class Magehack_Autogrid_Model_Table_Column
 
                         }
                         //end if value wasn't false
+
                     }
-                    //end foreach
-                }
+                //end foreach
             }
             //end if formConfig wasn't false
 
@@ -331,8 +331,15 @@ class Magehack_Autogrid_Model_Table_Column
 
                 }
                 //end foreach
+
             }
             //end if gridConfig wasn't false
+                                     
+					//now the config can change the title and the type
+					//so we update the class members anyway just incase they were set from the config
+					$this->formInputType = $this->formInfo['type'];
+					//LATER $this->setTitle(); //magic              
+            
         }
         //end if there was a tableId
 
@@ -489,19 +496,37 @@ class Magehack_Autogrid_Model_Table_Column
         //such as $this->name = "store_id"
         //or $this->name = 'websites'
 
+        //now there are some defaults in the config too,
+        //but I don;t understand them yet
+        //$this->config is autogrid.xml but is Vinai proposing config.xml?
+
+        if ($columnSourceModel = $this->config->getDefaultSourceModel($this->name)){
+    
+						//column grid information
+						$this->gridInfo['type']      = 'options',
+						$this->gridInfo['options']   = Mage::getModel($columnSourceModel)->getFlatOptionArray();
+
+						$this->formInfo['type']      = 'select',
+						$this->formInfo['values']   = Mage::getModel($columnSourceModel)->getSourceOptionArray();
+
+        }
+
+/*
+Are there special cases?
+
         switch(strtolower($this->name)){
         	
 					case 'websites' :
 						//column form information
 						
 						//column grid information
-						$this->gridInfo['header']    = Mage::helper('catalog')->__('Websites');
-						$this->gridInfo['width']     = '100px';
-						$this->gridInfo['sortable']  = false;
-						$this->gridInfo['index']     = 'websites';
-						$this->gridInfo['type']      = 'options';
-						$this->gridInfo['options']   = Mage::getModel('core/website')->getCollection()->toOptionHash();
-                                                break;
+						$this->gridInfo['header']    = Mage::helper('catalog')->__('Websites'),
+						$this->gridInfo['width']     = '100px',
+						$this->gridInfo['sortable']  = false,
+						$this->gridInfo['index']     = 'websites',
+						$this->gridInfo['type']      = 'options',
+						$this->gridInfo['options']   = Mage::getModel('core/website')->getCollection()->toOptionHash(),
+							break;
 							
 					case 'store_id' :       	
 						//column form information
@@ -528,10 +553,8 @@ class Magehack_Autogrid_Model_Table_Column
 							//no default
         }
         
+*/        
         
-        //now there are some defaults in the config too,
-        //but I don;t understand them yet
-        //$this->config is autogrid.xml but is Vinai proposing config.xml?
         
         
         
