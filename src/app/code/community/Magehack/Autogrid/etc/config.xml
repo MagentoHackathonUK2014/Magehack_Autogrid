@@ -57,7 +57,16 @@
         </events>
     </global>
     <adminhtml>
-       <layout>
+        <autogrid>
+            <column_type_defaults>
+                <source_model>
+                    <entity_type_id>magehack_autogrid/table_column_source_entityTypeId</entity_type_id>
+                    <store_id>magehack_autogrid/table_column_source_storeId</store_id>
+                    <attrbute_set_id>magehack_autogrid/table_column_source_attributeSetId</attrbute_set_id>
+                </source_model>
+            </column_type_defaults>
+        </autogrid>
+        <layout>
             <updates>
                 <magehack_autogrid module="Magehack_Autogrid">
                     <file>magehack/autogrid.xml</file>
