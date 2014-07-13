@@ -503,11 +503,11 @@ class Magehack_Autogrid_Model_Table_Column
         if ($columnSourceModel = $this->config->getDefaultSourceModel($this->name)) {
 
             //column grid information
-            $this->gridInfo['type'] = 'options',
-						$this->gridInfo['options'] = Mage::getModel($columnSourceModel)->getFlatOptionArray();
+            $this->gridInfo['type'] = 'options';
+            $this->gridInfo['options'] = Mage::getModel($columnSourceModel)->getFlatOptionArray();
 
-						$this->formInfo['type'] = 'select',
-						$this->formInfo['values'] = Mage::getModel($columnSourceModel)->getSourceOptionArray();
+            $this->formInfo['type'] = 'select';
+            $this->formInfo['values'] = Mage::getModel($columnSourceModel)->getSourceOptionArray();
 
         }
 
