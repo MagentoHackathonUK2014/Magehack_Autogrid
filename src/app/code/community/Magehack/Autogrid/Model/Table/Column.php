@@ -62,9 +62,9 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      */
     public function isInGrid()
     {
-        if ($this->hasAutogridTableId() && $this->hasColumnName() && $this->hasConfig()) {
+        if ($this->hasAutoGridTableId() && $this->hasColumnName() && $this->hasConfig()) {
             $config     = $this->getConfig();
-            $gridConfig = $config->getGrid($this->getAutogridTableId());
+            $gridConfig = $config->getGrid($this->getAutoGridTableId());
             if ($gridConfig && isset($gridConfig['columns'][$this->getColumnName()]['visiblity'])) {
                 return $gridConfig['columns'][$this->getColumnName()]['visibility'];
             }
@@ -80,9 +80,9 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      */
     public function isInForm()
     {
-        if ($this->hasAutogridTableId() && $this->hasColumnName() && $this->hasConfig()) {
+        if ($this->hasAutoGridTableId() && $this->hasColumnName() && $this->hasConfig()) {
             $config     = $this->getConfig(); //Mage::getModel('magehack_autogrid/config');
-            $formConfig = $config->getForm($this->getAutogridTableId());
+            $formConfig = $config->getForm($this->getAutoGridTableId());
             if ($formConfig && isset($formConfig['columns'][$this->getColumnName()]['visiblity'])) {
                 return $formConfig['columns'][$this->getColumnName()]['visibility'];
             }
@@ -97,7 +97,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      * @param string $tableId
      * @return $this
      */
-    public function setAutogridTableId($id)
+    public function setAutoGridTableId($id)
     {
         return $this->setData('auto_grid_table_id', $id);
     }
@@ -107,7 +107,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      *
      * @return string
      */
-    public function getAutogridTableId()
+    public function getAutoGridTableId()
     {
         return $this->getData('auto_grid_table_id');
     }
@@ -138,14 +138,14 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
         if ($this->hasTableParser()) {
             $columnArray = $this->getTableParser()->getTableColumnByName($columnName);
         } else {
-            Mage::log("Cannot setColumnName without parser. Please call setTableParser(Magehack_Autogrid_Model_Resource_Table_ParserInterface \$parser).\n", null, 'autogrid.log');
+            Mage::throwException("Cannot setColumnName without parser. Please call setTableParser(Magehack_Autogrid_Model_Resource_Table_ParserInterface \$parser).\n");
             return false;
         }
 
         if ($columnArray === null) {
             //then the $name is not in the database
             //but actually $name comes from parser in the first place if you are follwoing the code
-            Mage::log("Column name not found in database table.\n", null, 'autogrid.log');
+            Mage::throwException("Column name not found in database table.\n");
             return false;
         }
 
@@ -242,7 +242,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      * Call this method to set all the column information
      * Column information is set by default and by what is pulled from the autogrid.xml config
      * You must set $this->name before calling this method
-     * and if you want to use autogrid.xml you must also set $this->autoGridTableId before calling this method
+     * and if you want to use autogrid.xml you must also set $this->setAutoGridTableId before calling this method
      *
      * @PARAM string $dataType the SQL datatype of this column (fetched from the parser)
      * @RETURN Magehack_Autogrid_Model_Column ie $this
@@ -252,30 +252,30 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
     {
 
         if (!isset($dataType)) {
-            Mage::log("Cannot make default column without data type.\n", null, 'autogrid.log');
+            Mage::throwException("Cannot make default column without data type.\n");
             return false;
         }
 
         if (!$this->hasColumnName()) {
-            Mage::log("Cannot make default column without name.\n", null, 'autogrid.log');
+            Mage::throwException("Cannot make default column without name.\n");
             return false;
         }
 
         //Well, we can make a column for you without it but it will all be defaults
         //always start by making the default so every data item is populated
-        $this->makeDefaultColumn($dataType);
+        $this->_makeDefaultColumn($dataType);
 
         //then check Magehack_Autogrid_Model_Config to see if there are any specific requests
         //but only if your tableId set:
 
-        if ($this->hasAutogridTableId()) {
+        if ($this->hasAutoGridTableId()) {
             //then there might be some configuration beyond the defaults
-            $tableId = $this->getAutogridTableId();
+            $tableId = $this->getAutoGridTableId();
 
             //Magehack_Autogrid_Model_Config
             //$config = Mage::getModel('magehack_autogrid/config');
             if (!$this->hasConfig()) {
-                Mage::log("Cannot merge from config with no config. Please call ->setConfig() first.\n", null, 'autogrid.log');
+                Mage::throwException("Cannot merge from config with no config. Please call ->setConfig() first.\n");
                 return false;
             }
 
@@ -354,7 +354,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      * @return null (nothing)
      *
      */
-    public function makeDefaultColumn($dataType, $m = null)
+    protected function _makeDefaultColumn($dataType, $m = null)
     {
 
         //we will start with some base defaults
@@ -478,7 +478,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             default:
                 //the default will be a text box
                 //it was already set before we entered this switch
-                Mage::log("Column type not recognised. Used base defaults instead.\n", null, 'autogrid.log');
+                Mage::throwException("Column type not recognised. Used base defaults instead.\n");
         }
         //end switch
         //now we treat some special cases
@@ -489,15 +489,15 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
         //but I don;t understand them yet
         //$this->config is autogrid.xml but is Vinai proposing config.xml?
 
-        if ($columnSourceModel = $this->getConfig()->getDefaultSourceModel($this->getColumnName())) {
-
-            //column grid information
-            $this->setGridInfo('type', 'options');
-            $this->setGridInfo('options', Mage::getModel($columnSourceModel)->getFlatOptionArray());
-
-            $this->setFormFieldInfo('type', 'select');
-            $this->setFormFieldInfo('values', Mage::getModel($columnSourceModel)->getSourceOptionArray());
-        }
+//        if ($columnSourceModel = $this->getConfig()->getDefaultSourceModel($this->getColumnName())) {
+//
+//            //column grid information
+//            $this->setGridInfo('type', 'options');
+//            $this->setGridInfo('options', Mage::getModel($columnSourceModel)->getFlatOptionArray());
+//
+//            $this->setFormFieldInfo('type', 'select');
+//            $this->setFormFieldInfo('values', Mage::getModel($columnSourceModel)->getSourceOptionArray());
+//        }
 
         /*
           Are there special cases?
