@@ -53,7 +53,7 @@
                     <handle>
                         <name>col2</name>
                         <sort_order>4</sort_order>
-                        <type>textbox</type>
+                        <type>textarea</type>
                         <optional>0</optional>
                         <validate>1</validate>
                     </handle>
