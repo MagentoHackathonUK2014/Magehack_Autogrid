@@ -225,6 +225,8 @@ class Magehack_Autogrid_Model_Table
     }
 
     /**
+     * Return all collumns
+     * 
      * @return Magehack_Autogrid_Model_Table_ColumnInterface[]
      */
     public function getAllColumns()
@@ -236,6 +238,8 @@ class Magehack_Autogrid_Model_Table
     }
 
     /**
+     * Return all the columns that are visible in the grid
+     * 
      * @return Magehack_Autogrid_Model_Table_ColumnInterface[]
      */
     public function getGridColumns()
@@ -250,6 +254,8 @@ class Magehack_Autogrid_Model_Table
     }
 
     /**
+     * Return all the columns that are visible in the form
+     * 
      * @return Magehack_Autogrid_Model_Table_ColumnInterface[]
      */
     public function getFormColumns()
