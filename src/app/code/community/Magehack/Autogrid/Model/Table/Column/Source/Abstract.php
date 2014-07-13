@@ -86,7 +86,7 @@ abstract class Magehack_Autogrid_Model_Table_Column_Source_Abstract
     /**
      * Populate the $_options property
      * 
-     * @return null
+     * @return void
      */
     function _loadOptions()
     {

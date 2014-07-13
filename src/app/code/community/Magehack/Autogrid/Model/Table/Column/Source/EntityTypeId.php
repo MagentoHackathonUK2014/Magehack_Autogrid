@@ -19,5 +19,4 @@ class Magehack_Autogrid_Model_Table_Column_Source_EntityTypeId
             );
         }
     }
-
-} 
+}
