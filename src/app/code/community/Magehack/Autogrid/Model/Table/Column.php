@@ -335,10 +335,11 @@ class Magehack_Autogrid_Model_Table_Column
 
 
     /**
-     * $recognisedDataType as String
-     * $m as integer (it means the size of the SQL field eg VARCHAR[M])
-     * Returns (nothing) but sets some column data ready for reading later
-     * so that the Admin for or the Admin grid can be created
+     * Sets some column data ready for reading later so that the Admin form or the Admin grid can be created
+     * @param $dataType as String
+     * @param $m as integer (it means the size of the SQL field eg VARCHAR[M])
+     * @return null (nothing) 
+     * 
      */
     public function makeDefaultColumn($dataType, $m = null)
     {
@@ -346,19 +347,20 @@ class Magehack_Autogrid_Model_Table_Column
         //we will start with some base defaults
         //then you only need to change one or two things depending on the database type
 
+        $title = ($this->getTitle() || $this->name); //magic via setData() or use the column id if no title or empty title is set,
         //column grid information
         $this->gridColumnId       = $this->name;
-        $this->gridInfo['header'] = ($this->getHelper()->__($this->name));
-        $this->gridInfo['index']  = ($this->name);
-        $this->gridInfo['align']  = ('left');
-        $this->gridInfo['width']  = (self::DEFAULT_COLUMN_WIDTH);
+        $this->gridInfo['header'] = $title;
+        $this->gridInfo['index']  = $this->name;
+        $this->gridInfo['align']  = 'left';
+        $this->gridInfo['width']  = self::DEFAULT_COLUMN_WIDTH;
         //		'type'      => ''//'options',
 
         //column form information
         $this->setFormName($this->name); //if name is null or not set by parser we are in trouble
         $this->setFormInputType('text'); //'textbox' //editor //radio //select //selectmulti
         $this->formInfo = array(
-            'label'    => $this->getHelper()->__($this->name),
+            'label'    => $title,
             //'class'  => 'color {hash:true,required:false}',
             'required' => false,
             'name'     => $this->name,
