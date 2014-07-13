@@ -176,4 +176,21 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         return false;
     }
 
+    /**
+     * If a default source model is specified for the given column name, return that config value.
+     *
+     * NOTE: This config value comes from the regular (config.xml) config, not the autogrid.xml.
+     *
+     * @param string $columnName
+     * @return string|false
+     */
+    public function getDefaultSourceModel($columnName)
+    {
+        $path = 'adminhtml/autogrid/column_type_defaults/source_model';
+        $sourceModelClass = Mage::getConfig()->getNode($path);
+        if (! $sourceModelClass) {
+            return false;
+        }
+        return (string) $sourceModelClass;
+    }
 }
