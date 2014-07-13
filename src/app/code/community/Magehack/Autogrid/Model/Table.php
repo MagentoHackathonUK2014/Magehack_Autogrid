@@ -183,8 +183,8 @@ class Magehack_Autogrid_Model_Table
 
         /** @var Magehack_Autogrid_Model_Table_ColumnInterface $column */
         $column = Mage::getModel('magehack_autogrid/table_column');
-        //$column->setTableParser($parser);
-        //$column->setConfig($config);
+        $column->setTableParser($parser);
+        $column->setConfig($config);
         $column->setAutogridTableId($tableId);
         $column->setColumnName($name);
 
