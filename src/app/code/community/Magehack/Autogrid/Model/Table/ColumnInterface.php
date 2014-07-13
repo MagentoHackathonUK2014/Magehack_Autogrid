@@ -26,7 +26,7 @@ interface Magehack_Autogrid_Model_Table_ColumnInterface
     /**
      * @param $columnType string - mysql type as string
      */
-    public function setType($columnType);
+    public function setColumnData($columnType);
 
     /**
      * Returns the id (first parameter of addField) for setting up a form field
