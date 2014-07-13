@@ -36,7 +36,22 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Grid extends Mage_Adminhtml_Blo
         foreach ($table->getGridColumns() as $column) {
             $this->addColumn($column->getName(), $column->getGridInfo());
         }
-
+        $this->addColumn('action',
+            array(
+                'header' => Mage::helper('catalog')->__('Action'),
+                'width' => '100',
+                'type' => 'action',
+                'getter' => 'getId',
+                'actions' => array(
+                    array(
+                        'caption' => Mage::helper('catalog')->__('Edit'),
+                        'url' => array('base'=> '*/*/edit'),
+                        'field' => 'id'
+                    )),
+                'filter' => false,
+                'sortable' => false,
+                'is_system' => true,
+            ));
         return parent::_prepareColumns();
     }
 }
