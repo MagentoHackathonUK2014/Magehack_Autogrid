@@ -439,12 +439,12 @@ class Magehack_Autogrid_Model_Table_Column
 
                 break;
 
-            //these cases default to yes/no input
+            //these cases could default to radio buttons or yes/no select
             case "BOOL" :
             case "BOOLEAN" :
                 //column form information
                 //column grid information
-                $this->setFormInputType('textbox');
+                $this->setFormInputType('text');
 
                 break;
 
