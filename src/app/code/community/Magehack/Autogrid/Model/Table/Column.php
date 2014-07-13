@@ -22,6 +22,12 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
     const DEFAULT_COLUMN_WIDTH = '80px';
 
     /**
+     * The grid info
+     * @var array
+     */
+    protected $_gridInfo = array();
+
+    /**
      * Setter DI for config model
      *
      * @param Magehack_Autogrid_Model_ConfigInterface $config
@@ -179,7 +185,24 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
      */
     public function getGridInfo()
     {
-        return $this->getData('grid_info');
+        return $this->_gridInfo;
+    }
+
+    /**
+     * Set a key into the grid info array
+     *
+     * @param string|array $key The key to set
+     * @param mixed $value The value
+     * @return Magehack_Autogrid_Model_Table_Column
+     */
+    public function setGridInfo($key, $value = null)
+    {
+        if (is_array($key)) {
+            $this->_gridInfo = $key;
+        } else {
+            $this->_gridInfo[$key] = $value;
+        }
+        return $this;
     }
 
     /**
@@ -319,16 +342,16 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
         //we will start with some base defaults
         //then you only need to change one or two things depending on the database type
 
-        $title                      = $this->getTitle() ? $this->getTitle() : $this->name; //magic via setData() or use the column id if no title or empty title is set,
+        $title = $this->hasTitle() ? $this->getTitle() : $this->getColumnName(); //magic via setData() or use the column id if no title or empty title is set,
+
         //column grid information
-        $gridInfo = $this->getGridInfo();
         $this->setGridColumnId($this->getColumnName());
-        $gridInfo['header']   = $title;
-        $gridInfo['index']    = $this->getColumnName();
-        $gridInfo['align']    = 'left';
-        $gridInfo['width']    = self::DEFAULT_COLUMN_WIDTH;
-        $gridInfo['sortable'] = true;
-        //		'type'      => ''//'options',
+        $this->setGridInfo('header', $title);
+        $this->setGridInfo('index', $this->getColumnName());
+        $this->setGridInfo('align', 'left');
+        $this->setGridInfo('width', self::DEFAULT_COLUMN_WIDTH);
+        $this->setGridInfo('sortable', true);
+
         //column form information
         $this->setFormName($this->getColumnName()); //if name is null or not set by parser we are in trouble
         $this->setFormInputType('text'); //'textarea' //editor //radio //select //multiselect //
@@ -377,9 +400,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             case "DOUBLE PRECISION" :
                 //column form information
                 //column grid information
-                $gridInfo = $this->getGridInfo();
-                $gridInfo['type'] = 'number';
-                $this->setGridInfo($gridInfo);
+                $this->setGridInfo('type', 'number');
                 break;
 
             case "CHAR" :
@@ -396,9 +417,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             case "DATETIME" :
             case "TIMESTAMP" :
                 $this->setFormInputType('date');
-                $gridInfo = $this->getGridInfo();
-                $gridInfo['type'] = 'datetime';
-                $this->setGridInfo($gridInfo);
+                $this->setGridInfo('type', 'datetime');
                 $formInfo = $this->getFormInfo();
                 $formInfo['format'] = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
                 $this->setFormInfo($formInfo);
@@ -406,9 +425,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
 
             case "TIME" :
                 $this->setFormInputType('time');
-                $gridInfo = $this->getGridInfo();
-                $gridInfo['type'] = 'datetime';
-                $this->setGridInfo($gridInfo);
+                $this->setGridInfo('type', 'datetime');
                 break;
             case "YEAR" :
                 break;
@@ -430,14 +447,12 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
                 $this->setFormInputType('checkbox');
 
                 //column grid information
-                $gridInfo = $this->getGridInfo();
-                $gridInfo['type']    = 'options';
-                $gridInfo['options'] = array(
+                $this->setGridInfo('type', 'options');
+                $this->setGridInfo('options', array(
                     '1' => 'Yes',
                     '0' => 'No',
-                );
-                $gridInfo['align']   = 'center';
-                $this->setGridInfo($gridInfo);
+                ));
+                $setGridInfo('align', 'center');
                 break;
 
             //these are edge cases, but can be select boxes; what does $info have in it?
@@ -464,14 +479,13 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
         if ($columnSourceModel = $this->getConfig()->getDefaultSourceModel($this->getColumnName())) {
 
             //column grid information
-            $gridInfo = $this->getGridInfo();
-            $gridInfo['type']    = 'options';
-            $gridInfo['options'] = Mage::getModel($columnSourceModel)->getFlatOptionArray();
+            $this->setGridInfo('type', 'options');
+            $this->setGridInfo('options', Mage::getModel($columnSourceModel)->getFlatOptionArray());
 
             $formInfo = $this->getFormInfo();
             $formInfo['type']   = 'select';
             $formInfo['values'] = Mage::getModel($columnSourceModel)->getSourceOptionArray();
-            $this->setGridInfo($gridInfo);
+            $this->setFormInfo($formInfo);
         }
 
         /*
