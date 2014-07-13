@@ -26,6 +26,11 @@
                     <sort_order>10</sort_order>
                     <action>adminhtml/gridmaster/index</action>
                 </autogrid_master>
+                <autogrid_tables translate="title" module="magehack_autogrid">
+                    <title>All the tables</title>
+                    <sort_order>10</sort_order>
+                    <action>adminhtml/tables/index</action>
+                </autogrid_tables>
             </children>
         </system>
     </menu>
@@ -42,6 +47,9 @@
                             <autogrid_master translate="title" module="magehack_autogrid">
                                 <title>Grids paradise</title>
                             </autogrid_master>
+                            <autogrid_tables translate="title" module="magehack_autogrid">
+                                <title>All the tables</title>
+                            </autogrid_tables>
                         </children>
                     </system>
                 </children>

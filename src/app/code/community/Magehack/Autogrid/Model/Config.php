@@ -72,8 +72,8 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     {
         if (!isset($this->_tableNames[$tableId])) {
             if (!$this->_config->getNode('tables/'.$tableId.'/table')) {
-                Mage::log('Tablename is missing for: '.$tableId);
-                return false;
+//                Mage::log('Tablename is missing for: '.$tableId);
+                return $tableId;
             }
             $this->_tableNames[$tableId] = $this->_config->getNode('tables/' . $tableId . '/table')->__toString();
         }
