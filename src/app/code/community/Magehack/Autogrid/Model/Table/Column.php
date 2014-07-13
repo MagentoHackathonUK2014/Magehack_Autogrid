@@ -260,6 +260,7 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             Mage::throwException("Cannot make default column without name.\n");
             return false;
         }
+        $columnName = $this->getColumnName();
 
         //Well, we can make a column for you without it but it will all be defaults
         //always start by making the default so every data item is populated
@@ -283,9 +284,9 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             $config = $this->getConfig(); //we assume there must be a config if there is an autogridTableId
             //form config
             $formConfig = $config->getForm($tableId);
-            if ($formConfig !== false) {
-                if (isset($formConfig['columns'][$this->getColumnName()])) {
-                    foreach ($formConfig['columns'][$this->getColumnName()] as $key => $value) {
+            if ($formConfig) {
+                if (isset($formConfig['columns'][$columnName])) {
+                    foreach ($formConfig['columns'][$columnName] as $key => $value) {
 
                         if ($value != false) {
 
@@ -313,12 +314,12 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
             //end if formConfig wasn't false
             //grid config
             $gridConfig = $config->getGrid($tableId);
-            if ($gridConfig && isset($gridConfig['columns'][$this->getColumnName()])) {
-                foreach ($gridConfig['columns'][$this->getColumnName()] as $key => $value) {
+            if ($gridConfig && isset($gridConfig['columns'][$columnName])) {
+                foreach ($gridConfig['columns'][$columnName] as $key => $value) {
 
                     if ($value != false) {
 
-                        if ($key == "name") {
+                        if ($key == "name") { // ??? SHOULD THIS EVEN BE ALLOWED ???
                             //then set the name
                             $this->setGridColumnId($value);
                         } else {
