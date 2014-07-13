@@ -72,7 +72,8 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
     }
 
     /**
-     * @return array|string
+     * @param string $name The column name
+     * @return array|null
      */
     public function getTableColumnByName($name)
     {

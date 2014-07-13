@@ -16,6 +16,7 @@
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+die('lskjdbf');
 class Magehack_Autogrid_Block_Adminhtml_Autogrid_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
     protected function _prepareCollection()

@@ -58,7 +58,6 @@ class Magehack_Autogrid_Model_Table
     public function setAutoGridTableId($autoGridTableId)
     {
         $this->_autogridTableId = $autoGridTableId;
-        $this->_getTableParser()->init($autoGridTableId);
         return $this;
     }
 
@@ -72,6 +71,17 @@ class Magehack_Autogrid_Model_Table
     {
         $this->_config = $config;
         return $this;
+    }
+
+    /**
+     * @return Magehack_Autogrid_Model_ConfigInterface
+     */
+    protected function _getConfig()
+    {
+        if (! isset($this->_config)) {
+            $this->_config = Mage::getSingleton('magehack_autogrid/config');
+        }
+        return $this->_config;
     }
 
     /**
@@ -96,17 +106,6 @@ class Magehack_Autogrid_Model_Table
     {
         $this->_helper = $helper;
         return $this;
-    }
-
-    /**
-     * @return Magehack_Autogrid_Model_ConfigInterface
-     */
-    protected function _getConfig()
-    {
-        if (! isset($this->_config)) {
-            $this->_config = Mage::getSingleton('magehack_autogrid/config');
-        }
-        return $this->_config;
     }
 
     /**
@@ -155,6 +154,8 @@ class Magehack_Autogrid_Model_Table
     protected function _loadTableData()
     {
         $tableId = $this->getAutoGridTableId();
+        $tableName = $this->_getResolvedTableName($tableId);
+        $this->_getTableParser()->init($tableName);
         if (! $tableId) {
             $helper = $this->_getHelper();
             $message = $helper->__('No autogrid id set on table!');
@@ -176,16 +177,25 @@ class Magehack_Autogrid_Model_Table
         $parser = $this->_getTableParser();
         $config = $this->_getConfig();
         $tableId = $this->getAutoGridTableId();
-        
+
+        $tableName = $this->_getResolvedTableName($tableId);
+        $parser->init($tableName);
 
         /** @var Magehack_Autogrid_Model_Table_ColumnInterface $column */
         $column = Mage::getModel('magehack_autogrid/table_column');
-        $column->setTableParser($parser);
-        $column->setConfig($config);
+        //$column->setTableParser($parser);
+        //$column->setConfig($config);
         $column->setAutogridTableId($tableId);
         $column->setColumnName($name);
 
         return $column;
+    }
+    
+    protected function _getResolvedTableName($tableId)
+    {
+        $tableAlias = $this->_getConfig()->getTableName($tableId);
+        $tableName = Mage::getSingleton('core/resource')->getTableName($tableAlias); // @fixme!!!
+        return $tableName;
     }
 
     /**
@@ -193,8 +203,7 @@ class Magehack_Autogrid_Model_Table
      */
     protected function _loadTableDataFromParser()
     {
-        $columns = $this->_getTableParser()
-            ->getTableColumns();
+        $columns = $this->_getTableParser()->getTableColumns();
         foreach ($columns as $name => $columnInfo) {
             $this->_columns[$name] = $this->_getColumnInstance($name);
         }
