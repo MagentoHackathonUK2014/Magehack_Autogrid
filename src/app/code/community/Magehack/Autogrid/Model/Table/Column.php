@@ -463,6 +463,7 @@ class Magehack_Autogrid_Model_Table_Column
             case "TIMESTAMP" :
                 $this->setFormInputType('date');
                 $this->gridInfo['type'] = 'datetime';
+                $this->formInfo['format'] = Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT);
                 break;
 
             case "TIME" :

@@ -43,6 +43,11 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit_Form extends Mage_Adminhtm
         $fieldset = $form->addFieldset('general', array(
             'legend' => Mage::helper('magehack_autogrid')->__('General Information')
         ));
+        $table = Mage::helper('magehack_autogrid')->getCurrentTable();
+
+        foreach ($table->getGridColumns() as $column) {
+            $fieldset->addField($column->getName(), $column->getFormInputType(), $column->getFormInfo());
+        }
 
         $form->setUseContainer(true);
         $this->setForm($form);
