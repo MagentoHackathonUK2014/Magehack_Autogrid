@@ -227,9 +227,9 @@ class Magehack_Autogrid_Model_Table_Column
         return false; 
       }
     
-    		$this->setData($columnArray[$name]);
+    		$this->setData($columnArray);
       //use the type to set all the defaults and pull any column info from the config too
-      $this->setColumnData($columnArray[$name]['type']); //the name is the key to the column datatype
+      $this->setColumnData($columnArray['type']); //the name is the key to the column datatype
     }
     
     
@@ -284,6 +284,7 @@ class Magehack_Autogrid_Model_Table_Column
 					//form config
 					$formConfig = $config->getForm($tableId);
 					if ($formConfig!==false){
+                        if (isset( $formConfig['columns'][$this->name]))
 						foreach( $formConfig['columns'][$this->name] as $key => $value ){
 						
 							if ($value!=false){ 
@@ -488,7 +489,7 @@ class Magehack_Autogrid_Model_Table_Column
 								$this->gridInfo['options'] = array(
 										'1' => 'Yes',
 										'0' => 'No',
-								),
+								);
 								$this->gridInfo['align'] = 'center';
 
                 break;
