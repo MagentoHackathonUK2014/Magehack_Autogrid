@@ -47,25 +47,23 @@ class Magehack_Autogrid_Model_Table_Column
 
     public function isInGrid()
     {
-    		if(isset($this->autogridTableId) && isset($this->name) ){
-					$config = Mage::getModel('magehack_autogrid/config');
-					$gridConfig = $config->getGrid($this->autogridTableId);
-    			  return $gridConfig['columns'][$this->name]['visibility'];   			
-    		}else{
-    				//default says it's in
-    				return true;
-    		}
+        if(isset($this->autogridTableId) && isset($this->name) ){
+            $config = Mage::getModel('magehack_autogrid/config');
+            $gridConfig = $config->getGrid($this->autogridTableId);
+            if ($gridConfig && isset($gridConfig['columns'][$this->name]['visiblity']))
+                return $gridConfig['columns'][$this->name]['visibility'];
+        }
+        return true;
     }
     
     public function isInForm(){
-    		if(isset($this->autogridTableId) && isset($this->name) ){
-					$config = Mage::getModel('magehack_autogrid/config');
-					$formConfig = $config->getForm($this->autogridTableId);
-    			  return $formConfig['columns'][$this->name]['visibility'];   			
-    		}else{
-    				//default says it's in
-    				return true;
-    		}
+        if(isset($this->autogridTableId) && isset($this->name) ){
+            $config = Mage::getModel('magehack_autogrid/config');
+            $formConfig = $config->getForm($this->autogridTableId);
+            if ($formConfig && isset($formConfig['columns'][$this->name]['visiblity']))
+                return $formConfig['columns'][$this->name]['visibility'];
+        }
+        return true;
     }
     
     public function setAutogridTableId($id){
