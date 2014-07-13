@@ -287,7 +287,7 @@ class Magehack_Autogrid_Model_Table_Column
             //form config
             $formConfig = $config->getForm($tableId);
             if ($formConfig !== false) {
-                if (isset($formConfig['columns'][$this->name]))
+                if (isset($formConfig['columns'][$this->name])) {
                     foreach ($formConfig['columns'][$this->name] as $key => $value) {
 
                         if ($value != false) {
