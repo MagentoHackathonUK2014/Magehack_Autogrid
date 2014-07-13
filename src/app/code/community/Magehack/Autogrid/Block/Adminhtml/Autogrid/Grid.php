@@ -54,4 +54,16 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Grid extends Mage_Adminhtml_Blo
             ));
         return parent::_prepareColumns();
     }
+
+    /**
+     * Return row url for js event handlers
+     *
+     * @param Mage_Catalog_Model_Product|Varien_Object
+     * @return string
+     */
+    public function getRowUrl($item)
+    {
+        return $this->getUrl('*/*/edit', array('id' => $item->getId()));
+    }
+
 }
