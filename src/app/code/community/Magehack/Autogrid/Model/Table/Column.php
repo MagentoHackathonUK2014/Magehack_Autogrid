@@ -358,7 +358,7 @@ class Magehack_Autogrid_Model_Table_Column
         //we will start with some base defaults
         //then you only need to change one or two things depending on the database type
 
-        $title = ($this->getTitle() || $this->name); //magic via setData() or use the column id if no title or empty title is set,
+        $title = $this->getTitle()?$this->getTitle():$this->name; //magic via setData() or use the column id if no title or empty title is set,
         //column grid information
         $this->gridColumnId         = $this->name;
         $this->gridInfo['header']   = $title;
