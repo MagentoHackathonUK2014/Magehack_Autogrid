@@ -39,7 +39,8 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
      */
     protected function _construct()
     {
-        $this->_setResource('magehack_autogrid');
+        // Partially initialization
+        $this->_resources = Mage::getSingleton('core/resource');
     }
 
     /**
