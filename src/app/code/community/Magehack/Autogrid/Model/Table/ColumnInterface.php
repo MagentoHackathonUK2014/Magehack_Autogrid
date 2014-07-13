@@ -97,4 +97,19 @@ interface Magehack_Autogrid_Model_Table_ColumnInterface
      */
     public function getFormFieldInfo();
 
+    /**
+     * DI setter method for table parser
+     * 
+     * @param Magehack_Autogrid_Model_Resource_Table_ParserInterface $parser
+     * @return $this
+     */
+    public function setTableParser(Magehack_Autogrid_Model_Resource_Table_ParserInterface $parser);
+
+    /**
+     * DI setter method for config class
+     * 
+     * @param Magehack_Autogrid_Model_ConfigInterface $config
+     * @return $this
+     */
+    public function setConfig(Magehack_Autogrid_Model_ConfigInterface $config);
 }
