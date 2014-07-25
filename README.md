@@ -5,7 +5,7 @@ Using Magehack_Autogrid you don't have to do it again for flat tables.
 
 Facts
 -----
-- version: check the [config.xml](https://github.com/VinaiMagentoHackathonUK2014/Magehack_Autogrid.git/blob/master/app/code/community/Magehack/Autogrid/etc/config.xml)
+- version: check the [config.xml](https://github.com/MagentoHackathonUK2014/Magehack_Autogrid.git/blob/master/app/code/community/Magehack/Autogrid/etc/config.xml)
 - Magento Connect 1.0 extension key: - none -
 - Magento Connect 2.0 extension key: - none - 
 - [extension on GitHub](https://github.com/MagentoHackathonUK2014/Magehack_Autogrid)
