@@ -154,7 +154,7 @@ class Magehack_Autogrid_Model_Table
     /**
      * Load the table data from the table parser and the config and merge them together
      * 
-     * @throws Magehack_Autogrid_Model_Exception_InitializationRequired
+     * @throws Magehack_Autogrid_Exception_InitializationRequired
      */
     protected function _loadTableData()
     {
@@ -164,7 +164,7 @@ class Magehack_Autogrid_Model_Table
         if (! $tableId) {
             $helper = $this->_getHelper();
             $message = $helper->__('No autogrid id set on table!');
-            throw new Magehack_Autogrid_Model_Exception_InitializationRequired($message);
+            throw new Magehack_Autogrid_Exception_InitializationRequired($message);
         }
         $this->_loadTableDataFromParser();
         $this->_mergeTableDataFromConfig();

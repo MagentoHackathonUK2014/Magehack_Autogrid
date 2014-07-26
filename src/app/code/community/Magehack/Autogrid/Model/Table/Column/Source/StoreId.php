@@ -4,6 +4,6 @@
 class Magehack_Autogrid_Model_Table_Column_Source_StoreId
     extends Magehack_Autogrid_Model_Table_Column_Source_Abstract
 {
-    protected $_collectoin = 'core/store';
+    protected $_collection = 'core/store_collection';
     protected $_labelAttribute = 'name';
 }

@@ -44,4 +44,10 @@ interface Magehack_Autogrid_Model_Resource_Table_ParserInterface
      * @return array
      */
     public function getTableColumns();
+
+    /**
+     * @param string $name The column name
+     * @return array|null
+     */
+    public function getTableColumnByName($name);
 }

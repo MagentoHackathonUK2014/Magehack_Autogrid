@@ -58,18 +58,24 @@
     </global>
     <adminhtml>
         <autogrid>
-            <column_type_defaults>
+            <column_defaults>
                 <source_model>
                     <entity_type_id>magehack_autogrid/table_column_source_entityTypeId</entity_type_id>
-                    <store_id>magehack_autogrid/table_column_source_storeId</store_id>
                     <attribute_set_id>magehack_autogrid/table_column_source_attributeSetId</attribute_set_id>
+                    <store_id>magehack_autogrid/table_column_source_storeId</store_id>
+                    <store_ids>magehack_autogrid/table_column_source_storeId</store_ids>
+                    <website_id>magehack_autogrid/table_column_source_websiteId</website_id>
+                    <website_ids>magehack_autogrid/table_column_source_websiteId</website_ids>
                 </source_model>
-                <!-- not yet used: -->
-                <!--<frontend_input>-->
-                    <!--<store_id>multiselect</store_id>-->
-                    <!--<website_id>multiselect</website_id>-->
-                <!--</frontend_input>-->
-            </column_type_defaults>
+                <frontend_input>
+                    <entity_type_id>select</entity_type_id>
+                    <attribute_set_id>select</attribute_set_id>
+                    <store_id>select</store_id>
+                    <store_ids>multiselect</store_ids>
+                    <website_id>select</website_id>
+                    <website_ids>multiselect</website_ids>
+                </frontend_input>
+            </column_defaults>
         </autogrid>
         <layout>
             <updates>

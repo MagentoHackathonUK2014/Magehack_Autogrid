@@ -94,7 +94,7 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
 
     /**
      * @return Magehack_Autogrid_Model_Config
-     * @throws Magehack_Autogrid_Model_Exception_InitializationRequired
+     * @throws Magehack_Autogrid_Exception_InitializationRequired
      */
     private function _getConfig()
     {
