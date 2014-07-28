@@ -22,31 +22,31 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      * Config file name
      */
     const FILE = 'autogrid.xml';
-    
+
     /**
      * Cache of prepared table grid data
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $_grids = array();
-    
+
     /**
      * Cache of prepared table form data
-     * 
-     * @var array 
+     *
+     * @var array
      */
     protected $_forms = array();
-    
+
     /**
      * Merged autogrid XML config
-     * 
+     *
      * @var Mage_Core_Model_Config_Base
      */
     protected $_config;
 
     /**
      * List of possible column info keys.
-     * 
+     *
      * @var array
      */
     protected $_columnInfoKeys = array(
@@ -59,7 +59,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
 
     /**
      * List of possible field info keys.
-     * 
+     *
      * @var array
      */
     protected $_fieldInfoKeys = array(
@@ -74,11 +74,12 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         'is_unique',
         'validation_regex',
         'note',
+        'is_visible',
     );
 
     /**
      * DI setter method to provide method of passing in a loaded config model.
-     * 
+     *
      * @param Mage_Core_Model_Config_Base $config
      */
     public function setConfig(Mage_Core_Model_Config_Base $config)
@@ -109,7 +110,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     {
         $path = "tables/$tableId/table";
         if ($tableName = $this->_getConfig()->getNode($path)) {
-            return (string) $tableName;
+            return (string)$tableName;
         }
         return false;
     }
@@ -122,7 +123,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      */
     public function getTableTitle($tableId)
     {
-        return (string) $this->_getConfig()->getNode("tables/$tableId/title");
+        return (string)$this->_getConfig()->getNode("tables/$tableId/title");
     }
 
 
@@ -137,7 +138,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         if (!isset($this->_grids[$tableId])) {
             /** @var Varien_Simplexml_Element $gridConfig */
             $gridConfig = $this->_getConfig()->getNode('tables/' . $tableId . '/grid');
-            if (! $gridConfig) {
+            if (!$gridConfig) {
                 $this->_grids[$tableId] = false;
             } else {
                 $gridInfo = array();
@@ -162,7 +163,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     {
         if (!isset($this->_forms[$tableId])) {
             $formConfig = $this->_getConfig()->getNode('tables/' . $tableId . '/form');
-            if (! $formConfig) {
+            if (!$formConfig) {
                 $this->_forms[$tableId] = false;
             } else {
                 $formInfo = array();
@@ -187,6 +188,15 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     public function getColumnInfo($tableId, $column)
     {
         $gridInfo = $this->getGrid($tableId);
+        if (!isset($gridInfo[$column]) || !$gridInfo[$column]) {
+            // Column is not listed in the configuration.
+            // Apply possible defaults
+            $default = $this->_buildColumnInfo($column, array());
+            if ($default) {
+                $this->_grids[$tableId][$column] = $default;
+                $gridInfo[$column] = $default;
+            }
+        }
         return isset($gridInfo[$column]) ? $gridInfo[$column] : null;
     }
 
@@ -200,19 +210,28 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     public function getFieldInfo($tableId, $field)
     {
         $formInfo = $this->getForm($tableId);
+        if (!isset($formInfo[$field]) || !$formInfo[$field]) {
+            // Column is not listed in the configuration.
+            // Apply possible defaults
+            $default = $this->_buildFormInfo($field, array());
+            if ($default) {
+                $this->_forms[$tableId][$field] = $default;
+                $formInfo[$field] = $default;
+            }
+        }
         return isset($formInfo[$field]) ? $formInfo[$field] : null;
     }
 
     /**
      * Build array with grid columns
-     * 
+     *
      * Any key specified in the configuration is kept intact.
      * Any default values based on the column name should be merged in if
      * not specified in the autogrid config.
-     * 
+     *
      * Default values are checked for any key in $colInfo that is empty
      * and for every name in the $this->_columnInfoKeys array.
-     * 
+     *
      * @param string $colName
      * @param array $colInfo Column info from XML
      * @return array
@@ -223,6 +242,12 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         $result['type'] = $this->_getColumnType($colName, $result);
         if ('options' == $result['type']) {
             $result['options'] = $this->_getGridOptionsFromSource($result);
+        }
+        if (!isset($result['index']) && !isset($result['getter'])) {
+            $result['index'] = $colName;
+        }
+        if (!isset($result['header'])) {
+            $result['header'] = ucwords(str_replace('_', ' ', $colName));
         }
         return $result;
     }
@@ -236,7 +261,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      *
      * Default values are checked for any key in $fieldInfo that is empty
      * and for every name in the $this->_fieldInfoKeys array.
-     * 
+     *
      * @param string $fieldName
      * @param array $fieldInfo Field info from XML
      * @return array
@@ -248,14 +273,33 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         if (in_array($result['frontend_input'], array('select', 'multiselect'))) {
             $result['values'] = $this->_getFormOptionsFromSource($result);
         }
+        elseif ($result['frontend_input'] == 'date') {
+            if (! isset($result['format'])) {
+                $result['format'] = Mage::app()->getLocale()->getDateFormat(
+                    Mage_Core_Model_Locale::FORMAT_TYPE_SHORT
+                );
+            }
+            if (! isset($result['image'])) {
+                $result['image'] = Mage::getDesign()->getSkinUrl('images/grid-cal.gif');
+            }
+            if (! isset($result['class'])) {
+                $result['class'] = 'validate-date validate-date-range date-range-custom_theme-to';
+            }
+        }
+        if (! isset($result['name'])) {
+            $result['name'] = $fieldName;
+        }
+        if (!isset($result['label'])) {
+            $result['label'] = ucwords(str_replace('_', ' ', $fieldName));
+        }
         return $result;
     }
 
     /**
      * Build col or field definition array from config values with merged default values.
-     * 
+     *
      * This method is shared for grid column info and form field info.
-     * 
+     *
      * @param string $name
      * @param array $info
      * @param array $defaultKeys
@@ -265,7 +309,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     {
         $result = array();
         foreach ($info as $key => $value) {
-            if (! $value && ($default = $this->getColumnInfoDefault($name, $key))) {
+            if (!$value && ($default = $this->getColumnInfoDefault($name, $key))) {
                 $value = $default;
             }
             if (null !== $value) {
@@ -273,7 +317,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
             }
         }
         foreach ($defaultKeys as $key) {
-            if (! isset($result[$key])) {
+            if (!isset($result[$key])) {
                 if ($default = $this->getColumnInfoDefault($name, $key)) {
                     $result[$key] = $default;
                 }
@@ -284,7 +328,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
 
     /**
      * Return the default value for a given column info key and column name.
-     * 
+     *
      * NOTE: This information is fetched from the merged config.xml files, NOT the autogrid.xml!
      *
      * @param string $colName
@@ -293,10 +337,10 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      */
     public function getColumnInfoDefault($colName, $key)
     {
-        $path = "adminhtml/autogrid/$key/$colName";
+        $path = "adminhtml/autogrid/column_defaults/$key/$colName";
         $default = Mage::getConfig()->getNode($path);
         if ($default) {
-            return (string) $default;
+            return (string)$default;
         }
         return false;
     }
@@ -317,7 +361,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
 
     /**
      * Figure out and return the type for the given column.
-     * 
+     *
      * @param string $colName
      * @param array $info
      * @return string
@@ -341,7 +385,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
 
     /**
      * Figure out and return the input type for the given field.
-     * 
+     *
      * @param string $fieldName
      * @param array $info
      * @return string
@@ -357,12 +401,15 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         if (in_array($fieldName, array('created_at', 'updated_at', 'date'))) {
             return 'date';
         }
+        if ('entity_id' === $fieldName) {
+            return 'label';
+        }
         return 'text';
     }
 
     /**
      * Return an grid options array for the source model
-     * 
+     *
      * @param array $info
      * @return array
      */
@@ -378,7 +425,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
 
     /**
      * Return a form options array for the source model
-     * 
+     *
      * @param array $info
      * @return array
      */

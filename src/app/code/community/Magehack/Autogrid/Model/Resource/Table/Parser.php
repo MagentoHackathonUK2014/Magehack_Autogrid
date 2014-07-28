@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Magento Hackathon 2014 UK
  *
@@ -15,14 +16,36 @@
  * @copyright  Copyright (c) 2014 Magento community
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Magehack_Autogrid_Model_Resource_Table_Parser
     extends Mage_Core_Model_Resource_Db_Abstract
     implements Magehack_Autogrid_Model_Resource_Table_ParserInterface
 {
+    /**
+     * Table name
+     * 
+     * @var string
+     */
+    protected $_tableName;
 
-    protected $_primaryKey = null;
+    /**
+     * Name of the primary key column of the current table
+     * 
+     * @var string
+     */
+    protected $_primaryKey;
+
+    /**
+     * Description of the current table as returned by the read adapter
+     * 
+     * @var array
+     */
     protected $_cols = array();
+
+    /**
+     * Either the table comment of the name of the table
+     * 
+     * @var string
+     */
     protected $_title = '';
 
     /**
@@ -35,32 +58,39 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
 
     /**
      * @param string $tableName
-     * @return $this|void
+     * @return $this
      */
     public function init($tableName)
     {
         $tableName = $this->getTable($tableName);
         
-        $ra = $this->_getReadAdapter();
-        $struct = $ra->describeTable($tableName);
-        $this->_cols = array();
-        $dbconfig = $ra->getConfig();
-        $titles = array();
-
-        $data = $ra->fetchAll("SELECT COLUMN_NAME,COLUMN_COMMENT FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?",array($dbconfig['dbname'],$tableName));
-        foreach ($data as $item) {
-            $titles[$item['COLUMN_NAME']] = $item['COLUMN_COMMENT'];
-        }
-
-        foreach ($struct as $name => $info) {
-            //Mage::log($name."\n",null,'autogrid.log');
-            $this->_cols[$name] = array('type'=>$info['DATA_TYPE'],'title'=>$titles[$name]);
-            if ($info['PRIMARY'] && $info['PRIMARY_POSITION'] == 1) {
-                $this->_primaryKey = $name;
+        if ($this->_tableName != $tableName) {        
+            $this->_tableName = $tableName;
+    
+            $adapter = $this->_getReadAdapter();
+            $dbconfig = $adapter->getConfig();
+            $tableInfo = $adapter->describeTable($tableName);
+            $this->_cols = array();
+    
+            $select = $adapter->select()
+                ->from('information_schema.COLUMNS', array('COLUMN_NAME', 'COLUMN_COMMENT'))
+                ->where('TABLE_SCHEMA=?', $dbconfig['dbname'])
+                ->where('TABLE_NAME=?', $tableName);
+            $titles = $adapter->fetchPairs($select);
+    
+            foreach ($tableInfo as $name => $info) {
+                $this->_cols[$name] = array('type' => $info['DATA_TYPE'], 'title' => $titles[$name]);
+                if ($info['PRIMARY'] && $info['PRIMARY_POSITION'] == 1) {
+                    $this->_primaryKey = $name;
+                }
             }
+            $select = $adapter->select()
+                ->from('information_schema.TABLES', array('TABLE_COMMENT'))
+                ->where('TABLE_SCHEMA=?', $dbconfig['dbname'])
+                ->where('TABLE_NAME=?', $tableName);
+            $result = $adapter->fetchOne($select);
+            $this->_title = $result ? $result : '';
         }
-        $data = $ra->fetchRow("SELECT table_comment FROM INFORMATION_SCHEMA.TABLES WHERE table_schema=? AND table_name=?",array($dbconfig['dbname'],$tableName));
-        if (isset($data['table_comment'])) $this->_title = $data['table_comment'];
         return $this;
     }
 
@@ -73,7 +103,7 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
     }
 
     /**
-     * @return array|array
+     * @return array
      */
     public function getTableColumns()
     {
@@ -82,7 +112,7 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
 
     /**
      * @param string $name The column name
-     * @return array|null
+     * @return null|array
      */
     public function getTableColumnByName($name)
     {
@@ -93,7 +123,8 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
     }
 
     /**
-     * Retrieve the title
+     * Retrieve the table title
+     * 
      * @return string
      */
     public function getTableTitle()

@@ -28,11 +28,10 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Grid extends Mage_Adminhtml_Blo
         return parent::_prepareCollection();
     }
 
-
     protected function _prepareColumns()
     {
         $helper = Mage::helper('magehack_autogrid');
-        $table = Mage::helper('magehack_autogrid')->getCurrentTable();
+        $table = $helper->getCurrentTable();
 
         /** @var Magehack_Autogrid_Model_Table_ColumnInterface $column */
         foreach ($table->getGridColumns() as $column) {

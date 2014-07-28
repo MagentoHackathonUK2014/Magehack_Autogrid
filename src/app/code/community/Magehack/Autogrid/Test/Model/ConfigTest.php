@@ -142,7 +142,7 @@ EOX;
     public function testItReturnsTheDefaultForATableName($key, $expected)
     {
         $columnName = 'test';
-        $path = "adminhtml/autogrid/$key/$columnName";
+        $path = "adminhtml/autogrid/column_defaults/$key/$columnName";
         $this->app()->getConfig()->setNode($path, $expected);
         
         $instance = $this->getInstance();
@@ -168,6 +168,7 @@ EOX;
                     <frontend_label>Multiple fields to parse</frontend_label>
                     <something_special>A different value</something_special>
                     <backend_type>int</backend_type>
+                    <header>The Column Title</header>
                 </column_c>
             </grid>
         </$tableId>
@@ -178,18 +179,24 @@ EOX;
         $expected = array(
             'column_a' => array(
                 'frontend_label' => 'Frontend Label',
-                'type' => 'text'
+                'type' => 'text',
+                'index' => 'column_a',
+                'header' => 'Column A',
             ),
             'column_b' => array(
                 'source_model' => 'magehack_autogrid/table_column_source_yesno',
                 'type' => 'options',
-                'options' => array(0 => 'No', 1 => 'Yes')
+                'options' => array(0 => 'No', 1 => 'Yes'),
+                'index' => 'column_b',
+                'header' => 'Column B',
             ),
             'column_c' => array(
                 'frontend_label' => 'Multiple fields to parse',
                 'something_special' => 'A different value',
                 'backend_type' => 'int',
-                'type' => 'numeric'
+                'type' => 'numeric',
+                'index' => 'column_c',
+                'header' => 'The Column Title',
             )
         );
         $config = new Mage_Core_Model_Config_Base($xml);
@@ -203,9 +210,9 @@ EOX;
     {
         $sourceModel = 'magehack_autogrid/table_column_source_storeId';
         $options = Mage::getModel($sourceModel)->getGridOptionArray();
-        $path = "adminhtml/autogrid/source_model/store_id";
+        $path = "adminhtml/autogrid/column_defaults/source_model/store_id";
         $this->app()->getConfig()->setNode($path, $sourceModel);
-        $path = "adminhtml/autogrid/backend_type/store_id";
+        $path = "adminhtml/autogrid/column_defaults/backend_type/store_id";
         $this->app()->getConfig()->setNode($path, 'int');
         
         $tableId = 'test_table_id';
@@ -226,10 +233,12 @@ EOX;
         $expected = array(
             'store_id' => array(
                 'frontend_label' => 'The Label',
+                'backend_type' => 'int',
                 'source_model' => $sourceModel,
                 'type' => 'options',
                 'options' => $options,
-                'backend_type' => 'int'
+                'index' => 'store_id',
+                'header' => 'Store Id',
             )
         );
         
@@ -259,6 +268,7 @@ EOX;
                     <frontend_label>Multiple fields to parse</frontend_label>
                     <something_special>A different value</something_special>
                     <backend_type>int</backend_type>
+                    <label>The Label</label>
                 </column_c>
             </form>
         </$tableId>
@@ -268,7 +278,9 @@ EOX;
         $expected = array(
             'column_a' => array(
                 'frontend_label' => 'Frontend Label',
-                'frontend_input' => 'text'
+                'frontend_input' => 'text',
+                'name' => 'column_a',
+                'label' => 'Column A',
             ),
             'column_b' => array(
                 'source_model' => 'magehack_autogrid/table_column_source_yesno',
@@ -276,13 +288,17 @@ EOX;
                 'values' => array(
                     array('value' => 0, 'label' => 'No'),
                     array('value' => 1, 'label' => 'Yes')
-                )
+                ),
+                'name' => 'column_b',
+                'label' => 'Column B',
             ),
             'column_c' => array(
                 'frontend_label' => 'Multiple fields to parse',
                 'something_special' => 'A different value',
                 'backend_type' => 'int',
-                'frontend_input' => 'text'
+                'frontend_input' => 'text',
+                'name' => 'column_c',
+                'label' => 'The Label',
             )
         );
         
@@ -319,6 +335,8 @@ EOX;
             'something_special' => 'A different value',
             'backend_type' => 'int',
             'type' => 'numeric',
+            'index' => 'column_a',
+            'header' => 'Column A',
         );
         $config = new Mage_Core_Model_Config_Base($xml);
         $instance = $this->getInstance();
@@ -352,7 +370,9 @@ EOX;
             'frontend_label' => 'A Label',
             'something_special' => 'A different value',
             'backend_type' => 'int',
-            'frontend_input' => 'text'
+            'frontend_input' => 'text',
+            'name' => 'column_a',
+            'label' => 'Column A'
         );
         $config = new Mage_Core_Model_Config_Base($xml);
         $instance = $this->getInstance();

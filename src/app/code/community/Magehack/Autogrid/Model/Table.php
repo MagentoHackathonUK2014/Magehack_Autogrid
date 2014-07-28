@@ -159,13 +159,13 @@ class Magehack_Autogrid_Model_Table
     protected function _loadTableData()
     {
         $tableId = $this->getAutoGridTableId();
-        $tableName = $this->_getConfig()->getTableName($tableId);
-        $this->_getTableParser()->init($tableName);
         if (! $tableId) {
             $helper = $this->_getHelper();
             $message = $helper->__('No autogrid id set on table!');
             throw new Magehack_Autogrid_Exception_InitializationRequired($message);
         }
+        $tableName = $this->_getConfig()->getTableName($tableId);
+        $this->_getTableParser()->init($tableName);
         $this->_loadTableDataFromParser();
         $this->_mergeTableDataFromConfig();
         $this->_isLoaded = true;

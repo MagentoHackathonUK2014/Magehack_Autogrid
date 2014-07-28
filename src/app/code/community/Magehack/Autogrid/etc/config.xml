@@ -66,6 +66,7 @@
                     <store_ids>magehack_autogrid/table_column_source_storeId</store_ids>
                     <website_id>magehack_autogrid/table_column_source_websiteId</website_id>
                     <website_ids>magehack_autogrid/table_column_source_websiteId</website_ids>
+                    <has_options>magehack_autogrid/table_column_source_yesno</has_options>
                 </source_model>
                 <frontend_input>
                     <entity_type_id>select</entity_type_id>
@@ -74,6 +75,7 @@
                     <store_ids>multiselect</store_ids>
                     <website_id>select</website_id>
                     <website_ids>multiselect</website_ids>
+                    <has_options>select</has_options>
                 </frontend_input>
             </column_defaults>
         </autogrid>
