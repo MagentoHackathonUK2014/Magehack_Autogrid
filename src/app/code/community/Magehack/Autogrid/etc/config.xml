@@ -77,6 +77,9 @@
                     <website_ids>multiselect</website_ids>
                     <has_options>select</has_options>
                 </frontend_input>
+                <disabled>
+                    <created_at>1</created_at>
+                </disabled>
             </column_defaults>
         </autogrid>
         <layout>

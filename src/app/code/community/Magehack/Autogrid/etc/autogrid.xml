@@ -19,9 +19,9 @@
 -->
 <config>
     <tables>
-        <table_identifier_1>
+        <example_product_entity>
             <table>catalog/product</table>
-            <title>Testing with Catalog Products</title>
+            <title>Autogrid Example Table catalog/products</title>
             <grid>
                 <columns>
                     <has_options>
@@ -34,17 +34,13 @@
                         <filterable>1</filterable>
                         <sortable>0</sortable>
                     </type_id>
-                    <handle>
-                        <name>col5</name>
-                        <sort_order>7</sort_order>
-                        <type>t5</type>
-                        <optional>1</optional>
-                    </handle>
                 </columns>
             </grid>
-        </table_identifier_1>
-        <table_identifier_2>
+        </example_product_entity>
+        <example_core_resource>
+            <!-- only the table name is enough -->
             <table>core_resource</table>
-        </table_identifier_2>
+            <title>Autogrid Example Table core/resource</title>
+        </example_core_resource>
     </tables>
 </config>

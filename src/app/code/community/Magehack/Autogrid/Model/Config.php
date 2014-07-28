@@ -75,6 +75,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         'validation_regex',
         'note',
         'is_visible',
+        'disabled',
     );
 
     /**
