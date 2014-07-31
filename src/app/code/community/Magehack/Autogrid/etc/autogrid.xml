@@ -38,7 +38,7 @@
             </grid>
         </example_product_entity>
         <example_core_resource>
-            <!-- only the table name is enough -->
+            <!-- Only the table name is enough. The title is optional, too -->
             <table>core_resource</table>
             <title>Autogrid Example Table core/resource</title>
         </example_core_resource>

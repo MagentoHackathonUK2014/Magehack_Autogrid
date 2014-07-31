@@ -10,13 +10,16 @@ class Magehack_Autogrid_Model_Resource_Table_TableCollection
     public function loadData($printQuery = false, $logQuery = false)
     {
         if (!$this->isLoaded()) {
-            $ra = Mage::getSingleton("core/resource")->getConnection('core/read');
-            $dbconfig = $ra->getConfig();
+            $readAdapter = Mage::getSingleton("core/resource")->getConnection('core/read');
+            $dbconfig = $readAdapter->getConfig();
+            
+            $select = $readAdapter->select()
+                ->from('information_schema.TABLES', array('TABLE_NAME'))
+                ->where('TABLE_SCHEMA=?', $dbconfig['dbname']);
 
-            $res = $ra->fetchAll("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ?",$dbconfig['dbname']);
-            foreach ($res as $data) {
-                if ($data['TABLE_NAME'])
-                $table = $this->_getTableInstance($data['TABLE_NAME']);
+            $res = $readAdapter->fetchCol($select);
+            foreach ($res as $tableName) {
+                $table = $this->_getTableInstance($tableName);
                 $this->_addItem($table);
             }
             $this->_setIsLoaded();

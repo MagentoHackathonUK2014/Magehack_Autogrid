@@ -18,6 +18,7 @@
 
 /**
  * Adminhtml_Gridmaster Controller
+ * 
  * @package Magehack_Autogrid
  */
 class Magehack_Autogrid_Adminhtml_GridmasterController extends Mage_Adminhtml_Controller_Action
@@ -40,7 +41,7 @@ class Magehack_Autogrid_Adminhtml_GridmasterController extends Mage_Adminhtml_Co
     public function indexAction()
     {
         // Title
-        $this->_title($this->__('I\'m God of the grids'));
+        $this->_title($this->__('All Autogrid Tables'));
 
         $this->loadLayout();
         $this->renderLayout();

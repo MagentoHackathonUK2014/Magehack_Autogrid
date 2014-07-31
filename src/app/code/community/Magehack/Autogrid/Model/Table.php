@@ -225,6 +225,16 @@ class Magehack_Autogrid_Model_Table
     }
 
     /**
+     * @return bool
+     */
+    public function isValidTable()
+    {
+        $tableId = $this->getAutoGridTableId();
+        $tableName = trim($this->_getConfig()->getTableName($tableId));
+        return '' !== $tableName;
+    }
+
+    /**
      * Return all collumns
      * 
      * @return Magehack_Autogrid_Model_Table_ColumnInterface[]
@@ -278,6 +288,19 @@ class Magehack_Autogrid_Model_Table
             $this->_loadTableData();
         }
         return $this->_title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUri()
+    {
+        if (! $this->_isLoaded()) {
+            $this->_loadTableData();
+        }
+        $tableId = $this->getAutoGridTableId();
+        $uri = $this->_getConfig()->getTableUri($tableId);
+        return $uri;
     }
 
     /**

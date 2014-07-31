@@ -27,6 +27,22 @@ interface Magehack_Autogrid_Model_ConfigInterface
      * @return array All table identifiers defined in the configs
      */
     public function getAllTableIds();
+
+    /**
+     * Return the matching table ID if the specified artgument is a valid table id or table id URI.
+     * 
+     * @param string $controller
+     * @return string|false
+     */
+    public function getTableIdFromController($controller);
+
+    /**
+     * Return the table URI if configured, otherwise the table id
+     * 
+     * @param string $tableId
+     * @return mixed
+     */
+    public function getTableUri($tableId);
     
     /**
      * Return the real table name or table alias for a given table identifier.

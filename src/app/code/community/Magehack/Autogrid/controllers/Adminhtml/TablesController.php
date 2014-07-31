@@ -29,7 +29,7 @@ class Magehack_Autogrid_Adminhtml_TablesController extends Mage_Adminhtml_Contro
     public function preDispatch()
     {
         // Title
-        $this->_title($this->__('Autogrid'));
+        $this->_title($this->__('Autogrid Table List'));
 
         return parent::preDispatch();
     }
@@ -40,7 +40,7 @@ class Magehack_Autogrid_Adminhtml_TablesController extends Mage_Adminhtml_Contro
     public function indexAction()
     {
         // Title
-        $this->_title($this->__('All the tables'));
+        $this->_title($this->__('All Magento Tables'));
 
         $this->loadLayout();
         $this->renderLayout();

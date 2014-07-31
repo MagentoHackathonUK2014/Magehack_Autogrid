@@ -25,6 +25,7 @@ class Magehack_Autogrid_Block_Adminhtml_Gridmaster extends Mage_Adminhtml_Block_
 
     /**
      * Constructor Override
+     * 
      * @return Magehack_Autogrid_Controller_Router
      */
     protected function _construct()
@@ -33,13 +34,14 @@ class Magehack_Autogrid_Block_Adminhtml_Gridmaster extends Mage_Adminhtml_Block_
 
         $this->_blockGroup = 'magehack_autogrid';
         $this->_controller = 'adminhtml_gridmaster';
-        $this->_headerText = $this->__('Grid souls');
+        $this->_headerText = $this->__('All Autogrid Tables');
 
         return $this;
     }
 
     /**
      * Prepare Layout
+     * 
      * @return Magehack_Autogrid_Controller_Router
      */
     protected function _prepareLayout()

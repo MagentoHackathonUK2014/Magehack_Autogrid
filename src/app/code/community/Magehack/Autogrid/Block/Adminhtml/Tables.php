@@ -33,7 +33,7 @@ class Magehack_Autogrid_Block_Adminhtml_Tables extends Mage_Adminhtml_Block_Widg
 
         $this->_blockGroup = 'magehack_autogrid';
         $this->_controller = 'adminhtml_tables';
-        $this->_headerText = $this->__('All the tables');
+        $this->_headerText = $this->__('All Magento Tables (via Autogrid)');
 
         return $this;
     }

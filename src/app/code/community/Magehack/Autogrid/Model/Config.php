@@ -100,6 +100,56 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     }
 
     /**
+     * Return the matching table ID if the specified artgument is a valid table id or table id URI.
+     *
+     * @param string $controller
+     * @return string|false
+     */
+    public function getTableIdFromController($controller)
+    {
+        // only allow alphanumeric characters 
+        if (! preg_match('#^[a-z][1-z0-9_]+$#i', $controller)) {
+            return false;
+        }
+        $xpath = "tables/*/uri[text()='$controller']";
+        $nodes = $this->_getConfig()->getNode()->xpath($xpath);
+        if ($nodes) {
+            // find matching table uri
+            $tableId = $nodes[0]->xpath('..');
+            $tableId = $tableId[0]->getName();
+            return $tableId;
+        } else {
+            // find matching table id without an uri node
+            $tableId = $controller;
+            $tables = $this->getAllTableIds();
+            if (in_array($tableId, $tables)) {
+                $uri = $this->getTableUri($tableId);
+                if ($uri === $tableId) {
+                    // no uri configured
+                    return $tableId;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Return the table URI if configured, otherwise the table id
+     *
+     * @param string $tableId
+     * @return mixed
+     */
+    public function getTableUri($tableId)
+    {
+        $path = "tables/$tableId/uri";
+        if ($uri = $this->_getConfig()->getNode($path)) {
+            return $uri;
+        }
+        return $tableId;
+    }
+
+
+    /**
      * Return the real table name or table alias for a given table identifier.
      *
      * The real table name has to be specified in autogrid.xml

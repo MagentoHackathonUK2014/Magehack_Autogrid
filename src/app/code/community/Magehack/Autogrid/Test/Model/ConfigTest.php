@@ -346,7 +346,8 @@ EOX;
     }
 
     public function testItReturnsTheSpecifiedFieldInfo()
-    {        $tableId = 'test_table_id';
+    {
+        $tableId = 'test_table_id';
         $xml = <<<EOX
 <config>
     <tables>
@@ -379,5 +380,100 @@ EOX;
         $instance->setConfig($config);
         $result = $instance->getFieldInfo($tableId, 'column_a');
         $this->assertEquals($expected, $result);
+    }
+    
+    public function testItReturnsTheTableIdForAGivenUri()
+    {
+        $tableId = 'test_table_id';
+        $tableUri = 'the_table_uri';
+        $xml = <<<EOX
+<config>
+    <tables>
+        <$tableId>
+            <uri>$tableUri</uri>
+        </$tableId>
+    </tables>
+</config>
+EOX;
+        $config = new Mage_Core_Model_Config_Base($xml);
+        $instance = $this->getInstance();
+        $instance->setConfig($config);
+        $result = $instance->getTableIdFromController($tableUri);
+        $this->assertEquals($tableId, $result);
+    }
+    
+    public function testItNotReturnsTheTableIdForAGivenTableIdIfTheTableHasAnUri()
+    {
+        $tableId = 'test_table_id';
+        $tableUri = 'the_table_uri';
+        $xml = <<<EOX
+<config>
+    <tables>
+        <$tableId>
+            <uri>$tableUri</uri>
+        </$tableId>
+    </tables>
+</config>
+EOX;
+        $config = new Mage_Core_Model_Config_Base($xml);
+        $instance = $this->getInstance();
+        $instance->setConfig($config);
+        
+        // fetching a table by table Id should be impossible when an uri is specified
+        $result = $instance->getTableIdFromController($tableId);
+        $this->assertFalse($result);
+    }
+    
+    public function testItReturnsTheTableIdForAGivenTableIdIfTheTableNotHasAnUri()
+    {
+        $tableId = 'test_table_id';
+        $xml = <<<EOX
+<config>
+    <tables>
+        <$tableId/>
+    </tables>
+</config>
+EOX;
+        $config = new Mage_Core_Model_Config_Base($xml);
+        $instance = $this->getInstance();
+        $instance->setConfig($config);
+        
+        // fetching a table by table Id should work when no uri is specified
+        $result = $instance->getTableIdFromController($tableId);
+        $this->assertEquals($tableId, $result);
+    }
+    
+    public function invalidTableUriProvider()
+    {
+        return array(
+            array('.test'),
+            array('/test'),
+            array('../test'),
+            array('test..'),
+            array('//test'),
+            array('te/*/st'),
+        );
+    }
+
+    /**
+     * @dataProvider invalidTableUriProvider
+     */
+    public function testItDoesNotAcceptAUriWithInvalidCharacters($tableUri)
+    {
+        $tableId = 'test';
+        $xml = <<<EOX
+<config>
+    <tables>
+        <$tableId/>
+    </tables>
+</config>
+EOX;
+        $config = new Mage_Core_Model_Config_Base($xml);
+        $instance = $this->getInstance();
+        $instance->setConfig($config);
+
+        // fetching a table by table Id should work when no uri is specified
+        $result = $instance->getTableIdFromController($tableUri);
+        $this->assertFalse($result);
     }
 }
