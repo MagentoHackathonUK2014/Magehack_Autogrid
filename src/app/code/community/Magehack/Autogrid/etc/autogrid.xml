@@ -42,6 +42,9 @@
             <!-- Form field properties can also be specified if the defaults aren't satisfactory -->
             <!--
             <form>
+                <has_options>
+                    <backend_model>custom/backend_model</backend_model>
+                </has_options>
             </form>
             -->
         </example_product_entity>
