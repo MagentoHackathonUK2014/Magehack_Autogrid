@@ -11,7 +11,9 @@ class Magehack_Autogrid_Model_Table_Column_Source_EntityTypeId
      */
     function _loadOptions()
     {
+        /** @var Mage_Eav_Model_Resource_Entity_Type_Collection $collection */
         $collection = Mage::getResourceModel('eav/entity_type_collection');
+        /** @var Mage_Eav_Model_Entity_Type $model */
         foreach ($collection as $id => $model) {
             $this->_options[] = array(
                 'value' => $id,

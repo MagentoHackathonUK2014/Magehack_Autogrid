@@ -30,8 +30,7 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid
         if (! $tableId) {
             Mage::throwException($this->__('No autogrid table id specified'));
         }
-        $table =  Mage::getModel('magehack_autogrid/table');
-        $table->setAutoGridTableId($tableId);
+        $table = $helper->getCurrentTable();
                     
         $this->_headerText = $this->__('Table "%s"', $table->getTitle());
         $this->_addButtonLabel = $this->__('Add New');

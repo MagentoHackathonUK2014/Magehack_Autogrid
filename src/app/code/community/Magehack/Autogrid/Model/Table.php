@@ -154,18 +154,18 @@ class Magehack_Autogrid_Model_Table
     /**
      * Load the table data from the table parser and the config and merge them together
      * 
-     * @throws Magehack_Autogrid_Model_Exception_InitializationRequired
+     * @throws Magehack_Autogrid_Exception_InitializationRequired
      */
     protected function _loadTableData()
     {
         $tableId = $this->getAutoGridTableId();
-        $tableName = $this->_getConfig()->getTableName($tableId);
-        $this->_getTableParser()->init($tableName);
         if (! $tableId) {
             $helper = $this->_getHelper();
             $message = $helper->__('No autogrid id set on table!');
-            throw new Magehack_Autogrid_Model_Exception_InitializationRequired($message);
+            throw new Magehack_Autogrid_Exception_InitializationRequired($message);
         }
+        $tableName = $this->_getTableName($tableId);
+        $this->_getTableParser()->init($tableName);
         $this->_loadTableDataFromParser();
         $this->_mergeTableDataFromConfig();
         $this->_isLoaded = true;
@@ -182,7 +182,7 @@ class Magehack_Autogrid_Model_Table
         $parser = $this->_getTableParser();
         $config = $this->_getConfig();
         $tableId = $this->getAutoGridTableId();
-        $tableName = $config->getTableName($tableId);
+        $tableName = $this->_getTableName($tableId);
         
         $parser->init($tableName);
 
@@ -194,6 +194,25 @@ class Magehack_Autogrid_Model_Table
         $column->setColumnName($name);
 
         return $column;
+    }
+
+    /**
+     * Return the table name for the specified autogrid table id.
+     *
+     * If no table name for the specified id is found in the autogrid
+     * configuration, return the table id.
+     * This is used for the grid of all tables.  
+     * 
+     * @param string $tableId
+     * @return string
+     */
+    protected function _getTableName($tableId)
+    {
+        $tableName = $this->_getConfig()->getTableName($tableId);
+        if (false === $tableName) {
+            $tableName = $tableId;
+        }
+        return $tableName;
     }
 
     /**
@@ -220,8 +239,19 @@ class Magehack_Autogrid_Model_Table
             $this->_title = $title;
         }
         if (! $this->_title) {
-            $this->_title = $config->getTableName($tableId);
+            $this->_title = $this->_getTableName($tableId);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValidTable()
+    {
+        $tableId = $this->getAutoGridTableId();
+        // Don't use $this->_getTableName on purpose here
+        $tableName = trim($this->_getConfig()->getTableName($tableId));
+        return '' !== $tableName;
     }
 
     /**
@@ -278,6 +308,19 @@ class Magehack_Autogrid_Model_Table
             $this->_loadTableData();
         }
         return $this->_title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUri()
+    {
+        if (! $this->_isLoaded()) {
+            $this->_loadTableData();
+        }
+        $tableId = $this->getAutoGridTableId();
+        $uri = $this->_getConfig()->getTableUri($tableId);
+        return $uri;
     }
 
     /**

@@ -18,6 +18,7 @@
 
 /**
  * Adminhtml_Autogrid Controller
+ * 
  * @package Magehack_Autogrid
  */
 class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Controller_Action
@@ -31,7 +32,22 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
     }
 
     /**
+     * Override the parent method to use the actual controller name instead of the table id or uri
+     * 
+     * @param string $delimiter
+     * @return string
+     */
+    public function getFullActionName($delimiter = '_')
+    {
+        $request = $this->getRequest();
+        return $request->getRequestedRouteName().$delimiter.
+            $request->getControllerName().$delimiter.
+            $request->getRequestedActionName();
+    }
+
+    /**
      * Init the table
+     * 
      * @return Magehack_Autogrid_Model_Table The table
      */
     protected function _initTable()
@@ -42,18 +58,8 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
 
         $table = Mage::getModel('magehack_autogrid/table');
         $table->setAutoGridTableId($id);
+        
         return $table;
-    }
-    
-    /**
-     * Demo action (just for testing purposes
-     * 
-     * @todo remove
-     */
-    public function demoAction()
-    {
-        Zend_Debug::dump(Mage::helper('magehack_autogrid')->getTableId());
-        exit('yo man!');
     }
 
     /**
@@ -61,16 +67,16 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
      */
     public function indexAction()
     {
-        $this->loadLayout(array('default', 'adminhtml_autogrid_index'));
+        $this->loadLayout();
         $this->renderLayout();
     }
 
     /**
-     * Render and return the grid block only for ajac paging, filtering and sorting.
+     * Render and return the grid block only for ajax paging, filtering and sorting.
      */
     public function ajaxGridAction()
     {
-        $this->loadLayout(array('adminhtml_autogrid_ajaxgrid'));
+        $this->loadLayout();
         $this->renderLayout();
     }
 
@@ -89,7 +95,8 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
     {
         // The table
         if (!$table = $this->_initTable()) {
-            return $this->_forward('noroute');
+            $this->_forward('noroute');
+            return;
         }
         Mage::register('current_autogrid_table', $table);
 
@@ -101,7 +108,7 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
         Mage::register('current_generic_entity', $object);
 
         // Layout
-        $this->loadLayout(array('default', 'adminhtml_autogrid_edit'));
+        $this->loadLayout();
 
         // Title
         if ($object->getId()) {
@@ -116,13 +123,13 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
 
     /**
      * Save generic entity
-     * @return void
      */
     public function saveAction()
     {
         // The table
         if (!$table = $this->_initTable()) {
-            return $this->_forward('noroute');
+            $this->_forward('noroute');
+            return;
         }
 
         // The object
@@ -149,18 +156,18 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
             return $this->_redirect('*/*/edit', array('id' => $object->getId()));
         }
 
-        $this->_redirect('*/*/index');
+        $this->_redirect('*/*');
     }
 
     /**
      * Delete generic entity
-     * @return void
      */
     public function deleteAction()
     {
         // The table
         if (!$table = $this->_initTable()) {
-            return $this->_forward('noroute');
+            $this->_forward('noroute');
+            return;
         }
         Mage::register('current_autogrid_table', $table);
 
@@ -188,6 +195,6 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
 
         // Success
         $this->_getSession()->addSuccess($this->__('Entity deleted successfully.'));
-        $this->_redirect('*/*/index');
+        $this->_redirect('*/*');
     }
 }

@@ -19,8 +19,6 @@
 class Magehack_Autogrid_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
-     * The table ID
-     * 
      * @var string
      */
     protected $_tableId;
@@ -48,11 +46,14 @@ class Magehack_Autogrid_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * @param string $tableId
      * @return Magehack_Autogrid_Model_Table
      */
     public function getCurrentTable()
     {
         $tableId = $this->getTableId();
-        return Mage::getModel('magehack_autogrid/table')->setAutoGridTableId($tableId);
+        $tableModel = Mage::getModel('magehack_autogrid/table');
+        $tableModel->setAutoGridTableId($tableId);
+        return $tableModel;
     }
 }

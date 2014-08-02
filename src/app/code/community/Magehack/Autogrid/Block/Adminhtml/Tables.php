@@ -17,15 +17,16 @@
  */
 
 /**
- * Container of the grid of grids
+ * Container of the grid of all Magento tables
+ * 
  * @package Magehack_Autogrid
  */
 class Magehack_Autogrid_Block_Adminhtml_Tables extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
-
     /**
      * Constructor Override
-     * @return Magehack_Autogrid_Controller_Router
+     * 
+     * @return Magehack_Autogrid_Block_Adminhtml_Tables
      */
     protected function _construct()
     {
@@ -33,21 +34,19 @@ class Magehack_Autogrid_Block_Adminhtml_Tables extends Mage_Adminhtml_Block_Widg
 
         $this->_blockGroup = 'magehack_autogrid';
         $this->_controller = 'adminhtml_tables';
-        $this->_headerText = $this->__('All the tables');
+        $this->_headerText = $this->__('All Magento Tables (via Autogrid)');
 
         return $this;
     }
 
     /**
      * Prepare Layout
-     * @return Magehack_Autogrid_Controller_Router
+     * 
+     * @return Magehack_Autogrid_Block_Adminhtml_Tables
      */
     protected function _prepareLayout()
     {
         $this->_removeButton('add');
         return parent::_prepareLayout();
     }
-
-// Monsieur Biz Tag NEW_METHOD
-
 }

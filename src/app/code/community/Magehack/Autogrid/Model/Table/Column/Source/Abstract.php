@@ -51,7 +51,7 @@ abstract class Magehack_Autogrid_Model_Table_Column_Source_Abstract
      *
      * @return array
      */
-    public function getFlatOptionArray()
+    public function getGridOptionArray()
     {
         if (! isset($this->_options)) {
             $this->_loadOptions();
@@ -75,7 +75,7 @@ abstract class Magehack_Autogrid_Model_Table_Column_Source_Abstract
      *
      * @return array
      */
-    public function getSourceOptionArray()
+    public function getFormOptionArray()
     {
         if (! isset($this->_options)) {
             $this->_loadOptions();

@@ -41,7 +41,7 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit_Form extends Mage_Adminhtm
         $form->setData('data_object', $entity);
 
         $fieldset = $form->addFieldset('general', array(
-            'legend' => $helper->__('General Information')
+            'legend' => $helper->__('Table Fields')
         ));
         $table = $helper->getCurrentTable();
 

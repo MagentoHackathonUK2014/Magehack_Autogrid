@@ -12,7 +12,7 @@ interface Magehack_Autogrid_Model_Table_Column_SourceInterface
      * 
      * @return array
      */
-    public function getFlatOptionArray();
+    public function getGridOptionArray();
 
     /**
      * Return the options as a Magneto options array
@@ -26,5 +26,5 @@ interface Magehack_Autogrid_Model_Table_Column_SourceInterface
      * 
      * @return array
      */
-    public function getSourceOptionArray();
+    public function getFormOptionArray();
 }

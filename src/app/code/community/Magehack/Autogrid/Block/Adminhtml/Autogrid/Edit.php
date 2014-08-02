@@ -59,9 +59,9 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit extends Mage_Adminhtml_Blo
     public function getHeaderText()
     {
         if ($this->_getObject()->getId()) {
-            $header = 'Edit';
+            $header = $this->__('Edit Record (ID %s)', $this->_getObject()->getId());
         } else {
-            $header = 'New';
+            $header = 'New Record';
         }
         return $this->__($header);
     }

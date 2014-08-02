@@ -17,15 +17,16 @@
  */
 
 /**
- * Grid of grids
+ * Grid containing all database tables
+ *
  * @package Magehack_Autogrid
  */
 class Magehack_Autogrid_Block_Adminhtml_Tables_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
-
     /**
-     * Get collection object
-     * @return Varien_Data_Collection The collection of grids
+     * Prepare collection object
+     *
+     * @return Magehack_Autogrid_Model_Resource_Table_TableCollection The collection of tables in the database
      */
     public function getCollection()
     {
@@ -39,24 +40,25 @@ class Magehack_Autogrid_Block_Adminhtml_Tables_Grid extends Mage_Adminhtml_Block
 
     /**
      * Prepare columns
-     * @return Mbiz_Tmp_Block_Adminhtml_Foo_Grid
+     *
+     * @return Magehack_Autogrid_Block_Adminhtml_Tables_Grid
      */
     protected function _prepareColumns()
     {
-
         $this->addColumn('autogrid_table_id', [
-            'header'   => Mage::helper('magehack_autogrid')->__('ID'),
-            'type'     => 'text',
-            'getter'   => 'getAutoGridTableId',
-            'filter'   => false,
+            'header' => $this->__('Autogrid Table ID'),
+            'type' => 'text',
+            'getter' => 'getAutoGridTableId',
+            'filter' => false,
             'sortable' => false
         ]);
 
         $this->addColumn('title', [
-            'header'   => Mage::helper('magehack_autogrid')->__('Title'),
-            'type'     => 'text',
-            'getter'   => 'getTitle',
-            'filter'   => false,
+            'header' => $this->__('Title'),
+            'type' => 'text',
+            'getter' => 'getTitle',
+            'renderer' => 'magehack_autogrid/adminhtml_grid_column_renderer_tablename',
+            'filter' => false,
             'sortable' => false
         ]);
 
@@ -66,14 +68,11 @@ class Magehack_Autogrid_Block_Adminhtml_Tables_Grid extends Mage_Adminhtml_Block
     /**
      * Return row url for js event handlers
      *
-     * @param Mage_Catalog_Model_Product|Varien_Object
+     * @param Magehack_Autogrid_Model_Table $item
      * @return string
      */
     public function getRowUrl($item)
     {
-        return $this->getUrl('adminhtml/autogrid_' . $item->getId() . '/index');
+        return $this->getUrl('*/autogrid_tables/view/table/' . $item->getAutoGridTableId());
     }
-
-// Monsieur Biz Tag NEW_METHOD
-
 }

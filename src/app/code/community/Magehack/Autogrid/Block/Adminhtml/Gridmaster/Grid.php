@@ -17,7 +17,8 @@
  */
 
 /**
- * Grid of grids
+ * Grid of all autogrid tables
+ *
  * @package Magehack_Autogrid
  */
 class Magehack_Autogrid_Block_Adminhtml_Gridmaster_Grid extends Mage_Adminhtml_Block_Widget_Grid
@@ -25,7 +26,8 @@ class Magehack_Autogrid_Block_Adminhtml_Gridmaster_Grid extends Mage_Adminhtml_B
 
     /**
      * Get collection object
-     * @return Varien_Data_Collection The collection of grids
+     *
+     * @return Magehack_Autogrid_Model_Resource_Table_Collection The collection of grids
      */
     public function getCollection()
     {
@@ -39,24 +41,24 @@ class Magehack_Autogrid_Block_Adminhtml_Gridmaster_Grid extends Mage_Adminhtml_B
 
     /**
      * Prepare columns
-     * @return Mbiz_Tmp_Block_Adminhtml_Foo_Grid
+     *
+     * @return Magehack_Autogrid_Block_Adminhtml_Gridmaster_Grid
      */
     protected function _prepareColumns()
     {
-
         $this->addColumn('autogrid_table_id', [
-            'header'   => Mage::helper('magehack_autogrid')->__('ID'),
-            'type'     => 'text',
-            'getter'   => 'getAutoGridTableId',
-            'filter'   => false,
+            'header' => Mage::helper('magehack_autogrid')->__('ID'),
+            'type' => 'text',
+            'getter' => 'getAutoGridTableId',
+            'filter' => false,
             'sortable' => false
         ]);
 
         $this->addColumn('title', [
-            'header'   => Mage::helper('magehack_autogrid')->__('Title'),
-            'type'     => 'text',
-            'getter'   => 'getTitle',
-            'filter'   => false,
+            'header' => Mage::helper('magehack_autogrid')->__('Title'),
+            'type' => 'text',
+            'getter' => 'getTitle',
+            'filter' => false,
             'sortable' => false
         ]);
 
@@ -66,14 +68,11 @@ class Magehack_Autogrid_Block_Adminhtml_Gridmaster_Grid extends Mage_Adminhtml_B
     /**
      * Return row url for js event handlers
      *
-     * @param Mage_Catalog_Model_Product|Varien_Object
+     * @param Magehack_Autogrid_Model_Table $item
      * @return string
      */
     public function getRowUrl($item)
     {
-        return $this->getUrl('adminhtml/autogrid_' . $item->getId() . '/index');
+        return $this->getUrl('*/' . $item->getUri());
     }
-
-// Monsieur Biz Tag NEW_METHOD
-
 }

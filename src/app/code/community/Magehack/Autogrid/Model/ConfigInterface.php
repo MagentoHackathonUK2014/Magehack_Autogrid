@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Magento Hackathon 2014 UK
  *
@@ -15,67 +16,94 @@
  * @copyright  Copyright (c) 2014 Magento community
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
-
 interface Magehack_Autogrid_Model_ConfigInterface
 {
-    /**
-     * Return the real table name or table alias for a given table identifier.
-     * 
-     * The returned table name should NOT be resolved via core/resource->getTableName.
-     * 
-     * @param string $tableId The XML identifier for the auto grid table.
-     * @return string
-     */
-    public function getTableName($tableId);
-
-    /**
-     * Return the grid for backend grid creation
-     *
-     * @param string $tableId XML identifier for the table
-     * @return mixed
-     */
-    public function getGrid($tableId);
-
-    /**
-     * Return the grid for backend form creation
-     *
-     * @param string $tableId XML identifier for the table
-     * @return mixed
-     */
-    public function getForm($tableId);
-
-
-    /**
-     * Return the source model for grid or form
-     *
-     * @param string $tableId XML identifier for the table
-     * @param $part grid|form for which part the source model should be
-     * @return mixed
-     */
-    public function getSourceModel($tableId, $part);
+    const GRID = 'grid';
+    const FORM = 'form';
 
     /**
      * Return all identifiers from the config for easier looping
      *
-     * @return mixed array of all tableidentifiers defined in the configs
+     * @return array All table identifiers defined in the configs
      */
-    public function getTableIds();
-    
-     /** Return the table title if configured, otherwise an empty string
+    public function getAllTableIds();
+
+    /**
+     * Return the matching table ID if the specified artgument is a valid table id or table id URI.
+     * 
+     * @param string $controller
+     * @return string|false
+     */
+    public function getTableIdFromController($controller);
+
+    /**
+     * Return the table URI if configured, otherwise the table id
      * 
      * @param string $tableId
+     * @return mixed
+     */
+    public function getTableUri($tableId);
+    
+    /**
+     * Return the real table name or table alias for a given table identifier.
+     *
+     * The returned table name should NOT be resolved via core/resource->getTableName.
+     *
+     * @param string $tableId The XML identifier for the auto grid table
+     * @return string|false
+     */
+    public function getTableName($tableId);
+
+    /**
+     * Return the table title if configured, otherwise an empty string
+     *
+     * @param string $tableId The XML identifier for the auto grid table
      * @return string
      */
     public function getTableTitle($tableId);
 
     /**
-     * If a default source model is specified for the given column name, return that config value.
-     * 
-     * NOTE: This config value comes from the regular (config.xml) config, not the autogrid.xml.
-     * 
-     * @param string $columnName
-     * @return string|false
+     * Return the default value for a given column info key and column name.
+     *
+     * NOTE: This information is fetched from the merged config.xml files, NOT the autogrid.xml!
+     *
+     * @param string $colName
+     * @param string $key For example source_model or frontend_input...
+     * @return bool|string
      */
-    public function getDefaultSourceModel($columnName);
+    public function getColumnInfoDefault($colName, $key);
+
+    /**
+     * Return the grid-related data from XML for backend grid creation
+     *
+     * @param string $tableId The XML identifier for the auto grid table
+     * @return null|array
+     */
+    public function getGrid($tableId);
+
+    /**
+     * Return the form-related data from XML for backend form creation
+     *
+     * @param string $tableId The XML identifier for the auto grid table
+     * @return null|array
+     */
+    public function getForm($tableId);
+
+    /**
+     * Return info for a specific grid column
+     * 
+     * @param $tableId string An autogrid XML table identifier
+     * @param $column string Column name
+     * @return null|array
+     */
+    public function getColumnInfo($tableId, $column);
+
+    /**
+     * Return info for a specific form field
+     * 
+     * @param $tableId string An autogrid XML table identifier
+     * @param $field string Field name
+     * @return null|array
+     */
+    public function getFieldInfo($tableId, $field);
 }

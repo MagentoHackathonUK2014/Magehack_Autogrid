@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Magento Hackathon 2014 UK
  *
@@ -15,183 +16,154 @@
  * @copyright  Copyright (c) 2014 Magento community
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigInterface
 {
+    /**
+     * Config file name
+     */
+    const FILE = 'autogrid.xml';
 
     /**
-     * @var array
-     */
-    protected $_forms = array();
-    /**
+     * Cache of prepared table grid data
+     *
      * @var array
      */
     protected $_grids = array();
+
     /**
+     * Cache of prepared table form data
+     *
      * @var array
      */
-    protected $_tableNames = array();
+    protected $_forms = array();
+
     /**
-     * @var
+     * Merged autogrid XML config
+     *
+     * @var Mage_Core_Model_Config_Base
      */
     protected $_config;
 
-    protected $_sourceModels;
-
-    protected $_tables;
-
-    public function __construct()
-    {
-        $this->_config = Mage::getConfig()->loadModulesConfiguration('autogrid.xml');
-    }
-
+    /**
+     * List of possible column info keys.
+     *
+     * @var array
+     */
+    protected $_columnInfoKeys = array(
+        'frontend_label',
+        'backend_type',
+        'frontend_model',
+        'source_model',
+        'backend_model',
+    );
 
     /**
-     * Get all table configurations in one go.
+     * List of possible field info keys.
      *
-     * @return array
+     * @var array
      */
-    public function getTables()
-    {
-        $tables = array();
-            foreach (Mage::getConfig()->loadModulesConfiguration('autogrid.xml')->getNode('tables')->asCanonicalArray() as $tableName => $tableParameters) {
-            $tables[$tableName]= $tableParameters;
-        }
-        return $tables;
-    }
+    protected $_fieldInfoKeys = array(
+        'frontend_label',
+        'backend_type',
+        'frontend_input',
+        'frontend_class',
+        'source_model',
+        'backend_model',
+        'is_required',
+        'default_value',
+        'is_unique',
+        'validation_regex',
+        'note',
+        'is_visible',
+        'disabled',
+    );
 
     /**
-     * Return the real table name or table alias for a given table identifier.
+     * DI setter method to provide method of passing in a loaded config model.
      *
-     * The real table name has to be specified in autogrid.xml to be taken care of.
-     *
-     * @param string $tableId XML identifier for the table
-     * @return mixed
+     * @param Mage_Core_Model_Config_Base $config
      */
-    public function getTableName($tableId)
+    public function setConfig(Mage_Core_Model_Config_Base $config)
     {
-        if (!isset($this->_tableNames[$tableId])) {
-            if (!$this->_config->getNode('tables/'.$tableId.'/table')) {
-//                Mage::log('Tablename is missing for: '.$tableId);
-                return $tableId;
-            }
-            $this->_tableNames[$tableId] = $this->_config->getNode('tables/' . $tableId . '/table')->__toString();
-        }
-        return $this->_tableNames[$tableId];
-    }
-
-    /**
-     * Return the grid for backend grid creation
-     *
-     * @param string $tableId XML identifier for the table
-     * @return mixed
-     */
-    public function getGrid($tableId)
-    {
-        if (!isset($this->_grids[$tableId])) {
-            if (!$this->_config->getNode('tables/'.$tableId.'/grid')) {
-                return false;
-            }
-            foreach ($this->_config->getNode('tables/' . $tableId . '/grid') as $gridElement) {
-                $this->_grids[$tableId] = $gridElement->asCanonicalArray();
-                foreach ($this->_grids[$tableId]['columns'] as $colName => $info) {
-                    if (isset($info['source_model']) && $info['source_model']) {
-                        $options = $this->getOptions($tableId, 'grid', $colName, $info['source_model']);
-                        $this->_grids[$tableId]['columns'][$colName]['options'] = $options;
-                        $this->_grids[$tableId]['columns'][$colName]['type'] = 'options';
-                    }
-                }
-            }
-        }
-        return $this->_grids[$tableId];
-    }
-
-    /**
-     * Return the grid for backend form creation
-     *
-     * @param string $tableId XML identifier for the table
-     * @return mixed
-     */
-    public function getForm($tableId)
-    {
-            if (!isset($this->_forms[$tableId])) {
-                if (!$this->_config->getNode('tables/'.$tableId.'/form')) {
-                    return false;
-                }
-                $this->_forms[$tableId] = $this->_config->getNode('tables/' . $tableId . '/form')->asCanonicalArray();
-
-                foreach ($this->_forms[$tableId]['columns'] as $colName => $info) {
-                    if (isset($info['source_model']) && $info['source_model']) {
-                        $options = $this->getOptions($tableId, 'form', $colName, $info['source_model']);
-                        $this->_forms[$tableId]['columns'][$colName]['values'] = $options;
-                        if (! isset($this->_forms[$tableId]['columns'][$colName]['type'])) {
-                            $this->_forms[$tableId]['columns'][$colName]['type'] = 'select';
-                        }
-                    }
-                }
-            }
-            return $this->_forms[$tableId];
-    }
-
-    /**
-     * Return the source model for grid or form
-     *
-     * @param string $tableId XML identifier for the table
-     * @param $part grid|form for which part the source model should be
-     * @return mixed
-     */
-    public function getSourceModel($tableId, $part)
-    {
-        if($node = $this->_config->getNode('tables/'.$tableId.'/'.$part.'/source_model')) {
-            return Mage::getModel(substr($node->__toString(), 0, strpos($node->__toString(), '::')));
-        }
-        return false;
-    }
-
-    /**
-     * Return Source Model Options based on Model and specified Methods
-     *
-     * @param string $tableId XML identifier for the table
-     * @param string $part grid|form for which part the source model should be
-     * @param string $columnId column-identifier
-     * @param string $sourceModelClass
-     * @return array|false
-     */
-    public function getOptions($tableId, $part, $columnId, $sourceModelClass = null)
-    {
-        if (! $sourceModelClass) {
-            $sourceModelClass = (string)$this->_config->getNode('tables/'.$tableId.'/'.$part.'/columns/'.$columnId.'/source_model');
-        }
-        if (! $sourceModelClass) {
-            $sourceModelClass = $this->getDefaultSourceModel($columnId);
-        }
-        if($sourceModelClass) {
-            $data = explode('::', $sourceModelClass);
-            if (empty($data[1]) && $part == 'grid') {
-                $data[1] = 'getFlatOptionArray';
-            } elseif (empty($data[1]) && $part == 'form') {
-                $data[1] = 'getSourceOptionsArray';
-            }
-            $options = Mage::getSingleton($data[0])->{$data[1]}();
-            return $options;
-        }
-        return false;
+        $this->_config = $config;
     }
 
     /**
      * Return all identifiers from the config for easier looping
      *
-     * @return mixed array of all tableidentifiers defined in the configs
+     * @return mixed array of all table identifiers defined in the configs
      */
-    public function getTableIds()
+    public function getAllTableIds()
     {
-        if (!isset($this->_tables)) {
+        $tableIds = array_keys($this->_getConfig()->getNode('tables')->asArray());
+        return $tableIds;
+    }
 
-            foreach ($this->_config->getNode('tables')->asArray() as $tableId => $table) {
-                $this->_tables[] = $tableId;
+    /**
+     * Return the matching table ID if the specified artgument is a valid table id or table id URI.
+     *
+     * @param string $controller
+     * @return string|false
+     */
+    public function getTableIdFromController($controller)
+    {
+        // only allow alphanumeric characters 
+        if (! preg_match('#^[a-z][1-z0-9_]+$#i', $controller)) {
+            return false;
+        }
+        $xpath = "tables/*/uri[text()='$controller']";
+        $nodes = $this->_getConfig()->getNode()->xpath($xpath);
+        if ($nodes) {
+            // find matching table uri
+            $tableId = $nodes[0]->xpath('..');
+            $tableId = $tableId[0]->getName();
+            return $tableId;
+        } else {
+            // find matching table id without an uri node
+            $tableId = $controller;
+            $tables = $this->getAllTableIds();
+            if (in_array($tableId, $tables)) {
+                $uri = $this->getTableUri($tableId);
+                if ($uri === $tableId) {
+                    // no uri configured
+                    return $tableId;
+                }
             }
         }
-        return $this->_tables;
+        return false;
+    }
+
+    /**
+     * Return the table URI if configured, otherwise the table id
+     *
+     * @param string $tableId
+     * @return mixed
+     */
+    public function getTableUri($tableId)
+    {
+        $path = "tables/$tableId/uri";
+        if ($uri = $this->_getConfig()->getNode($path)) {
+            return $uri;
+        }
+        return $tableId;
+    }
+
+
+    /**
+     * Return the real table name or table alias for a given table identifier.
+     *
+     * The real table name has to be specified in autogrid.xml
+     *
+     * @param string $tableId XML identifier for the table
+     * @return string|false
+     */
+    public function getTableName($tableId)
+    {
+        $path = "tables/$tableId/table";
+        if ($tableName = $this->_getConfig()->getNode($path)) {
+            return (string)$tableName;
+        }
+        return false;
     }
 
     /**
@@ -202,27 +174,319 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      */
     public function getTableTitle($tableId)
     {
-        if($node = $this->_config->getNode('tables/'.$tableId.'/title')) {
-            return (string) $node;
+        return (string)$this->_getConfig()->getNode("tables/$tableId/title");
+    }
+
+
+    /**
+     * Return the grid data for the given table id
+     *
+     * @param string $tableId XML identifier for the table
+     * @return false|array
+     */
+    public function getGrid($tableId)
+    {
+        if (!isset($this->_grids[$tableId])) {
+            /** @var Varien_Simplexml_Element $gridConfig */
+            $gridConfig = $this->_getConfig()->getNode('tables/' . $tableId . '/grid');
+            if (!$gridConfig) {
+                $this->_grids[$tableId] = false;
+            } else {
+                $gridInfo = array();
+                foreach ($gridConfig->asCanonicalArray() as $column => $info) {
+                    if ($colDef = $this->_buildColumnInfo($column, $info)) {
+                        $gridInfo[$column] = $colDef;
+                    }
+                }
+                $this->_grids[$tableId] = $gridInfo;
+            }
+        }
+        return $this->_grids[$tableId];
+    }
+
+    /**
+     * Return the form data for the given table id
+     *
+     * @param string $tableId XML identifier for the table
+     * @return false array
+     */
+    public function getForm($tableId)
+    {
+        if (!isset($this->_forms[$tableId])) {
+            $formConfig = $this->_getConfig()->getNode('tables/' . $tableId . '/form');
+            if (!$formConfig) {
+                $this->_forms[$tableId] = false;
+            } else {
+                $formInfo = array();
+                foreach ($formConfig->asCanonicalArray() as $field => $info) {
+                    if ($fieldDef = $this->_buildFormInfo($field, $info)) {
+                        $formInfo[$field] = $fieldDef;
+                    }
+                }
+                $this->_forms[$tableId] = $formInfo;
+            }
+        }
+        return $this->_forms[$tableId];
+    }
+
+    /**
+     * Return info for a specific grid column
+     *
+     * @param $tableId string An autogrid XML table identifier
+     * @param $column string Column name
+     * @return null|array
+     */
+    public function getColumnInfo($tableId, $column)
+    {
+        $gridInfo = $this->getGrid($tableId);
+        if (!isset($gridInfo[$column]) || !$gridInfo[$column]) {
+            // Column is not listed in the configuration.
+            // Apply possible defaults
+            $default = $this->_buildColumnInfo($column, array());
+            if ($default) {
+                $this->_grids[$tableId][$column] = $default;
+                $gridInfo[$column] = $default;
+            }
+        }
+        return isset($gridInfo[$column]) ? $gridInfo[$column] : null;
+    }
+
+    /**
+     * Return info for a specific form field
+     *
+     * @param $tableId string An autogrid XML table identifier
+     * @param $field string Field name
+     * @return null|array
+     */
+    public function getFieldInfo($tableId, $field)
+    {
+        $formInfo = $this->getForm($tableId);
+        if (!isset($formInfo[$field]) || !$formInfo[$field]) {
+            // Column is not listed in the configuration.
+            // Apply possible defaults
+            $default = $this->_buildFormInfo($field, array());
+            if ($default) {
+                $this->_forms[$tableId][$field] = $default;
+                $formInfo[$field] = $default;
+            }
+        }
+        return isset($formInfo[$field]) ? $formInfo[$field] : null;
+    }
+
+    /**
+     * Build array with grid columns
+     *
+     * Any key specified in the configuration is kept intact.
+     * Any default values based on the column name should be merged in if
+     * not specified in the autogrid config.
+     *
+     * Default values are checked for any key in $colInfo that is empty
+     * and for every name in the $this->_columnInfoKeys array.
+     *
+     * @param string $colName
+     * @param array $colInfo Column info from XML
+     * @return array
+     */
+    protected function _buildColumnInfo($colName, array $colInfo)
+    {
+        $result = $this->_prepareColFieldInfo($colName, $colInfo, $this->_columnInfoKeys);
+        $result['type'] = $this->_getColumnType($colName, $result);
+        if ('options' == $result['type']) {
+            $result['options'] = $this->_getGridOptionsFromSource($result);
+        }
+        if (!isset($result['index']) && !isset($result['getter'])) {
+            $result['index'] = $colName;
+        }
+        if (!isset($result['header'])) {
+            $result['header'] = ucwords(str_replace('_', ' ', $colName));
+        }
+        return $result;
+    }
+
+    /**
+     * Build array with form fields
+     *
+     * Any key specified in the configuration is kept intact.
+     * Any default values based on the field name should be merged in if
+     * not specified in the autogrid config.
+     *
+     * Default values are checked for any key in $fieldInfo that is empty
+     * and for every name in the $this->_fieldInfoKeys array.
+     *
+     * @param string $fieldName
+     * @param array $fieldInfo Field info from XML
+     * @return array
+     */
+    protected function _buildFormInfo($fieldName, array $fieldInfo)
+    {
+        $result = $this->_prepareColFieldInfo($fieldName, $fieldInfo, $this->_fieldInfoKeys);
+        $result['frontend_input'] = $this->_getFrontendInputType($fieldName, $result);
+        if (in_array($result['frontend_input'], array('select', 'multiselect'))) {
+            $result['values'] = $this->_getFormOptionsFromSource($result);
+        }
+        elseif ($result['frontend_input'] == 'date') {
+            if (! isset($result['format'])) {
+                $result['format'] = Mage::app()->getLocale()->getDateFormat(
+                    Mage_Core_Model_Locale::FORMAT_TYPE_SHORT
+                );
+            }
+            if (! isset($result['image'])) {
+                $result['image'] = Mage::getDesign()->getSkinUrl('images/grid-cal.gif');
+            }
+            if (! isset($result['class'])) {
+                $result['class'] = 'validate-date validate-date-range date-range-custom_theme-to';
+            }
+        }
+        if (! isset($result['name'])) {
+            $result['name'] = $fieldName;
+        }
+        if (!isset($result['label'])) {
+            $result['label'] = ucwords(str_replace('_', ' ', $fieldName));
+        }
+        return $result;
+    }
+
+    /**
+     * Build col or field definition array from config values with merged default values.
+     *
+     * This method is shared for grid column info and form field info.
+     *
+     * @param string $name
+     * @param array $info
+     * @param array $defaultKeys
+     * @return array
+     */
+    private function _prepareColFieldInfo($name, array $info, array $defaultKeys)
+    {
+        $result = array();
+        foreach ($info as $key => $value) {
+            if (!$value && ($default = $this->getColumnInfoDefault($name, $key))) {
+                $value = $default;
+            }
+            if (null !== $value) {
+                $result[$key] = $value;
+            }
+        }
+        foreach ($defaultKeys as $key) {
+            if (!isset($result[$key])) {
+                if ($default = $this->getColumnInfoDefault($name, $key)) {
+                    $result[$key] = $default;
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Return the default value for a given column info key and column name.
+     *
+     * NOTE: This information is fetched from the merged config.xml files, NOT the autogrid.xml!
+     *
+     * @param string $colName
+     * @param string $key
+     * @return bool|string
+     */
+    public function getColumnInfoDefault($colName, $key)
+    {
+        $path = "adminhtml/autogrid/column_defaults/$colName/$key";
+        $default = Mage::getConfig()->getNode($path);
+        if ($default) {
+            return (string)$default;
         }
         return false;
     }
 
     /**
-     * If a default source model is specified for the given column name, return that config value.
+     * Get all table configurations in one go.
      *
-     * NOTE: This config value comes from the regular (config.xml) config, not the autogrid.xml.
-     *
-     * @param string $columnName
-     * @return string|false
+     * @return Mage_Core_Model_Config_Base
      */
-    public function getDefaultSourceModel($columnName)
+    private function _getConfig()
     {
-        $path = 'adminhtml/autogrid/column_type_defaults/source_model/' . $columnName;
-        $sourceModelClass = Mage::getConfig()->getNode($path);
-        if (! $sourceModelClass) {
-            return false;
+        if (is_null($this->_config)) {
+            $this->_config = Mage::getConfig()->loadModulesConfiguration(self::FILE);
         }
-        return (string) $sourceModelClass;
+
+        return $this->_config;
+    }
+
+    /**
+     * Figure out and return the type for the given column.
+     *
+     * @param string $colName
+     * @param array $info
+     * @return string
+     */
+    protected function _getColumnType($colName, array $info)
+    {
+        if (isset($info['type'])) {
+            return $info['type'];
+        }
+        if (isset($info['source_model'])) {
+            return 'options';
+        }
+        if (isset($info['backend_type']) && 'int' == $info['backend_type']) {
+            return 'numeric';
+        }
+        if (in_array($colName, array('entity_id', 'id'))) {
+            return 'numeric';
+        }
+        return 'text';
+    }
+
+    /**
+     * Figure out and return the input type for the given field.
+     *
+     * @param string $fieldName
+     * @param array $info
+     * @return string
+     */
+    protected function _getFrontendInputType($fieldName, array $info)
+    {
+        if (isset($info['frontend_input'])) {
+            return $info['frontend_input'];
+        }
+        if (isset($info['source_model'])) {
+            return 'select';
+        }
+        if (in_array($fieldName, array('created_at', 'updated_at', 'date'))) {
+            return 'date';
+        }
+        if ('entity_id' === $fieldName) {
+            return 'label';
+        }
+        return 'text';
+    }
+
+    /**
+     * Return an grid options array for the source model
+     *
+     * @param array $info
+     * @return array
+     */
+    protected function _getGridOptionsFromSource(array $info)
+    {
+        if (isset($info['source_model'])) {
+            /** @var Magehack_Autogrid_Model_Table_Column_SourceInterface $source */
+            $source = Mage::getModel($info['source_model']);
+            return $source->getGridOptionArray();
+        }
+        return array();
+    }
+
+    /**
+     * Return a form options array for the source model
+     *
+     * @param array $info
+     * @return array
+     */
+    protected function _getFormOptionsFromSource(array $info)
+    {
+        if (isset($info['source_model'])) {
+            /** @var Magehack_Autogrid_Model_Table_Column_SourceInterface $source */
+            $source = Mage::getModel($info['source_model']);
+            return $source->getFormOptionArray();
+        }
+        return array();
     }
 }
