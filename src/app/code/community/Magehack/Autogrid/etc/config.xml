@@ -85,7 +85,12 @@
                 </website_ids>
                 <created_at>
                     <disabled>1</disabled>
+                    <backend_model>magehack_autogrid/table_column_backend_createdAt</backend_model>
                 </created_at>
+                <updated_at>
+                    <disabled>1</disabled>
+                    <backend_model>magehack_autogrid/table_column_backend_updatedAt</backend_model>
+                </updated_at>
             </column_defaults>
         </autogrid>
         <layout>

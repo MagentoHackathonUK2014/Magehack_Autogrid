@@ -30,11 +30,6 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
     protected $_tableParser;
 
     /**
-     * @var Magehack_Autogrid_Helper_Data
-     */
-    protected $_helper;
-
-    /**
      * Resource initialization
      */
     protected function _construct()
@@ -54,16 +49,6 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
     }
 
     /**
-     * Setter DI for helper
-     * 
-     * @param Magehack_Autogrid_Helper_Data $helper
-     */
-    public function setHelper(Magehack_Autogrid_Helper_Data $helper)
-    {
-        $this->_helper = $helper;
-    }
-
-    /**
      * Setter DI for table parser
      * 
      * @param Magehack_Autogrid_Model_Resource_Table_ParserInterface $parser
@@ -71,17 +56,6 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
     public function setTableParser(Magehack_Autogrid_Model_Resource_Table_ParserInterface $parser)
     {
         $this->_tableParser = $parser;
-    }
-
-    /**
-     * @return Magehack_Autogrid_Helper_Data
-     */
-    private function _getHelper()
-    {
-        if (! isset($this->_helper)) {
-            $this->_helper = Mage::helper('magehack_autogrid');
-        }
-        return $this->_helper;
     }
     
     private function _getTableParser()
@@ -120,5 +94,47 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
         $primaryKey = $tableParser->getPrimaryKey();
         $this->_resourceModel = null;
         $this->_init($tableName, $primaryKey);
+    }
+
+    private function _walkBackends(Magehack_Autogrid_Model_GenericEntity $object, $method)
+    {
+        $columns = $this->_getTableParser()->getTableColumns();
+        foreach (array_keys($columns) as $column) {
+            $info = $this->_getConfig()->getColumnInfo($column, $column);
+            if (isset($info['backend_model']) && $info['backend_model']) {
+                $backendModel = Mage::getModel($info['backend_model']);
+                $backendModel->$method($object);
+            }
+        }
+    }
+
+    protected function _afterLoad(Mage_Core_Model_Abstract $object)
+    {
+        $this->_walkBackends($object, 'afterLoad');
+        return parent::_afterLoad($object);
+    }
+
+    protected function _beforeSave(Mage_Core_Model_Abstract $object)
+    {
+        $this->_walkBackends($object, 'beforeSave');
+        return parent::_beforeSave($object);
+    }
+
+    protected function _afterSave(Mage_Core_Model_Abstract $object)
+    {
+        $this->_walkBackends($object, 'afterSave');
+        return parent::_afterSave($object);
+    }
+
+    protected function _beforeDelete(Mage_Core_Model_Abstract $object)
+    {
+        $this->_walkBackends($object, 'beforeDelete');
+        return parent::_beforeDelete($object);
+    }
+
+    protected function _afterDelete(Mage_Core_Model_Abstract $object)
+    {
+        $this->_walkBackends($object, 'afterDelete');
+        return parent::_afterDelete($object);
     }
 }
