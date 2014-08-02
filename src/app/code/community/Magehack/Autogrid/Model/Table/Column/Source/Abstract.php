@@ -90,10 +90,7 @@ abstract class Magehack_Autogrid_Model_Table_Column_Source_Abstract
      */
     protected function _loadOptions()
     {
-        if (! isset($this->_collection)) {
-            Mage::throwException('No collection class set on ' . get_class($this));
-        }
-        $collection = Mage::getResourceModel($this->_collection);
+        $collection = $this->_getCollection();
         foreach ($collection as $id => $model) {
             if (isset($this->_valueAttribute)) {
                 $value = $model->getData($this->_valueAttribute);
@@ -103,5 +100,14 @@ abstract class Magehack_Autogrid_Model_Table_Column_Source_Abstract
             $label = $model->getData($this->_labelAttribute);
             $this->_options[] = array('value' => $value, 'label' => $label);
         }
+    }
+    
+    protected function _getCollection()
+    {
+        if (! isset($this->_collection)) {
+            Mage::throwException('No collection class set on ' . get_class($this));
+        }
+        $collection = Mage::getResourceModel($this->_collection);
+        return $collection;
     }
 }
