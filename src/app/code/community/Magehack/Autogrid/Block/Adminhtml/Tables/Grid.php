@@ -45,7 +45,6 @@ class Magehack_Autogrid_Block_Adminhtml_Tables_Grid extends Mage_Adminhtml_Block
      */
     protected function _prepareColumns()
     {
-
         $this->addColumn('autogrid_table_id', [
             'header' => $this->__('Autogrid Table ID'),
             'type' => 'text',
@@ -58,6 +57,7 @@ class Magehack_Autogrid_Block_Adminhtml_Tables_Grid extends Mage_Adminhtml_Block
             'header' => $this->__('Title'),
             'type' => 'text',
             'getter' => 'getTitle',
+            'renderer' => 'magehack_autogrid/adminhtml_grid_column_renderer_tablename',
             'filter' => false,
             'sortable' => false
         ]);
@@ -73,6 +73,6 @@ class Magehack_Autogrid_Block_Adminhtml_Tables_Grid extends Mage_Adminhtml_Block
      */
     public function getRowUrl($item)
     {
-        return $this->getUrl('*/' . $item->getUri() . '/');
+        return $this->getUrl('*/autogrid_tables/view/table/' . $item->getAutoGridTableId());
     }
 }

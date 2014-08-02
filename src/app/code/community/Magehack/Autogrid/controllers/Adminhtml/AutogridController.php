@@ -18,6 +18,7 @@
 
 /**
  * Adminhtml_Autogrid Controller
+ * 
  * @package Magehack_Autogrid
  */
 class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Controller_Action
@@ -43,7 +44,6 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
             $request->getControllerName().$delimiter.
             $request->getRequestedActionName();
     }
-
 
     /**
      * Init the table
@@ -72,7 +72,7 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
     }
 
     /**
-     * Render and return the grid block only for ajac paging, filtering and sorting.
+     * Render and return the grid block only for ajax paging, filtering and sorting.
      */
     public function ajaxGridAction()
     {
@@ -123,7 +123,6 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
 
     /**
      * Save generic entity
-     * @return void
      */
     public function saveAction()
     {
@@ -162,7 +161,6 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
 
     /**
      * Delete generic entity
-     * @return void
      */
     public function deleteAction()
     {

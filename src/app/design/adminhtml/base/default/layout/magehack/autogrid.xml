@@ -27,16 +27,16 @@
         <block type="magehack_autogrid/adminhtml_autogrid_grid" output="toHtml"/>
     </adminhtml_autogrid_ajaxgridaction>
 
+    <adminhtml_autogrid_edit>
+        <block type="magehack_autogrid/adminhtml_autogrid_edit" name="form_container" parent="content" />
+    </adminhtml_autogrid_edit>
+
     <adminhtml_gridmaster_index>
         <block type="magehack_autogrid/adminhtml_gridmaster" name="grid_container" parent="content" />
     </adminhtml_gridmaster_index>
 
-    <adminhtml_tables_index>
+    <adminhtml_autogrid_tables_index>
         <block type="magehack_autogrid/adminhtml_tables" name="grid_container" parent="content" />
-    </adminhtml_tables_index>
-
-    <adminhtml_autogrid_edit>
-        <block type="magehack_autogrid/adminhtml_autogrid_edit" name="form_container" parent="content" />
-    </adminhtml_autogrid_edit>
+    </adminhtml_autogrid_tables_index>
 
 </layout>

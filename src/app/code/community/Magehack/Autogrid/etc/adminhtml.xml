@@ -29,7 +29,7 @@
                 <autogrid_tables translate="title" module="magehack_autogrid">
                     <title>All Magento Tables (via Autogrid)</title>
                     <sort_order>10</sort_order>
-                    <action>adminhtml/tables/index</action>
+                    <action>adminhtml/autogrid_tables/index</action>
                 </autogrid_tables>
             </children>
         </system>

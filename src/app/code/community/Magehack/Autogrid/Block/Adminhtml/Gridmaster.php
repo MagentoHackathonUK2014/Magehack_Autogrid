@@ -17,16 +17,16 @@
  */
 
 /**
- * Container of the grid of grids
+ * Container of the grid of configured autogrids
+ * 
  * @package Magehack_Autogrid
  */
 class Magehack_Autogrid_Block_Adminhtml_Gridmaster extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
-
     /**
      * Constructor Override
      * 
-     * @return Magehack_Autogrid_Controller_Router
+     * @return Magehack_Autogrid_Block_Adminhtml_Gridmaster
      */
     protected function _construct()
     {
@@ -42,14 +42,11 @@ class Magehack_Autogrid_Block_Adminhtml_Gridmaster extends Mage_Adminhtml_Block_
     /**
      * Prepare Layout
      * 
-     * @return Magehack_Autogrid_Controller_Router
+     * @return Magehack_Autogrid_Block_Adminhtml_Gridmaster
      */
     protected function _prepareLayout()
     {
         $this->_removeButton('add');
         return parent::_prepareLayout();
     }
-
-// Monsieur Biz Tag NEW_METHOD
-
 }

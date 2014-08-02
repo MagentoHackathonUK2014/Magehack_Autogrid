@@ -17,12 +17,12 @@
  */
 
 /**
- * Adminhtml_Gridmaster Controller
+ * Adminhtml autogrid all tables grid controller
+ * 
  * @package Magehack_Autogrid
  */
-class Magehack_Autogrid_Adminhtml_TablesController extends Mage_Adminhtml_Controller_Action
+class Magehack_Autogrid_Adminhtml_Autogrid_TablesController extends Mage_Adminhtml_Controller_Action
 {
-
     /**
      * Pre dispatch
      */

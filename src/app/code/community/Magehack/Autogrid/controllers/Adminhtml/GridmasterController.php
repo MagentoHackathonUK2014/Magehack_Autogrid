@@ -17,7 +17,7 @@
  */
 
 /**
- * Adminhtml_Gridmaster Controller
+ * Adminhtml All configured autogrid tables controller
  * 
  * @package Magehack_Autogrid
  */
@@ -48,7 +48,6 @@ class Magehack_Autogrid_Adminhtml_GridmasterController extends Mage_Adminhtml_Co
     }
 
     /**
-     * Is allowed?
      * @return bool
      */
     protected function _isAllowed()

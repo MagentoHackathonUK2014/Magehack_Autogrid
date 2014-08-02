@@ -37,8 +37,6 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid
 
         parent::_construct();
     }
-    
-    
 
     /**
      * @return Mage_Adminhtml_Model_Session
