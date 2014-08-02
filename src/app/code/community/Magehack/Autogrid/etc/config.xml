@@ -59,27 +59,39 @@
     <adminhtml>
         <autogrid>
             <column_defaults>
+                <entity_type_id>
+                    <frontend_input>select</frontend_input>
+                    <source_model>magehack_autogrid/table_column_source_entityTypeId</source_model>
+                </entity_type_id>
+                <attribute_set_id>
+                    <frontend_input>select</frontend_input>
+                    <source_model>magehack_autogrid/table_column_source_attributeSetId</source_model>
+                </attribute_set_id>
+                <store_id>
+                    <frontend_input>select</frontend_input>
+                    <source_model>magehack_autogrid/table_column_source_storeId</source_model>
+                </store_id>
+                <store_ids>
+                    <frontend_input>multiselect</frontend_input>
+                    <source_model>magehack_autogrid/table_column_source_storeId</source_model>
+                </store_ids>
+                <website_id>
+                    <frontend_input>select</frontend_input>
+                    <source_model>magehack_autogrid/table_column_source_websiteId</source_model>
+                </website_id>
+                <website_ids>
+                    <frontend_input>multiselect</frontend_input>
+                    <source_model>magehack_autogrid/table_column_source_websiteId</source_model>
+                </website_ids>
                 <source_model>
-                    <entity_type_id>magehack_autogrid/table_column_source_entityTypeId</entity_type_id>
-                    <attribute_set_id>magehack_autogrid/table_column_source_attributeSetId</attribute_set_id>
-                    <store_id>magehack_autogrid/table_column_source_storeId</store_id>
-                    <store_ids>magehack_autogrid/table_column_source_storeId</store_ids>
-                    <website_id>magehack_autogrid/table_column_source_websiteId</website_id>
-                    <website_ids>magehack_autogrid/table_column_source_websiteId</website_ids>
                     <has_options>magehack_autogrid/table_column_source_yesno</has_options>
                 </source_model>
-                <frontend_input>
-                    <entity_type_id>select</entity_type_id>
-                    <attribute_set_id>select</attribute_set_id>
-                    <store_id>select</store_id>
-                    <store_ids>multiselect</store_ids>
-                    <website_id>select</website_id>
-                    <website_ids>multiselect</website_ids>
-                    <has_options>select</has_options>
-                </frontend_input>
-                <disabled>
-                    <created_at>1</created_at>
-                </disabled>
+                <has_options>
+                    <frontend_input>select</frontend_input>
+                </has_options>
+                <created_at>
+                    <disabled>1</disabled>
+                </created_at>
             </column_defaults>
         </autogrid>
         <layout>

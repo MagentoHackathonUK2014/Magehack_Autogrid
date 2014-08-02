@@ -142,7 +142,7 @@ EOX;
     public function testItReturnsTheDefaultForATableName($key, $expected)
     {
         $columnName = 'test';
-        $path = "adminhtml/autogrid/column_defaults/$key/$columnName";
+        $path = "adminhtml/autogrid/column_defaults/$columnName/$key";
         $this->app()->getConfig()->setNode($path, $expected);
         
         $instance = $this->getInstance();
@@ -210,9 +210,9 @@ EOX;
     {
         $sourceModel = 'magehack_autogrid/table_column_source_storeId';
         $options = Mage::getModel($sourceModel)->getGridOptionArray();
-        $path = "adminhtml/autogrid/column_defaults/source_model/store_id";
+        $path = "adminhtml/autogrid/column_defaults/store_id/source_model";
         $this->app()->getConfig()->setNode($path, $sourceModel);
-        $path = "adminhtml/autogrid/column_defaults/backend_type/store_id";
+        $path = "adminhtml/autogrid/column_defaults/store_id/backend_type";
         $this->app()->getConfig()->setNode($path, 'int');
         
         $tableId = 'test_table_id';

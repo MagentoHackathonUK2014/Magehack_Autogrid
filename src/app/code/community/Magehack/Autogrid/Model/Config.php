@@ -388,7 +388,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      */
     public function getColumnInfoDefault($colName, $key)
     {
-        $path = "adminhtml/autogrid/column_defaults/$key/$colName";
+        $path = "adminhtml/autogrid/column_defaults/$colName/$key";
         $default = Mage::getConfig()->getNode($path);
         if ($default) {
             return (string)$default;
