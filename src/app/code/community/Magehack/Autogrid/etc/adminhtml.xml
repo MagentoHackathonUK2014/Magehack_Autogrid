@@ -26,11 +26,14 @@
                     <sort_order>9</sort_order>
                     <action>adminhtml/gridmaster/index</action>
                 </autogrid_master>
+                <!--
+                Disable since table content editing isn't implemented
                 <autogrid_tables translate="title" module="magehack_autogrid">
                     <title>All Magento Tables (via Autogrid)</title>
                     <sort_order>10</sort_order>
                     <action>adminhtml/autogrid_tables/index</action>
                 </autogrid_tables>
+                -->
             </children>
         </system>
     </menu>
@@ -47,9 +50,11 @@
                             <autogrid_master translate="title" module="magehack_autogrid">
                                 <title>All Autogrid Tables</title>
                             </autogrid_master>
+                            <!--
+                            Disable since table content editing isn't implemented.
                             <autogrid_tables translate="title" module="magehack_autogrid">
                                 <title>All Magento Tables (via Autogrid)</title>
-                            </autogrid_tables>
+                            </autogrid_tables>-->
                         </children>
                     </system>
                 </children>
