@@ -103,7 +103,7 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
         // The object
         $object = Mage::getModel('magehack_autogrid/genericEntity')
             ->setAutoGridTableId($table->getAutoGridTableId())
-            ->load($this->getRequest()->getParam('id', null))
+            ->load($this->getRequest()->getParam('id'))
         ;
         Mage::register('current_generic_entity', $object);
 
@@ -133,23 +133,28 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
         }
 
         // The object
+        $pkColumn = $table->getPrimaryKey();
+        $id = $this->getRequest()->getParam($pkColumn);
         $object = Mage::getModel('magehack_autogrid/genericEntity')
             ->setAutoGridTableId($table->getAutoGridTableId())
-            ->load($this->getRequest()->getParam('id', null))
-        ;
+            ->load($id);
 
         // Save it
         try {
             $object->addData($this->getRequest()->getPost());
+            if ('' === $id) {
+                // The primary key has to be null (not '') to qualify as a new record
+                $object->unsetData($pkColumn);
+            }
             $object->save();
         } catch (Mage_Core_Exception $e) {
-            $this->_getSession()->addError($this->__('An error occurred.'));
+            $this->_getSession()->addError($this->__('An error occurred: %s', $e->getMessage()));
             $this->_redirectReferer();
             return;
         }
 
         // Success
-        $this->_getSession()->addSuccess($this->__('Entity saved successfully.'));
+        $this->_getSession()->addSuccess($this->__('Entity %s saved successfully.', $object->getId()));
 
         // check if 'Save and Continue'
         if ($this->getRequest()->getParam('back')) {
@@ -172,14 +177,15 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
         Mage::register('current_autogrid_table', $table);
 
         // The object
+        $id = $this->getRequest()->getParam('id');
         $object = Mage::getModel('magehack_autogrid/genericEntity')
             ->setAutoGridTableId($table->getAutoGridTableId())
-            ->load($this->getRequest()->getParam('id', null))
+            ->load($id)
         ;
 
         // No object?
         if (!$object->getId()) {
-            $this->_getSession()->addError($this->__('Entity not found.'));
+            $this->_getSession()->addError($this->__('Entity %s not found.', $id));
             $this->_redirectReferer();
             return;
         }
@@ -188,13 +194,13 @@ class Magehack_Autogrid_Adminhtml_AutogridController extends Mage_Adminhtml_Cont
         try {
             $object->delete();
         } catch (Mage_Core_Exception $e) {
-            $this->_getSession()->addError($this->__('An error occurred.'));
+            $this->_getSession()->addError($this->__('An error occurred: %s', $e->getMessage()));
             $this->_redirectReferer();
             return;
         }
 
         // Success
-        $this->_getSession()->addSuccess($this->__('Entity deleted successfully.'));
+        $this->_getSession()->addSuccess($this->__('Entity %s deleted successfully.', $id));
         $this->_redirect('*/*');
     }
 }
