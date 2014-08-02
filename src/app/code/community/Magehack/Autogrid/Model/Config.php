@@ -332,12 +332,18 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         if (in_array($result['frontend_input'], array('select', 'multiselect'))) {
             $result['values'] = $this->_getFormOptionsFromSource($result);
         }
-        elseif ($result['frontend_input'] == 'date') {
+        elseif ($result['frontend_input'] == 'datetime') {
             if (! isset($result['format'])) {
-                $result['format'] = Mage::app()->getLocale()->getDateFormat(
+                $locale = Mage::app()->getLocale();
+                $result['format'] = $locale->getDateFormat(
                     Mage_Core_Model_Locale::FORMAT_TYPE_SHORT
-                );
+                ) . ' HH:mm:ss';
             }
+        } elseif ($result['frontend_input'] == 'date') {
+            $locale = Mage::app()->getLocale();
+            $result['format'] = $locale->getDateFormat(
+                Mage_Core_Model_Locale::FORMAT_TYPE_SHORT
+            );
             if (! isset($result['image'])) {
                 $result['image'] = Mage::getDesign()->getSkinUrl('images/grid-cal.gif');
             }
@@ -461,11 +467,8 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         if (isset($info['source_model'])) {
             return 'select';
         }
-        if (in_array($fieldName, array('created_at', 'updated_at', 'date'))) {
-            return 'date';
-        }
-        if ('entity_id' === $fieldName) {
-            return 'label';
+        if (in_array($fieldName, array('created_at', 'updated_at'))) {
+            return 'datetime';
         }
         return 'text';
     }
