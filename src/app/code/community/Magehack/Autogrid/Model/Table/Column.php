@@ -156,6 +156,9 @@ class Magehack_Autogrid_Model_Table_Column implements Magehack_Autogrid_Model_Ta
             $columnInfo = $this->_getColumnDataFromParser();
             $configInfo = $this->_getFieldDataFromConfig();
             $this->_fieldData = $this->_mergeColumnData($columnInfo, $configInfo);
+            if ($this->getColumnName() == $this->_tableParser->getPrimaryKey()) {
+                $this->_fieldData['frontend_input'] = 'hidden';
+            }
         }
         return $this->_fieldData;
     }
