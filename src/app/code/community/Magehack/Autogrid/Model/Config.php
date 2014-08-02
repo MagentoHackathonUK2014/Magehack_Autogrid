@@ -360,16 +360,20 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
     {
         $result = array();
         foreach ($info as $key => $value) {
-            if (!$value && ($default = $this->getColumnInfoDefault($name, $key))) {
-                $value = $default;
-            }
+            if (!$value) {
+                $default = $this->getColumnInfoDefault($name, $key);
+                if (null !== $default) {
+                    $value = $default;
+                }
+            } 
             if (null !== $value) {
                 $result[$key] = $value;
             }
         }
         foreach ($defaultKeys as $key) {
             if (!isset($result[$key])) {
-                if ($default = $this->getColumnInfoDefault($name, $key)) {
+                $default = $this->getColumnInfoDefault($name, $key);
+                if (null !== $default) {
                     $result[$key] = $default;
                 }
             }
@@ -384,16 +388,16 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      *
      * @param string $colName
      * @param string $key
-     * @return bool|string
+     * @return null|string
      */
     public function getColumnInfoDefault($colName, $key)
     {
         $path = "adminhtml/autogrid/column_defaults/$colName/$key";
         $default = Mage::getConfig()->getNode($path);
-        if ($default) {
+        if ($default !== false) {
             return (string)$default;
         }
-        return false;
+        return null;
     }
 
     /**

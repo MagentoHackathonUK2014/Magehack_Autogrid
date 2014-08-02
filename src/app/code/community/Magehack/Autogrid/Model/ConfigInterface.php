@@ -69,7 +69,7 @@ interface Magehack_Autogrid_Model_ConfigInterface
      *
      * @param string $colName
      * @param string $key For example source_model or frontend_input...
-     * @return bool|string
+     * @return null|string
      */
     public function getColumnInfoDefault($colName, $key);
 
