@@ -30,8 +30,6 @@ class Magehack_Autogrid_Test_Model_Resource_GenericEntityTest
         /** @var Magehack_Autogrid_Model_Resource_GenericEntity $instance */
         $instance = new $this->class;
         
-        $stubHelper = $this->getMock('Magehack_Autogrid_Helper_Data');
-        
         $stubConfig = $this->getMock('Magehack_Autogrid_Model_Config');
         if ($tableName) {
             $stubConfig->expects($this->any())
@@ -41,8 +39,6 @@ class Magehack_Autogrid_Test_Model_Resource_GenericEntityTest
         }
         
         $stubTableParser = $this->getMock('Magehack_Autogrid_Model_Resource_Table_Parser');
-        
-        $instance->setHelper($stubHelper);
         
         $instance->setConfig($stubConfig);
         
