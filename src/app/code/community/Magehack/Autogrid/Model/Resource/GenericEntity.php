@@ -30,6 +30,11 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
     protected $_tableParser;
 
     /**
+     * @var string
+     */
+    protected $_autogridTableId;
+
+    /**
      * Resource initialization
      */
     protected function _construct()
@@ -88,6 +93,7 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
      */
     public function setAutoGridTableId($autoGridTableId)
     {
+        $this->_autogridTableId = $autoGridTableId;
         $tableName = $this->_getConfig()->getTableName($autoGridTableId);
         $tableParser = $this->_getTableParser();
         $tableParser->init($this->getTable($tableName));
@@ -100,7 +106,7 @@ class Magehack_Autogrid_Model_Resource_GenericEntity
     {
         $columns = $this->_getTableParser()->getTableColumns();
         foreach (array_keys($columns) as $column) {
-            $info = $this->_getConfig()->getColumnInfo($column, $column);
+            $info = $this->_getConfig()->getFieldInfo($this->_autogridTableId, $column);
             if (isset($info['backend_model']) && $info['backend_model']) {
                 $backendModel = Mage::getModel($info['backend_model']);
                 $backendModel->$method($object);
