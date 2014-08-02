@@ -83,9 +83,6 @@
                     <frontend_input>multiselect</frontend_input>
                     <source_model>magehack_autogrid/table_column_source_websiteId</source_model>
                 </website_ids>
-                <has_options>
-                    <frontend_input>select</frontend_input>
-                </has_options>
                 <created_at>
                     <disabled>1</disabled>
                 </created_at>
