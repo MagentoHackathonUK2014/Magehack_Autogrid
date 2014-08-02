@@ -47,12 +47,40 @@ class Magehack_Autogrid_Adminhtml_Autogrid_TablesController extends Mage_Adminht
     }
 
     /**
+     * Display grid for selected table
+     */
+    public function viewAction()
+    {
+        // @todo $table = $this->_initTable
+        $this->_title($this->__('Table "%s"', '[TABLE TITLE]'));
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+    
+    public function editAction()
+    {
+        Mage::throwException('@todo: implement');
+    }
+    
+    public function saveAction()
+    {
+        Mage::throwException('@todo: implement');
+    }
+    
+    public function deleteAction()
+    {
+        Mage::throwException('@todo: implement');
+    }
+
+    /**
      * Is allowed?
+     * 
      * @return bool
      */
     protected function _isAllowed()
     {
-        return true;
+        return Mage::getSingleton('admin/session')
+            ->isAllowed('system/autogrid_tables');
     }
 
 }
