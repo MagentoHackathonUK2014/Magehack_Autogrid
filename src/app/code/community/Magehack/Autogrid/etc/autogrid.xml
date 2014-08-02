@@ -20,23 +20,35 @@
 <config>
     <tables>
         <example_product_entity>
+            <!-- Table name or table alias: -->
             <table>catalog/product</table>
+            <!-- Alternative table title -->
             <title>Autogrid Example Table catalog/products</title>
             <grid>
-                <columns>
-                    <has_options>
-                        <source_model>magehack_autogrid/table_column_source_yesno</source_model>
-                    </has_options>
-                    <type_id>
-                        <source_model>magehack_autogrid/table_column_source_yesno::getFlatOptionArray</source_model>
-                        <name>The Product Type</name>
-                        <type>varchar</type>
-                        <filterable>1</filterable>
-                        <sortable>0</sortable>
-                    </type_id>
-                </columns>
+                <!-- Grid configuration overriding default values -->
+                <entity_type_id>
+                    <sortable>0</sortable>
+                </entity_type_id>
+                <has_options>
+                    <source_model>magehack_autogrid/table_column_source_yesno</source_model>
+                </has_options>
+                <type_id>
+                    <header>The Product Type</header>
+                    <type>varchar</type>
+                    <filter>0</filter>
+                    <!--<sortable>0</sortable>-->
+                </type_id>
             </grid>
+            <!-- Form field properties can also be specified if the defaults aren't satisfactory -->
+            <!--
+            <form>
+            </form>
+            -->
         </example_product_entity>
+        <example_category_autogrid_table>
+            <table>catalog/category</table>
+            <uri>categories</uri>
+        </example_category_autogrid_table>
         <example_core_resource>
             <!-- Only the table name is enough. The title is optional, too -->
             <table>core_resource</table>
