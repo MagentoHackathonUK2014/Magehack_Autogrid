@@ -45,9 +45,9 @@ class Magehack_Autogrid_Block_Adminhtml_Autogrid_Edit_Form extends Mage_Adminhtm
         ));
         $table = $helper->getCurrentTable();
 
-        /** @var Magehack_Autogrid_Model_Table_ColumnInterface $column */
-        foreach ($table->getGridColumns() as $column) {
-            $fieldset->addField($column->getFormFieldId(), $column->getFieldInputType(), $column->getFormFieldInfo());
+        /** @var Magehack_Autogrid_Model_Table_ColumnInterface $field */
+        foreach ($table->getFormColumns() as $field) {
+            $fieldset->addField($field->getFormFieldId(), $field->getFieldInputType(), $field->getFormFieldInfo());
         }
 
         $form->setData('use_container', true);
