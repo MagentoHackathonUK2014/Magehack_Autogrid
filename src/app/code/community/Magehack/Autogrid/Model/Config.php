@@ -55,6 +55,8 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         'frontend_model',
         'source_model',
         'backend_model',
+        'filter',
+        'sortable',
     );
 
     /**
@@ -299,6 +301,12 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         }
         if (!isset($result['header'])) {
             $result['header'] = ucwords(str_replace('_', ' ', $colName));
+        }
+        if (isset($result['filter']) && ! $result['filter']) {
+            $result['filter'] = false; // cast to boolean false
+        }
+        if (isset($result['sortable']) && ! $result['sortable']) {
+            $result['sortable'] = false; // cast to boolean false
         }
         return $result;
     }
