@@ -16,7 +16,8 @@ Description
 Every time a developer has to display information from database tables on Magento admin, she has to write the same code again and again.
 Magehack_Autogrid does most of the work automatically, as long as the grid is dealing with a flat table.
 
-It only requires a potentially very small config file (like, 5 lines of XML excluding the root node), and the rest is taken care of automatically:
+It only requires a potentially very small config file (like, 5 lines of XML excluding the root node), and the rest is taken care of automatically.  
+This code belongs in a file called *[etc/autogrid.xml](https://github.com/MagentoHackathonUK2014/Magehack_Autogrid/blob/master/src/app/code/community/Magehack/Autogrid/etc/autogrid.xml)* in a modules directory.  
 
 ```{.xml}
 <config>
@@ -27,9 +28,39 @@ It only requires a potentially very small config file (like, 5 lines of XML excl
     </tables>
 </config>
 ```
-This code belongs into a file called *etc/autogrid.xml* in a modules directory.  
-Additional options can be specified of course, overriding the defaults.  
-Please have a look at the examples in the *[etc/autogrid.xml](https://github.com/MagentoHackathonUK2014/Magehack_Autogrid/blob/master/src/app/code/community/Magehack/Autogrid/etc/autogrid.xml)* file for inspiration.  
+
+Additional options can be specified of course, overriding the defaults:
+
+```{.xml}
+<config>
+    <tables>
+        <example_product_table>
+            <table>catalog/product</table>
+            <title>Autogrid Example Table</title>
+            <grid>
+                <entity_type_id>
+                    <sortable>0</sortable>
+                </entity_type_id>
+                <has_options>
+                    <source_model>magehack_autogrid/table_column_source_yesno</source_model>
+                </has_options>
+                <type_id>
+                    <header>The Product Type</header>
+                </type_id>
+            </grid>
+            <form>
+                <type_id>
+                    <disabled>1</disabled>
+                </type_id>
+            </form>
+        </example_product_table>
+    </tables>
+</config>
+
+```
+
+Please have a look at the examples in the *[etc/autogrid.xml](https://github.com/MagentoHackathonUK2014/Magehack_Autogrid/blob/master/src/app/code/community/Magehack/Autogrid/etc/autogrid.xml)* file for more examples.
+  
 Also, global defaults based on column name can be specified in the usual *[config.xml](https://github.com/MagentoHackathonUK2014/Magehack_Autogrid/blob/master/src/app/code/community/Magehack/Autogrid/etc/config.xml#L61-L95)* files:
 
 ```{xml}
@@ -51,6 +82,22 @@ Also, global defaults based on column name can be specified in the usual *[confi
             </column_defaults>
         </autogrid>
     </adminhtml>
+</config>
+```
+
+There are a number of nice features, for example backend model support for flat table entities.
+
+```{.xml}
+<config>
+    <tables>
+        <example_product_table>
+            <form>
+                <updated_at>
+                    <backend_model>magehack_autogrid/table_column_backend_updatedAt</backend_model>
+                </updated_at>
+            </form>
+        </example_product_table>
+    </tables>
 </config>
 ```
 
