@@ -464,9 +464,11 @@ class Magehack_Autogrid_Model_Table_Column extends Mage_Core_Model_Abstract impl
                 break;
 
             default:
-                //the default will be a text box
+                //the default will be 'text'
                 //it was already set before we entered this switch
-                Mage::throwException("Column type not recognised. Used base defaults instead.\n");
+                //by doing nothing here we allow any autogrid.xml settings to still apply later on
+                //so if your data type wasn't matched above you should define it in autogrid.xml
+                //Mage::throwException("Column type not recognised. Used base defaults instead.\n");
         }
         //end switch
         //now we treat some special cases

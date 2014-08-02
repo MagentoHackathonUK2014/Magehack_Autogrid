@@ -48,9 +48,9 @@ Developers
 ---------
 * Sam
 * [Vinai Kopp](https://github.com/vinai)
-* Niels Preuss
-* [Jacques Bodin-Hullin](http://jacques.sh)
-* Malachy McConnell (git hub username malachy.mcconnnell)
+* [Nils Preuss](https://github.com/nils.preuss)
+* [Jacques Bodin-Hullin](https://github.com/jacquesbh)
+* [Malachy McConnell](https://malachy.mcconnnell)
 
 Licence
 -------
