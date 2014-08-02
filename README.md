@@ -1,7 +1,7 @@
 Magehack_Autogrid
 =================
 Every time a developer has to display information from database tables on Magento admin, she has to write the same code again and again.
-Using Magehack_Autogrid you don't have to do it again for flat tables.
+Magehack_Autogrid can do most of the work for you, as long as the grid is dealing with a flat table.
 
 Facts
 -----
@@ -13,8 +13,51 @@ Facts
 
 Description
 -----------
-Every time a developer hase to display information from database tables on Magento admin, she has to write the same code again and again.
-Using Magehack_Autogrid you don't have to do it again for flat tables.
+Every time a developer has to display information from database tables on Magento admin, she has to write the same code again and again.
+Magehack_Autogrid does most of the work automatically, as long as the grid is dealing with a flat table.
+
+It only requires a potentially very small config file (like, 5 lines of XML excluding the root node), and the rest is taken care of automatically:
+
+```{.xml}
+<config>
+    <tables>
+        <example_product_table>
+            <table>catalog/product</table>
+        </example_product_table>
+    </tables>
+</config>
+```
+This code belongs into a file called *etc/autogrid.xml* in a modules directory.  
+Additional options can be specified of course, overriding the defaults.  
+Please have a look at the examples in the *[etc/autogrid.xml](https://github.com/MagentoHackathonUK2014/Magehack_Autogrid/blob/master/src/app/code/community/Magehack/Autogrid/etc/autogrid.xml)* file for inspiration.  
+Also, global defaults based on column name can be specified in the usual *[config.xml](https://github.com/MagentoHackathonUK2014/Magehack_Autogrid/blob/master/src/app/code/community/Magehack/Autogrid/etc/config.xml#L61-L95)* files:
+
+```{xml}
+<config>
+    <adminhtml>
+        <autogrid>
+            <column_defaults>
+                <attribute_set_id>
+                    <frontend_input>select</frontend_input>
+                    <source_model>magehack_autogrid/table_column_source_attributeSetId</source_model>
+                </attribute_set_id>
+                <website_ids>
+                    <frontend_input>multiselect</frontend_input>
+                    <source_model>magehack_autogrid/table_column_source_websiteId</source_model>
+                </website_ids>
+                <created_at>
+                    <disabled>1</disabled>
+                </created_at>
+            </column_defaults>
+        </autogrid>
+    </adminhtml>
+</config>
+```
+
+Extension Stability
+-------------------
+The extensions source still shows its roots in a one-night hackathon, but work has continued and it is in a usable and rather maintainable state.  
+Plenty of work can still be done
 
 Usage
 -----
@@ -34,6 +77,17 @@ If you are using the Magento compiler, disable compilation before the installati
 
 1. Install the extension from github (its not on Magento Connect).
 2. Clear the cache, logout from the admin panel and then login again.
+
+Todo
+----
+Here a list of the todo items that I've got in my mind at the moment:
+ 
+- add per table acl resource support
+- add more tests
+- refactor column class further, column types should be individual classes based on an abstract column type
+- complete "all-tables" grid support (view selected tables, create, edit and delete for table contents)
+- remove the example autogrid.xml
+- create examples
 
 Support
 -------
