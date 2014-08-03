@@ -48,10 +48,10 @@
             </form>
             -->
         </example_product_entity>
-        <example_category_autogrid_table>
-            <table>catalog/category</table>
-            <uri>categories</uri>
-        </example_category_autogrid_table>
+        <example_core_config_data>
+            <table>core/config_data</table>
+            <uri>configuration_data</uri>
+        </example_core_config_data>
         <example_core_resource>
             <!-- Only the table name is enough. The title is optional, too -->
             <table>core_resource</table>

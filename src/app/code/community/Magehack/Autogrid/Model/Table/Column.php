@@ -156,11 +156,30 @@ class Magehack_Autogrid_Model_Table_Column implements Magehack_Autogrid_Model_Ta
             $columnInfo = $this->_getColumnDataFromParser();
             $configInfo = $this->_getFieldDataFromConfig();
             $this->_fieldData = $this->_mergeColumnData($columnInfo, $configInfo);
+            $this->_updateFrontendInput($columnInfo);
             if ($this->getColumnName() == $this->_tableParser->getPrimaryKey()) {
                 $this->_fieldData['frontend_input'] = 'hidden';
             }
         }
         return $this->_fieldData;
+    }
+
+    /**
+     * The most ugly hack in this module.
+     *
+     * Underlying architectural technical dept doesn't allow for anything better
+     * without more refactoring as far as I can see at the moment. 
+     * 
+     * @param array $columnInfo
+     */
+    private function _updateFrontendInput(array $columnInfo)
+    {
+        if ($this->getColumnName() == $this->_tableParser->getPrimaryKey()) {
+            $this->_fieldData['frontend_input'] = 'hidden';
+        }
+        if ('text' === $this->_fieldData['frontend_input'] && 'text' !== $columnInfo['frontend_input']) {
+            $this->_fieldData['frontend_input'] = $columnInfo['frontend_input'];
+        }
     }
 
     /**
@@ -174,7 +193,25 @@ class Magehack_Autogrid_Model_Table_Column implements Magehack_Autogrid_Model_Ta
     {
         $name = $this->getColumnName();
         $data = $this->_tableParser->getTableColumnByName($name);
+        $data['frontend_input'] = $this->_getFrontendInputByType($data['type']);
         return $data;
+    }
+
+    /**
+     * Return the input type based on the column data type.
+     * 
+     * Very ugly, much technical dept here...
+     * 
+     * @param string $type
+     * @return string
+     */
+    private function _getFrontendInputByType($type)
+    {
+        $input = 'text';
+        if ('text' == $type) {
+            $input = 'textarea';
+        }
+        return $input;
     }
 
     /**
@@ -189,6 +226,8 @@ class Magehack_Autogrid_Model_Table_Column implements Magehack_Autogrid_Model_Ta
 
     /**
      * Return the field data from the autogrid config model
+     * 
+     * @return array
      */
     private function _getFieldDataFromConfig()
     {
