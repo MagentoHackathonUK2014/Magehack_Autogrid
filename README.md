@@ -147,7 +147,7 @@ Any contributions are highly appreciated. The best way to contribute code is to 
 
 Developers
 ---------
-* Sam
+* [Sam Ban](https://github.com/ShoobyBan)
 * [Vinai Kopp](https://github.com/vinai)
 * [Nils Preuss](https://github.com/nils.preuss)
 * [Jacques Bodin-Hullin](https://github.com/jacquesbh)
