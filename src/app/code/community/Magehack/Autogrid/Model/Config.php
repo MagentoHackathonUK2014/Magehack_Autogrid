@@ -357,6 +357,9 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         if (!isset($result['label'])) {
             $result['label'] = ucwords(str_replace('_', ' ', $fieldName));
         }
+        if (null === $result['frontend_input']) {
+            unset($result['frontend_input']);
+        }
         return $result;
     }
 
@@ -457,7 +460,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
      *
      * @param string $fieldName
      * @param array $info
-     * @return string
+     * @return string|null
      */
     protected function _getFrontendInputType($fieldName, array $info)
     {
@@ -470,7 +473,7 @@ class Magehack_Autogrid_Model_Config implements Magehack_Autogrid_Model_ConfigIn
         if (in_array($fieldName, array('created_at', 'updated_at'))) {
             return 'datetime';
         }
-        return 'text';
+        return null;
     }
 
     /**

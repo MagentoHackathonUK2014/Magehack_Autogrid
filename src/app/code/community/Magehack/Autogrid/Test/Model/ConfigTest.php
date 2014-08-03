@@ -284,6 +284,7 @@ EOX;
                     <something_special>A different value</something_special>
                     <backend_type>int</backend_type>
                     <label>The Label</label>
+                    <frontend_input>text</frontend_input>
                 </column_c>
             </form>
         </$tableId>
@@ -293,7 +294,6 @@ EOX;
         $expected = array(
             'column_a' => array(
                 'frontend_label' => 'Frontend Label',
-                'frontend_input' => 'text',
                 'name' => 'column_a',
                 'label' => 'Column A',
             ),
@@ -386,7 +386,6 @@ EOX;
             'frontend_label' => 'A Label',
             'something_special' => 'A different value',
             'backend_type' => 'int',
-            'frontend_input' => 'text',
             'name' => 'column_a',
             'label' => 'Column A'
         );

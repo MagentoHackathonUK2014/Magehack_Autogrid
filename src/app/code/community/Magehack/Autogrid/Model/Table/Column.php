@@ -156,29 +156,18 @@ class Magehack_Autogrid_Model_Table_Column implements Magehack_Autogrid_Model_Ta
             $columnInfo = $this->_getColumnDataFromParser();
             $configInfo = $this->_getFieldDataFromConfig();
             $this->_fieldData = $this->_mergeColumnData($columnInfo, $configInfo);
-            $this->_updateFrontendInput($columnInfo);
-            if ($this->getColumnName() == $this->_tableParser->getPrimaryKey()) {
-                $this->_fieldData['frontend_input'] = 'hidden';
-            }
+            $this->_updateFrontendInput();
         }
         return $this->_fieldData;
     }
 
     /**
-     * The most ugly hack in this module.
-     *
-     * Underlying architectural technical dept doesn't allow for anything better
-     * without more refactoring as far as I can see at the moment. 
-     * 
-     * @param array $columnInfo
+     * Update the frontend input type under special circumstances
      */
-    private function _updateFrontendInput(array $columnInfo)
+    private function _updateFrontendInput()
     {
         if ($this->getColumnName() == $this->_tableParser->getPrimaryKey()) {
             $this->_fieldData['frontend_input'] = 'hidden';
-        }
-        if ('text' === $this->_fieldData['frontend_input'] && 'text' !== $columnInfo['frontend_input']) {
-            $this->_fieldData['frontend_input'] = $columnInfo['frontend_input'];
         }
     }
 
@@ -193,7 +182,7 @@ class Magehack_Autogrid_Model_Table_Column implements Magehack_Autogrid_Model_Ta
     {
         $name = $this->getColumnName();
         $data = $this->_tableParser->getTableColumnByName($name);
-        $data['frontend_input'] = $this->_getFrontendInputByType($data['type']);
+        $data['frontend_input'] = $this->_getFrontendInputByType($data['backend_type']);
         return $data;
     }
 

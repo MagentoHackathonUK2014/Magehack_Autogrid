@@ -79,7 +79,7 @@ class Magehack_Autogrid_Model_Resource_Table_Parser
             $titles = $adapter->fetchPairs($select);
     
             foreach ($tableInfo as $name => $info) {
-                $this->_cols[$name] = array('type' => $info['DATA_TYPE'], 'title' => $titles[$name]);
+                $this->_cols[$name] = array('backend_type' => $info['DATA_TYPE'], 'title' => $titles[$name]);
                 if ($info['PRIMARY'] && $info['PRIMARY_POSITION'] == 1) {
                     $this->_primaryKey = $name;
                 }
