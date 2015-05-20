@@ -149,7 +149,7 @@ Developers
 ---------
 * [Sam Ban](https://github.com/ShoobyBan)
 * [Vinai Kopp](https://github.com/vinai)
-* [Nils Preuss](https://github.com/nils.preuss)
+* [Nils Preuss](https://github.com/nhp)
 * [Jacques Bodin-Hullin](https://github.com/jacquesbh)
 * [Malachy McConnell](https://malachy.mcconnnell)
 
