@@ -1,0 +1,37 @@
+{
+    "name": "magehack/autogrid",
+    "license": "OSL-3.0",
+    "type": "magento-module",
+    "description": "The Magehack_Autogrid can do most of the work for your simple or more complex grids.",
+    "homepage": "https://github.com/MagentoHackathonUK2014/Magehack_Autogrid",
+    "authors": [
+        {
+            "name": "Sam Ban",
+            "homepage": "https://github.com/ShoobyBan",
+            "role": "Developer"
+        },
+        {
+            "name": "Vinai Kopp",
+            "homepage": "https://github.com/vinai",
+            "role": "Developer"
+        },
+        {
+            "name": "Nils Preuss",
+            "homepage": "https://github.com/nhp",
+            "role": "Developer"
+        },
+        {
+            "name": "Jacques Bodin-Hullin",
+            "homepage": "https://github.com/jacquesbh",
+            "role": "Developer"
+        },
+        {
+            "name": "Malachy McConnell",
+            "homepage": "https://malachy.mcconnnell/",
+            "role": "Developer"
+        }
+    ],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "Allows to manage this package as a dependency"
+    }
+}
